@@ -1,0 +1,7 @@
+https://colab.research.google.com/github/deepmind/graph_nets/blob/master/graph_nets/demos/graph_nets_basics.ipynb#scrollTo=cpUOMJo30oHa
+
+https://docs.dgl.ai/tutorials/basics/1_first.html
+
+https://docs.dgl.ai/tutorials/models/index.html
+
+https://docs.dgl.ai/tutorials/models/4_old_wines/7_transformer.html

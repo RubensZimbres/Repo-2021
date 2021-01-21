@@ -249,23 +249,25 @@ def draw(i):
     nx.draw_networkx(nx_G.to_undirected(), pos, node_color=colors,
             with_labels=True, node_size=300, ax=ax)
 
-fig = plt.figure(dpi=150)
-fig.clf()
-ax = fig.subplots()
-draw(0)  # draw the prediction of the first epoch
-plt.show()
+for i in range(0,50):
+    fig = plt.figure(dpi=150)
+    fig.clf()
+    ax = fig.subplots()
+    draw(i)  # draw the prediction of the first epoch
+    plt.savefig('/home/theone/Documents/graph/foo{}.png'.format(i))
+    plt.show()
 
+import glob
+from PIL import Image
 
-#ani = animation.FuncAnimation(fig, draw, frames=len(all_logits), interval=200)
+# filepaths
+fp_in = "/home/theone/Documents/graph/foo*.png"
+fp_out = "/home/theone/Documents/graph_movie.gif"
 
-#plt.show()
-
-
-
-
-
-
-
+# https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html#gif
+img, *imgs = [Image.open(f) for f in sorted(glob.glob(fp_in))]
+img.save(fp=fp_out, format='GIF', append_images=imgs,
+         save_all=True, duration=200, loop=0)
 
 
 

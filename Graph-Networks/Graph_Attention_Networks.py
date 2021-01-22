@@ -142,7 +142,7 @@ def embed(word):
     last_hidden_states = outputs[0]
     return np.mean(last_hidden_states,axis=1)
 
-embeddings=np.array(list(map(embed,words)))
+embeddings=norm(np.array(list(map(embed,words))))
 embeddings=embeddings.reshape(len(words),768)
 
 #! pip install dgl
@@ -180,8 +180,11 @@ de=np.array([False]*9)
 for i in mask_init:
     de[i-1]=True
 
+import torch.nn.functional as f
+
 g=G
-features=G.ndata['feat']
+features=f.normalize(torch.tensor(embeddings), p=2, dim=1)
+
 labels= torch.from_numpy(np.array([1,1,1,0,0,0,0,0,0]))
 mask=torch.from_numpy(de)
 
@@ -379,11 +382,11 @@ net = GAT(g,
           num_heads=2)
 
 # create optimizer
-optimizer = torch.optim.Adam(net.parameters(), lr=1e-3)
+optimizer = torch.optim.Adam(net.parameters(), lr=1e-2)
 import time
 
 dur = []
-for epoch in range(30):
+for epoch in range(800):
     if epoch >= 3:
         t0 = time.time()
 
@@ -400,7 +403,8 @@ for epoch in range(30):
 
     print("Epoch {:05d} | Loss {:.4f} | Time(s) {:.4f}".format(
         epoch, loss.item(), np.mean(dur)))
-    
+#!pip install sklearn scikit-learn
+
 torch.save(net.state_dict(), '/home/theone/Documents/Model1/checkpoint.t7')
 
 model = GAT(g,
@@ -420,8 +424,8 @@ def predict(batch, model):
     return predicted
 
 y_pred = predict(features,model)
-    
-
+y_pred
+labels
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 

@@ -401,6 +401,25 @@ for epoch in range(30):
     print("Epoch {:05d} | Loss {:.4f} | Time(s) {:.4f}".format(
         epoch, loss.item(), np.mean(dur)))
     
+torch.save(net.state_dict(), '/home/theone/Documents/Model1/checkpoint.t7')
+
+model = GAT(g,
+          in_dim=features.size()[1],
+          hidden_dim=8,
+          out_dim=7,
+          num_heads=2)
+
+model.load_state_dict(torch.load('/home/theone/Documents/Model1/checkpoint.t7'))
+model.eval()
+
+def predict(batch, model):
+    with torch.no_grad():
+        out = model(batch)
+        _, predicted = torch.max(out, 1)
+        predicted = predicted.numpy()
+    return predicted
+
+y_pred = predict(features,model)
     
 
 import matplotlib.animation as animation

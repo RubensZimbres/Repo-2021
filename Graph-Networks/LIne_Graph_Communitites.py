@@ -198,31 +198,29 @@ for i in range(50):
 import time
 def visualize2(labels, g):
     pos = nx.spring_layout(g, seed=1)
-    plt.axis('off')
+    fig=plt.figure(figsize=(8, 8))
+    fig.clf()
+    ax = fig.subplots()
+    ax.cla()
+    ax.axis('off')
+    ax.set_title('Epoch: %d' % i)
     nx.draw_networkx(g, pos=pos, node_size=50, cmap=plt.get_cmap('coolwarm'),
                      node_color=labels, edge_color='k',
                      arrows=False, width=0.5, style='dotted', with_labels=False)
 
 for i in range(0,50):
-    fig = plt.figure(dpi=150)
-    fig.clf()
-    ax = fig.subplots()
     visualize2(pred2[i].cpu().detach().numpy(),nx_G1)  # draw the prediction of the first epoch
     plt.savefig('/home/theone/Documents/graph4/foo{}.png'.format(time.time()))
-    #plt.show()
+    plt.show()
 
 import glob
 from PIL import Image
 
 # filepaths
 fp_in = "/home/theone/Documents/graph4/foo*.png"
-fp_out = "/home/theone/Documents/graph4_GAT_movie.gif"
+fp_out = "/home/theone/Documents/graph4_comm_movie.gif"
 
 # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html#gif
 img, *imgs = [Image.open(f) for f in sorted(glob.glob(fp_in))]
 img.save(fp=fp_out, format='GIF', append_images=imgs,
          save_all=True, duration=200, loop=0)
-
-
-
-

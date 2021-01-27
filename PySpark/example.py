@@ -55,6 +55,11 @@ df = df.withColumn('publish_time_2',regexp_replace(df.publish_time, 'T', ' '))
 df = df.withColumn('publish_time_2',regexp_replace(df.publish_time_2, 'Z', ''))
 df = df.withColumn("publish_time_3", to_timestamp(df.publish_time_2, 'yyyy-MM-dd HH:mm:ss.SSS'))
 
+from pyspark.sql.functions import year, month
+# Other options: dayofmonth, dayofweek, dayofyear, weekofyear
+df.select("trending_date",year("trending_date"),month("trending_date")).show(5)
+
+
 df = df.withColumn('title',lower(df.title)) # or rtrim/ltrim
 df.select("title").show(5,False)
 
@@ -79,6 +84,8 @@ df.select("likes","dislikes",expr("CASE WHEN likes > dislikes THEN  'Good' WHEN 
 print("Option 3: selectExpr() using SQL equivalent CASE expression")
 df.selectExpr("likes","dislikes","CASE WHEN likes > dislikes THEN  'Good' WHEN likes < dislikes THEN 'Bad' ELSE 'Undetermined' END AS Favorability").show(3)
 
+from pyspark.sql.functions import concat_ws
+df.select(concat_ws(' ', df.title,df.channel_title,df.tags).alias('text')).show(1,False)
 
 
 col_list= df.columns[0:5]

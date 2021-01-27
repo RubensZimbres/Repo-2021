@@ -24,7 +24,7 @@ df.show()
 ############################
 
 path = "/home/anaconda3/work/Python Files and Datasets AS of 22DEC20/PySpark DataFrame Essentials/Datasets/students.csv"
-df = spark.read.csv(path,header=True)
+df = spark.read.csv(path,,inferSchema=True,header=True)
 df.toPandas()
 
 df.groupBy("gender").agg({'math score':'mean'}).show()
@@ -39,3 +39,20 @@ collect = df.collect()
 # Even if we duplicate the dataframe, the ID remains the same
 df2 = df
 df2.rdd.id()
+
+# Iterate over a column
+
+def square_float(x):
+    return float(x**2)
+
+square_udf_float2=udf(lambda z: square_float(z),FloatType())
+
+(df.select('integers',square_udf_float2('integers').alias('int_squared')))
+
+students = spark.read.csv(path+'students.csv',inferSchema=True,header=True)
+
+
+# **Parquet Files**
+
+parquet = spark.read.parquet(path+'users1.parquet')
+parquet.show(2)

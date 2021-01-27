@@ -35,8 +35,9 @@ df.toPandas()
 df.groupBy("gender").agg({'math score':'mean'}).show()
 
 df.select("gender", "math_score").summary("count", "min", "max").show()
-df.select(['Name','gender']).orderBy('Name').show(5)
+df.select(['Name','gender']).orderBy('Name').show(5,False) #not truncated
 df.select("Name","math_score").where(df.Name.like("A%")).show(5, False)
+df[df.Name.isin("L. Messi", "Cristiano Ronaldo")].limit(4).toPandas()
 
 # It's not until we change the df in some way, that the ID changes
 # These kinds of commands won't actually be run...

@@ -52,7 +52,7 @@ df = df.withColumn('new_col', df['math score'] * 2)
 df2 = df.withColumnRenamed('Rolling year total number of offences','Count')
 
 df.createOrReplaceTempView("tempview")
-spark.sql("SELECT * FROM tempview WHERE Count > 1000").limit(5).toPandas()
+spark.sql("SELECT Region, sum(Count) AS Total FROM tempview WHERE Count > 1000 GROUP BY Gender").limit(5).toPandas()
 
 
 col_list= df.columns[0:5]

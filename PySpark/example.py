@@ -59,6 +59,8 @@ from pyspark.sql.functions import year, month
 # Other options: dayofmonth, dayofweek, dayofyear, weekofyear
 df.select("trending_date",year("trending_date"),month("trending_date")).show(5)
 
+from pyspark.sql.functions import datediff
+df.select("trending_date","publish_time_3",(datediff(df.trending_date,df.publish_time_3)/365).alias('diff')).show(5)
 
 df = df.withColumn('title',lower(df.title)) # or rtrim/ltrim
 df.select("title").show(5,False)
@@ -86,6 +88,10 @@ df.selectExpr("likes","dislikes","CASE WHEN likes > dislikes THEN  'Good' WHEN l
 
 from pyspark.sql.functions import concat_ws
 df.select(concat_ws(' ', df.title,df.channel_title,df.tags).alias('text')).show(1,False)
+
+from pyspark.sql.functions import split
+df.select("title").show(1,False)
+df.select(split(df.title, ' ').alias('new')).show(1,False)
 
 
 col_list= df.columns[0:5]

@@ -16,6 +16,11 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder.appName("PySpark").getOrCreate()
 spark
 
+cores = spark._jsc.sc().getExecutorMemoryStatus().keySet().size()
+print("You are working with", cores, "core(s)")
+spark
+
+
 data = [['tom', 10], ['nick', 15], ['juli', 14]] 
 
 df = spark.createDataFrame(data,['Name', 'Age']) 
@@ -50,9 +55,24 @@ square_udf_float2=udf(lambda z: square_float(z),FloatType())
 (df.select('integers',square_udf_float2('integers').alias('int_squared')))
 
 students = spark.read.csv(path+'students.csv',inferSchema=True,header=True)
+print(type(students))
+
+studentsPdf = students.toPandas()
+print(type(studentsPdf))
 
 
 # **Parquet Files**
 
 parquet = spark.read.parquet(path+'users1.parquet')
 parquet.show(2)
+
+# **Partitioned Parquet Files**
+# Actually most big datasets will be partitioned. Here is how you can collect all the pieces (parts) of the dataset in one simple command.
+
+partitioned = spark.read.parquet(path+'users*')
+partitioned.show(2)
+
+users1_2 = spark.read.option("basePath", path).parquet(path+'users1.parquet', path+'users2.parquet')
+users1_2.show()
+
+

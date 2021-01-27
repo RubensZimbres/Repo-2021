@@ -55,9 +55,30 @@ df = df.withColumn('publish_time_2',regexp_replace(df.publish_time, 'T', ' '))
 df = df.withColumn('publish_time_2',regexp_replace(df.publish_time_2, 'Z', ''))
 df = df.withColumn("publish_time_3", to_timestamp(df.publish_time_2, 'yyyy-MM-dd HH:mm:ss.SSS'))
 
+df = df.withColumn('title',lower(df.title)) # or rtrim/ltrim
+df.select("title").show(5,False)
+
+###### OR
+
+import pyspark.sql.functions as f
+df.select("publish_time",f.translate(f.col("publish_time"), "TZ", " ").alias("translate_func")).show(5,False)
+
 df.createOrReplaceTempView("tempview")
 spark.sql("SELECT Region, sum(Count) AS Total FROM tempview GROUP BY Region").limit(5).toPandas()
 spark.sql("SELECT * FROM tempview WHERE App LIKE '%dating%'").limit(5).toPandas()
+
+
+print("Option#1: select or withColumn() using when-otherwise")
+from pyspark.sql.functions import when
+df.select("likes","dislikes",(when(df.likes > df.dislikes, 'Good').when(df.likes < df.dislikes, 'Bad').otherwise('Undetermined')).alias("Favorability")).show(3)
+
+print("Option2: select or withColumn() using expr function")
+from pyspark.sql.functions import expr 
+df.select("likes","dislikes",expr("CASE WHEN likes > dislikes THEN  'Good' WHEN likes < dislikes THEN 'Bad' ELSE 'Undetermined' END AS Favorability")).show(3)
+
+print("Option 3: selectExpr() using SQL equivalent CASE expression")
+df.selectExpr("likes","dislikes","CASE WHEN likes > dislikes THEN  'Good' WHEN likes < dislikes THEN 'Bad' ELSE 'Undetermined' END AS Favorability").show(3)
+
 
 
 col_list= df.columns[0:5]

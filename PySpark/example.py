@@ -53,6 +53,7 @@ df2 = df.withColumnRenamed('Rolling year total number of offences','Count')
 
 df.createOrReplaceTempView("tempview")
 spark.sql("SELECT Region, sum(Count) AS Total FROM tempview GROUP BY Region").limit(5).toPandas()
+spark.sql("SELECT * FROM tempview WHERE App LIKE '%dating%'").limit(5).toPandas()
 
 
 col_list= df.columns[0:5]
@@ -78,6 +79,10 @@ sqlTrans.transform(df).show(5)
 
 df.withColumn("percent",expr("round((count/244720928)*100,2)")).show()
 df.select("*",expr("round((count/244720928)*100,2) AS percent")).show()
+
+from pyspark.sql.types import IntegerType, FloatType
+df = googlep.withColumn("Rating", googlep["Rating"].cast(FloatType())).withColumn("Reviews", googlep["Reviews"].cast(IntegerType())).withColumn("Price", googlep["Price"].cast(IntegerType()))
+print(df.printSchema())
 
 
 ################################################################################

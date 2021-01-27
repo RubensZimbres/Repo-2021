@@ -70,6 +70,17 @@ type(sqlTrans)
 
 df4=sqlTrans.transform(df)
 
+from pyspark.sql.functions import expr 
+
+sqlTrans = SQLTransformer(
+    statement="SELECT SUM(Count) as Total FROM __THIS__") 
+sqlTrans.transform(df).show(5)
+
+df.withColumn("percent",expr("round((count/244720928)*100,2)")).show()
+df.select("*",expr("round((count/244720928)*100,2) AS percent")).show()
+
+
+################################################################################
 
 # Until we executute a command like this
 collect = df.collect()

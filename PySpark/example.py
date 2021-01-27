@@ -60,6 +60,11 @@ print(type(students))
 studentsPdf = students.toPandas()
 print(type(studentsPdf))
 
+students.schema['math score'].dataType
+
+students.describe(['math score']).show()
+
+students.select("math score", "reading score","writing score").summary("count", "min", "25%", "75%", "max").show()
 
 # **Parquet Files**
 
@@ -75,4 +80,19 @@ partitioned.show(2)
 users1_2 = spark.read.option("basePath", path).parquet(path+'users1.parquet', path+'users2.parquet')
 users1_2.show()
 
+# However you often have to set the schema yourself if you aren't dealing with a .read method that doesn't have inferSchema() built-in.
 
+from pyspark.sql.types import StructField,StringType,IntegerType,StructType,DateType
+
+data_schema = [StructField("name", StringType(), True),
+               StructField("email", StringType(), True),
+               StructField("city", StringType(), True),
+               StructField("mac", StringType(), True),
+               StructField("timestamp", DateType(), True),
+               StructField("creditcard", StringType(), True)]
+
+final_struc = StructType(fields=data_schema)
+
+people = spark.read.json(path+'people.json', schema=final_struc)
+
+people.printSchema()

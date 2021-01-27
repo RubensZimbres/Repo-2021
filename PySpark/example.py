@@ -153,12 +153,16 @@ df2.rdd.id()
 
 # Iterate over a column
 
-def square_float(x):
-    return float(x**2)
+from pyspark.sql.functions import udf
+from pyspark.sql.types import IntegerType
 
-square_udf_float2=udf(lambda z: square_float(z),FloatType())
+def square(x):
+    return int(x**2)
+square_udf = udf(lambda z: square(z), IntegerType())
 
-(df.select('integers',square_udf_float2('integers').alias('int_squared')))
+df.select('dislikes',square_udf('dislikes').alias('likes_sq')).where(col('dislikes').isNotNull()).show()
+
+#######################################################################
 
 students = spark.read.csv(path+'students.csv',inferSchema=True,header=True)
 print(type(students))

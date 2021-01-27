@@ -55,6 +55,13 @@ df = df.withColumn('publish_time_2',regexp_replace(df.publish_time, 'T', ' '))
 df = df.withColumn('publish_time_2',regexp_replace(df.publish_time_2, 'Z', ''))
 df = df.withColumn("publish_time_3", to_timestamp(df.publish_time_2, 'yyyy-MM-dd HH:mm:ss.SSS'))
 
+df = sales.select('Date',split(sales.Date, '/')[0].alias('Month'),'Total')
+
+from pyspark.sql.functions import when
+clean = tweets.withColumn('Party', when(tweets.Party == 'Democrat', 'Democrat').when(tweets.Party == 'Republican', 'Republican').otherwise('Other'))
+counts = clean.groupBy("Party").count()
+counts.orderBy(desc("count")).show(16)
+
 from pyspark.sql.functions import year, month
 # Other options: dayofmonth, dayofweek, dayofyear, weekofyear
 df.select("trending_date",year("trending_date"),month("trending_date")).show(5)
@@ -93,6 +100,8 @@ from pyspark.sql.functions import split
 df.select("title").show(1,False)
 df.select(split(df.title, ' ').alias('new')).show(1,False)
 
+# CLEAN
+df = reviews.withColumn("cleaned_reviews", trim(lower(regexp_replace(col('review_txt'),'[^\sa-zA-Z0-9]', ''))))
 
 col_list= df.columns[0:5]
 df3=df.select(col_list)

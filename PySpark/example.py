@@ -151,6 +151,40 @@ df0.select(levenshtein('Input', 'Option1').alias('Apple')).show()
 df0.select(levenshtein('Input', 'Option2').alias('Microsoft')).show()
 df0.select(levenshtein('Input', 'Option3').alias('IBM')).show()
 
+# MISSING
+
+df.filter(df.cuisines.isNull()).select(['name','cuisines']).show(5)
+
+from pyspark.sql.functions import *
+
+def null_value_calc(df):
+    null_columns_counts = []
+    numRows = df.count()
+    for k in df.columns:
+        nullRows = df.where(col(k).isNull()).count()
+        if(nullRows > 0):
+            temp = k,nullRows,(nullRows/numRows)*100
+            null_columns_counts.append(temp)
+    return(null_columns_counts)
+
+null_columns_calc_list = null_value_calc(df)
+spark.createDataFrame(null_columns_calc_list, ['Column_Name', 'Null_Values_Count','Null_Value_Percent']).show()
+
+df.na.drop().limit(4).toPandas() 
+
+# OR
+
+drop_len = df.na.drop(subset=["votes"]).count() 
+
+df.na.fill(999).limit(10).toPandas()
+
+df.filter(df.name.isNull()).na.fill('No Name',subset=['name']).limit(5).toPandas()
+
+def fill_with_mean(df, include=set()): 
+    stats = df.agg(*(avg(c).alias(c) for c in df.columns if c in include))
+    return df.na.fill(stats.first().asDict())
+
+updated_df = fill_with_mean(df, ["votes"])
 
 from pyspark.ml.feature import SQLTransformer
 

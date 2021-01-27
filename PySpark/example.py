@@ -129,7 +129,27 @@ left_join = eats_plants.join(eats_meat, ["name","id"], how='left') # Could also 
 
 conditional_join = eats_plants.join(eats_meat, ["name","id"], how='left').filter(eats_meat.name.isNotNull())
 
+### DIFF NAMES 2 TABLES
 
+step1 = teachings.join(instructors, teachings.instructor_id == instructors.id, how='left').select(['instructor_id','name','section_uuid'])
+
+df_list = []
+for filename in os.listdir(path):
+    if filename.endswith(".csv"):
+        filename_list = filename.split(".") #separate path from .csv
+        df_name = filename_list[0]
+        df = spark.read.csv(path+filename,inferSchema=True,header=True)
+        df.name = df_name
+        df_list.append(df_name)
+        exec(df_name + ' = df')
+
+from pyspark.sql.functions import levenshtein
+
+df0 = spark.createDataFrame([('Aple', 'Apple','Microsoft','IBM')], ['Input', 'Option1','Option2','Option3'])
+print("Correct this company name: Aple")
+df0.select(levenshtein('Input', 'Option1').alias('Apple')).show()
+df0.select(levenshtein('Input', 'Option2').alias('Microsoft')).show()
+df0.select(levenshtein('Input', 'Option3').alias('IBM')).show()
 
 
 from pyspark.ml.feature import SQLTransformer

@@ -96,3 +96,24 @@ final_struc = StructType(fields=data_schema)
 people = spark.read.json(path+'people.json', schema=final_struc)
 
 people.printSchema()
+
+# Note the strange naming convention of the output file in the path that you specified. 
+# Spark uses Hadoop File Format, which requires data to be partitioned - that's why you have part- files. 
+# If you want to rename your written files to a more user friendly format, you can do that using the method below:
+
+from py4j.java_gateway import java_import
+java_import(spark._jvm, 'org.apache.hadoop.fs.Path')
+
+fs = spark._jvm.org.apache.hadoop.fs.FileSystem.get(spark._jsc.hadoopConfiguration())
+file = fs.globStatus(spark._jvm.Path('write_test.csv/part*'))[0].getPath().getName()
+fs.rename(spark._jvm.Path('write_test.csv/' + file), spark._jvm.Path('write_test2.csv')) #these two need to be different
+fs.delete(spark._jvm.Path('write_test.csv'), True)
+
+# WRITE in Data
+
+students.write.mode("overwrite").csv('write_test.csv')
+
+users1_2.write.mode("overwrite").parquet('parquet/')
+
+users1_2.write.mode("overwrite").partitionBy("gender").parquet('part_parquet/')
+

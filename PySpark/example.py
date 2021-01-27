@@ -29,7 +29,7 @@ df.show()
 ############################
 
 path = "/home/anaconda3/work/Python Files and Datasets AS of 22DEC20/PySpark DataFrame Essentials/Datasets/students.csv"
-df = spark.read.csv(path,,inferSchema=True,header=True)
+df = spark.read.csv(path,inferSchema=True,header=True)
 df.toPandas()
 
 df.groupBy("gender").agg({'math score':'mean'}).show()
@@ -84,6 +84,25 @@ from pyspark.sql.types import IntegerType, FloatType
 df = googlep.withColumn("Rating", googlep["Rating"].cast(FloatType())).withColumn("Reviews", googlep["Reviews"].cast(IntegerType())).withColumn("Price", googlep["Price"].cast(IntegerType()))
 print(df.printSchema())
 
+##### Available types:
+#     - DataType
+#     - NullType
+#     - StringType
+#     - BinaryType
+#     - BooleanType
+#     - DateType
+#     - TimestampType
+#     - DecimalType
+#     - DoubleType
+#     - FloatType
+#     - ByteType
+#     - IntegerType
+#     - LongType
+#     - ShortType
+#     - ArrayType
+#     - MapType
+#     - StructField
+#     - StructType
 
 ################################################################################
 

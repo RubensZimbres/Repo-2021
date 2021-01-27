@@ -30,9 +30,13 @@ df.show()
 
 path = "/home/anaconda3/work/Python Files and Datasets AS of 22DEC20/PySpark DataFrame Essentials/Datasets/students.csv"
 df = spark.read.csv(path,inferSchema=True,header=True)
-df.toPandas()
+
+df.limit(5).toPandas()
 
 df.groupBy("gender").agg({'math score':'mean'}).show()
+df.groupBy("product").agg(min(df.price).alias("Min Price"),max(df.price).alias("Max Price")).show(5)
+df.groupBy("host_id").sum('number_of_reviews').show(10)
+
 
 df.select("gender", "math_score").summary("count", "min", "max").show()
 df.select(['Name','gender']).orderBy('Name').show(5,False) #not truncated

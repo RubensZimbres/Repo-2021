@@ -34,6 +34,8 @@ df.toPandas()
 
 df.groupBy("gender").agg({'math score':'mean'}).show()
 
+df.select("gender", "math_score").summary("count", "min", "max").show()
+
 # It's not until we change the df in some way, that the ID changes
 # These kinds of commands won't actually be run...
 df = df.withColumn('new_col', df['math score'] * 2)

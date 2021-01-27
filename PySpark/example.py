@@ -37,6 +37,7 @@ df.groupBy("gender").agg({'math score':'mean'}).show()
 df.groupBy("product").agg(min(df.price).alias("Min Price"),max(df.price).alias("Max Price")).show(5)
 df.groupBy("host_id").sum('number_of_reviews').show(10)
 
+df.agg({'minimum_nights':'avg'}).withColumnRenamed("avg(minimum_nights)", "Avg Min Nights").show()
 
 df.select("gender", "math_score").summary("count", "min", "max").show()
 df.select(['Name','gender']).orderBy('Name').show(5,False) #not truncated
@@ -109,6 +110,25 @@ df = reviews.withColumn("cleaned_reviews", trim(lower(regexp_replace(col('review
 
 col_list= df.columns[0:5]
 df3=df.select(col_list)
+
+
+###### SQL
+
+inner_join = eats_plants.join(eats_meat, ["name","id"],"inner")
+
+left_join = eats_plants.join(eats_meat, ["name","id"], how='left') # Could also use 'left_outer'
+
++-----------+---+-----------+---------+
+|       name| id|eats_plants|eats_meat|
++-----------+---+-----------+---------+
+|       deer|  3|        yes|     null|
+|      human|  4|        yes|      yes|
+|      koala|  1|        yes|     null|
+|caterpillar|  2|        yes|     null|
++-----------+---+-----------+---------+
+
+conditional_join = eats_plants.join(eats_meat, ["name","id"], how='left').filter(eats_meat.name.isNotNull())
+
 
 
 

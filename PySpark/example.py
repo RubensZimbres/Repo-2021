@@ -52,11 +52,24 @@ df = df.withColumn('new_col', df['math score'] * 2)
 df2 = df.withColumnRenamed('Rolling year total number of offences','Count')
 
 df.createOrReplaceTempView("tempview")
-spark.sql("SELECT Region, sum(Count) AS Total FROM tempview WHERE Count > 1000 GROUP BY Gender").limit(5).toPandas()
+spark.sql("SELECT Region, sum(Count) AS Total FROM tempview GROUP BY Region").limit(5).toPandas()
 
 
 col_list= df.columns[0:5]
 df3=df.select(col_list)
+
+
+
+from pyspark.ml.feature import SQLTransformer
+
+sqlTrans = SQLTransformer(
+    statement="SELECT PFA,Region,Offence FROM __THIS__") ## placeholder
+sqlTrans.transform(df).show(5)
+
+type(sqlTrans)
+
+df4=sqlTrans.transform(df)
+
 
 # Until we executute a command like this
 collect = df.collect()

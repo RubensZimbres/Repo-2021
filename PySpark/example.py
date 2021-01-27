@@ -51,6 +51,10 @@ df = df.withColumn('new_col', df['math score'] * 2)
 
 df2 = df.withColumnRenamed('Rolling year total number of offences','Count')
 
+df = df.withColumn('publish_time_2',regexp_replace(df.publish_time, 'T', ' '))
+df = df.withColumn('publish_time_2',regexp_replace(df.publish_time_2, 'Z', ''))
+df = df.withColumn("publish_time_3", to_timestamp(df.publish_time_2, 'yyyy-MM-dd HH:mm:ss.SSS'))
+
 df.createOrReplaceTempView("tempview")
 spark.sql("SELECT Region, sum(Count) AS Total FROM tempview GROUP BY Region").limit(5).toPandas()
 spark.sql("SELECT * FROM tempview WHERE App LIKE '%dating%'").limit(5).toPandas()
@@ -80,8 +84,8 @@ sqlTrans.transform(df).show(5)
 df.withColumn("percent",expr("round((count/244720928)*100,2)")).show()
 df.select("*",expr("round((count/244720928)*100,2) AS percent")).show()
 
-from pyspark.sql.types import IntegerType, FloatType
-df = googlep.withColumn("Rating", googlep["Rating"].cast(FloatType())).withColumn("Reviews", googlep["Reviews"].cast(IntegerType())).withColumn("Price", googlep["Price"].cast(IntegerType()))
+from pyspark.sql.types import *
+df = googlep.withColumn("Rating", googlep["Rating"].cast(FloatType()))  .withColumn("Reviews", googlep["Reviews"].cast(IntegerType()))  .withColumn("Price", googlep["Price"].cast(IntegerType()))
 print(df.printSchema())
 
 ##### Available types:

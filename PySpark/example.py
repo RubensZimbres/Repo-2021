@@ -40,10 +40,16 @@ df.select("Name","math_score").where(df.Name.like("A%")).show(5, False)
 df[df.Name.isin("L. Messi", "Cristiano Ronaldo")].limit(4).toPandas()
 df.filter("Age>40").limit(4).toPandas()
 df.select("Photo",df.Photo.substr(-4,4)).show(5,False) #png
+df.select("Name","math_score").where(df.name.startswith("L")).where(df.Name.like("A%")).show(5, False)
+
+# spark starts with 1 != Python = 0 
 
 # It's not until we change the df in some way, that the ID changes
 # These kinds of commands won't actually be run...
 df = df.withColumn('new_col', df['math score'] * 2)
+
+col_list= df.columns[0:5]
+df3=df.select(col_list)
 
 # Until we executute a command like this
 collect = df.collect()

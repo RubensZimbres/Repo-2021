@@ -849,11 +849,11 @@ data_prep_pl = pipeline.fit(df)
 feature_data = data_prep_pl.transform(df)
 feature_data.show(1,False)
 
-# Hashing TF
+# 1 - Hashing TF
 hashingTF = HashingTF(inputCol="filtered", outputCol="rawfeatures", numFeatures=20)
 HTFfeaturizedData = hashingTF.transform(feature_data)
 
-# TF-IDF
+# 2 - TF-IDF
 idf = IDF(inputCol="rawfeatures", outputCol="features")
 idfModel = idf.fit(HTFfeaturizedData)
 TFIDFfeaturizedData = idfModel.transform(HTFfeaturizedData)
@@ -863,7 +863,7 @@ TFIDFfeaturizedData.name = 'TFIDFfeaturizedData'
 HTFfeaturizedData = HTFfeaturizedData.withColumnRenamed("rawfeatures","features")
 HTFfeaturizedData.name = 'HTFfeaturizedData' #We will use later for printing
 
-# Word2Vec
+# 3 - Word2Vec
 word2Vec = Word2Vec(vectorSize=3, minCount=0, inputCol="filtered", outputCol="features")
 model = word2Vec.fit(feature_data)
 

@@ -632,3 +632,44 @@ ax.plot(range(2,kmax),kmcost[2:kmax])
 ax.set_xlabel('k')
 ax.set_ylabel('cost')
 plt.show()
+
+            
+#### BISECTING K-MEANS - tree
+
+from pyspark.ml.clustering import BisectingKMeans
+
+kmax = 50
+bkmcost = np.zeros(kmax)
+for k in range(2,kmax):
+    bkmeans = BisectingKMeans().setK(k).setSeed(1).setFeaturesCol("features")
+    model = bkmeans.fit(df_kmeans)
+    predictions = model.transform(df_kmeans)
+    evaluator = ClusteringEvaluator()
+    bkmcost[k] = evaluator.evaluate(predictions) #computes Silhouette score
+
+#################
+            
+k = 15
+bkmeans = BisectingKMeans().setK(k).setSeed(1).setFeaturesCol("features")
+model = bkmeans.fit(df_kmeans)
+
+predictions = model.transform(df_kmeans)
+
+evaluator = ClusteringEvaluator()
+
+silhouette = evaluator.evaluate(predictions)
+print("Silhouette with squared euclidean distance = " + str(silhouette))
+print(" ")
+
+centers = model.clusterCenters()
+print("Cluster Centers: ")
+for center in centers:
+    print(center)
+
+import pandas as pd
+import numpy as np
+center_pdf = pd.DataFrame(list(map(np.ravel,centers)))
+center_pdf.columns = columns
+center_pdf
+
+predictions.limit(5).toPandas()

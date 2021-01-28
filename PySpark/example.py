@@ -480,3 +480,17 @@ paramGrid = (ParamGridBuilder().addGrid(classifier.maxIter, [10, 15]).addGrid(cl
 ###### DECISION TREES
 classifier = DecisionTreeClassifier()
 paramGrid = (ParamGridBuilder().addGrid(classifier.maxBins, [10, 20,40,80,100]).build())
+
+###### RANDOM FOREST
+classifier = RandomForestClassifier()
+paramGrid = (ParamGridBuilder().addGrid(classifier.maxDepth, [2,5,10]).build())
+BestModel.featureImportances.toArray()
+array([7.42616028e-02, 2.33261315e-02, 1.57644374e-02, 1.83837109e-02,
+       2.15133684e-02, 1.33275126e-01, 5.47811046e-02, 1.58630216e-02,
+       1.19127272e-01, 3.54069589e-03, 4.33353182e-03, 5.12711914e-01,
+       1.16754626e-03, 1.01202259e-03, 0.00000000e+00, 6.80487967e-04,
+       2.58025630e-04])
+            
+####### Gradient Boosted Trees
+classifier = GBTClassifier()
+paramGrid = (ParamGridBuilder().addGrid(classifier.maxDepth, [2,5,10]).build())

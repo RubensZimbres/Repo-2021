@@ -623,3 +623,12 @@ ax.plot(range(2,kmax),kmcost[2:kmax])
 ax.set_xlabel('k')
 ax.set_ylabel('cost')
 plt.show()
+
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+fig, ax = plt.subplots(1,1, figsize =(8,6))
+ax.plot(range(2,kmax),kmcost[2:kmax])
+ax.set_xlabel('k')
+ax.set_ylabel('cost')
+plt.show()

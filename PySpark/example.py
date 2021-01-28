@@ -314,3 +314,33 @@ users1_2.write.mode("overwrite").parquet('parquet/')
 
 users1_2.write.mode("overwrite").partitionBy("gender").parquet('part_parquet/')
 
+############## MACHINE LEARNING
+
+## LABEL
+
+dependent_var = 'Class/ASD Traits '
+renamed = df.withColumn("label_str", df[dependent_var].cast(StringType())) #Rename and change to string type
+indexer = StringIndexer(inputCol="label_str", outputCol="label") #Pyspark is expecting the this naming convention 
+indexed = indexer.fit(renamed).transform(renamed)
+indexed.toPandas()['label']
+
+# STRING TO NUMERICAL
+
+input_columns = df.columns
+numeric_inputs = []
+string_inputs = []
+for column in input_columns:
+    # First identify the string vars in your input column list
+    if str(indexed.schema[column].dataType) == 'StringType':
+        # Set up your String Indexer function
+        indexer = StringIndexer(inputCol=column, outputCol=column+"_num") 
+        # Then call on the indexer you created here
+        indexed = indexer.fit(indexed).transform(indexed)
+        # Rename the column to a new name so you can disinguish it from the original
+        new_col_name = column+"_num"
+        # Add the new column name to the string inputs list
+        string_inputs.append(new_col_name)
+    else:
+        # If no change was needed, take no action 
+        # And add the numeric var to the num list
+        numeric_inputs.append(column)

@@ -795,3 +795,102 @@ aggregates = limited.summary("min", "mean", "max")
 print("Total Cases in this Cluster: ",limited.count())
 aggregates.toPandas()
 
+################### NLP
+
+### CLEAN
+df = df.withColumn("blurb",regexp_replace(col('blurb'), '[^A-Za-z ]+', ''))
+df.select("blurb").show(10,False)
+df = df.withColumn("blurb",lower(col('blurb')))
+
+regex_tokenizer = RegexTokenizer(inputCol="blurb", outputCol="words", pattern="\\W")
+raw_words = regex_tokenizer.transform(df)
+raw_words.show(2,False)
+raw_words.printSchema()
+
+remover = StopWordsRemover(inputCol="words", outputCol="filtered")
+stopwords = remover.getStopWords() 
+
+words_df = remover.transform(raw_words)
+words_df.show(1,False)
+
+indexer = StringIndexer(inputCol="state", outputCol="label")
+feature_data = indexer.fit(words_df).transform(words_df)
+feature_data.show(5)
+feature_data.printSchema()
+
+>>> feature_data.printSchema()
+root
+ |-- _c0: string (nullable = true)
+ |-- blurb: string (nullable = true)
+ |-- state: string (nullable = true)
+ |-- words: array (nullable = true)
+ |    |-- element: string (containsNull = true)
+ |-- filtered: array (nullable = true)
+ |    |-- element: string (containsNull = true)
+ |-- label: double (nullable = false)
+
+# Tokenize
+regex_tokenizer = RegexTokenizer(inputCol="blurb", outputCol="words", pattern="\\W")
+raw_words = regex_tokenizer.transform(df)
+
+# Remove Stop words
+remover = StopWordsRemover(inputCol="words", outputCol="filtered")
+words_df = remover.transform(raw_words)
+
+# Zero Index Label Column
+indexer = StringIndexer(inputCol="state", outputCol="label")
+feature_data = indexer.fit(words_df).transform(words_df)
+
+feature_data.show(1,False)
+
+pipeline = Pipeline(stages=[regex_tokenizer,remover,indexer])
+data_prep_pl = pipeline.fit(df)
+# Now call on the Pipeline to get our final df
+feature_data = data_prep_pl.transform(df)
+feature_data.show(1,False)
+
+# Hashing TF
+hashingTF = HashingTF(inputCol="filtered", outputCol="rawfeatures", numFeatures=20)
+HTFfeaturizedData = hashingTF.transform(feature_data)
+
+# TF-IDF
+idf = IDF(inputCol="rawfeatures", outputCol="features")
+idfModel = idf.fit(HTFfeaturizedData)
+TFIDFfeaturizedData = idfModel.transform(HTFfeaturizedData)
+TFIDFfeaturizedData.name = 'TFIDFfeaturizedData'
+
+#rename the HTF features to features to be consistent
+HTFfeaturizedData = HTFfeaturizedData.withColumnRenamed("rawfeatures","features")
+HTFfeaturizedData.name = 'HTFfeaturizedData' #We will use later for printing
+
+# Word2Vec
+word2Vec = Word2Vec(vectorSize=3, minCount=0, inputCol="filtered", outputCol="features")
+model = word2Vec.fit(feature_data)
+
+W2VfeaturizedData = model.transform(feature_data)
+# W2VfeaturizedData.show(1,False)
+
+# W2Vec Dataframes typically has negative values so we will correct for that here so that we can use the Naive Bayes classifier
+scaler = MinMaxScaler(inputCol="features", outputCol="scaledFeatures")
+
+# Compute summary statistics and generate MinMaxScalerModel
+scalerModel = scaler.fit(W2VfeaturizedData)
+
+# rescale each feature to range [min, max].
+scaled_data = scalerModel.transform(W2VfeaturizedData)
+W2VfeaturizedData = scaled_data.select('state','blurb','label','scaledFeatures')
+W2VfeaturizedData = W2VfeaturizedData.withColumnRenamed('scaledFeatures','features')
+
+W2VfeaturizedData.name = 'W2VfeaturizedData' # We will need this to print later
+
+classifier = DecisionTreeClassifier()
+featureDF = W2VfeaturizedData
+
+train, test = featureDF.randomSplit([0.7, 0.3],seed = 11)
+features = featureDF.select(['features']).collect()
+
+class_count = featureDF.select(countDistinct("label")).collect()
+classes = class_count[0][0]
+
+#running this afain with generate all the objects need to play around with test data
+ClassTrainEval(classifier,features,classes,train,test)

@@ -894,3 +894,21 @@ classes = class_count[0][0]
 
 #running this afain with generate all the objects need to play around with test data
 ClassTrainEval(classifier,features,classes,train,test)
+
+######### BINNED
+
+from pyspark.sql.functions import *
+
+groups = df.withColumn("age_group",expr("CASE WHEN Age < 30 THEN 'Under 30' WHEN Age BETWEEN 30 AND 55 THEN '30 to 55' WHEN Age > 50 THEN '50 +' ELSE 'Other' END AS age_group"))
+print(groups.groupBy("age_group").count().show())
+
+groups = groups.withColumn("income_group",expr("CASE WHEN income < 40 THEN 'Under 40' WHEN income BETWEEN 40 AND 70 THEN '40 - 70' WHEN income > 70 THEN '70 +' ELSE 'Other' END AS income_group"))
+print(groups.groupBy("income_group").count().show())
+
+groups = groups.withColumn("spending_group",expr("CASE WHEN spending_score < 30 THEN 'Less than 30' WHEN spending_score BETWEEN 30 AND 60 THEN '30 - 60' WHEN spending_score > 60 THEN '60 +' ELSE 'Other' END AS spending_group"))
+print(groups.groupBy("spending_group").count().show())
+
+print(groups.groupBy("Gender").count().show())
+
+groups = groups.withColumn("items",array('Gender','age_group', 'income_group','spending_group')) #items is what spark is expecting
+groups.limit(4).toPandas()

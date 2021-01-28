@@ -344,3 +344,33 @@ for column in input_columns:
         # If no change was needed, take no action 
         # And add the numeric var to the num list
         numeric_inputs.append(column)
+
+## SKEWNESS
+        
+d = {}
+### TOP AND BOTTOM 1%
+for col in numeric_inputs: 
+    d[col] = indexed.approxQuantile(col,[0.01,0.99],0.25) #if you want to make it go faster increase the last number
+
+for col in numeric_inputs:
+    skew = indexed.agg(skewness(indexed[col])).collect() #check for skewness
+    skew = skew[0][0]
+    if skew > 1: # If right skew, floor, cap and log(x+1)
+        indexed = indexed.withColumn(col,         log(when(df[col] < d[col][0],d[col][0])        .when(indexed[col] > d[col][1], d[col][1])        .otherwise(indexed[col] ) +1).alias(col))
+        print(col+" has been treated for positive (right) skewness. (skew =)",skew,")")
+    elif skew < -1: # If left skew floor, cap and exp(x)
+        indexed = indexed.withColumn(col,         exp(when(df[col] < d[col][0],d[col][0])        .when(indexed[col] > d[col][1], d[col][1])        .otherwise(indexed[col] )).alias(col))
+        print(col+" has been treated for negative (left) skewness. (skew =",skew,")")
+
+## FEATURES AND LABEL
+
+indexed.toPandas()[features_list]
+
+indexed.toPandas()['label']
+
+features_list = numeric_inputs + string_inputs
+assembler = VectorAssembler(inputCols=features_list,outputCol='features')
+output = assembler.transform(indexed).select('features','label')
+
+
+     

@@ -752,3 +752,46 @@ argmaxUdf = udf(lambda x,y: [i for i, e in enumerate(x) if e==y ])
 results = max_vals.withColumn('topic', argmaxUdf(max_vals.array,max_vals.max))
 results.printSchema()
 results.limit(4).toPandas()
+
+############ GAUSSIAN MIXTURE MODEL
+
+kmax = 50
+ll = np.zeros(kmax)
+for k in range(2,kmax):
+    gm = GaussianMixture(k=k, tol=0.0001,maxIter=10, seed=10)
+    model = gm.fit(final_df)
+    summary = model.summary
+    ll[k] = summary.logLikelihood
+
+fig, ax = plt.subplots(1,1, figsize =(8,6))
+ax.plot(range(2,kmax),ll[2:kmax])
+ax.set_xlabel('k')
+ax.set_ylabel('ll')
+
+gm = GaussianMixture(k=5, maxIter=10, seed=10)
+model = gm.fit(final_df)
+
+summary = model.summary
+print("Clusters: ",summary.k)
+print("Cluster Sizes: ",summary.clusterSizes)
+print("Log Likelihood: ",summary.logLikelihood)
+
+weights = model.weights
+print("Model Weights: :",len(weights))
+
+print("Means: ", model.gaussiansDF.select("mean").head())
+
+print("Cov: ",model.gaussiansDF.select("cov").head())
+
+transformed = model.transform(final_df)#.select("features", "prediction")
+
+transformed.limit(7).toPandas()
+transformed.show(1,False)
+
+transformed.groupBy("prediction").agg({"prediction":"count",'QUANTITYORDERED':'min','PRICEEACH':'min','SALES':'min'}).orderBy("prediction").show()
+
+limited = transformed.filter("prediction == 0")
+aggregates = limited.summary("min", "mean", "max")
+print("Total Cases in this Cluster: ",limited.count())
+aggregates.toPandas()
+

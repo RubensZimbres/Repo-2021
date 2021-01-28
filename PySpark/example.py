@@ -407,4 +407,47 @@ final_data.show()
 |  0.0|(17,[0,3,4,5,8,10...|
 +-----+--------------------+
     
+train,test = final_data.randomSplit([0.7,0.3])
 
+from pyspark.ml.classification import *
+from pyspark.ml.evaluation import *
+from pyspark.sql.functions import *
+from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+
+Bin_evaluator = BinaryClassificationEvaluator(rawPredictionCol='predictions') #labelCol='label'
+MC_evaluator = MulticlassClassificationEvaluator(metricName="accuracy") # redictionCol="prediction",
+
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+classifier = LogisticRegression()
+fitModel=classifier.fit(train)
+
+predictions = fitModel.transform(test)
+evaluator = BinaryClassificationEvaluator()
+print('Test Area Under ROC', evaluator.evaluate(predictions))
+
+#####################
+            
+
+classifier = LogisticRegression()
+# Then Set up your parameter grid for the cross validator to conduct hyperparameter tuning
+paramGrid = (ParamGridBuilder().addGrid(classifier.maxIter, [10, 15,20]).build())
+# Then set up the Cross Validator which requires all of the following parameters:
+crossval = CrossValidator(estimator=classifier,
+                          estimatorParamMaps=paramGrid,
+                          evaluator=MC_evaluator,
+                          numFolds=2) # 3 + is best practice
+
+fitModel = crossval.fit(train)
+
+            BestModel = fitModel.bestModel
+print("Intercept: " + str(BestModel.interceptVector))
+print("Coefficients: \n" + str(BestModel.coefficientMatrix))
+
+LR_BestModel = BestModel
+
+predictions = fitModel.transform(test)
+
+accuracy = (MC_evaluator.evaluate(predictions))*100
+print(accuracy)
+
+            

@@ -673,3 +673,82 @@ center_pdf.columns = columns
 center_pdf
 
 predictions.limit(5).toPandas()
+
+########## LDA
+
+df = spark.read.json(path+'recipes.json')
+
+            # Tokenize
+regex_tokenizer = RegexTokenizer(inputCol="Description", outputCol="words", pattern="\\W")
+raw_words = regex_tokenizer.transform(df_clean)
+
+# Remove Stop words
+remover = StopWordsRemover(inputCol="words", outputCol="filtered")
+words_df = remover.transform(raw_words)
+
+# Zero Index Label Column
+cv = CountVectorizer(inputCol="filtered", outputCol="features")
+cvmodel = cv.fit(words_df)
+df_vect = cvmodel.transform(words_df)
+            
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+
+kmax = 30
+ll = np.zeros(kmax)
+lp = np.zeros(kmax)
+for k in range(2,kmax):
+    lda = LDA(k=k, maxIter=10)
+    model = lda.fit(df_vect)
+    ll[k] = model.logLikelihood(df_vect)
+    lp[k] = model.logPerplexity(df_vect)
+    
+fig, ax = plt.subplots(1,1, figsize =(8,6))
+ax.plot(range(2,kmax),ll[2:kmax])
+ax.set_xlabel('k')
+ax.set_ylabel('ll')
+
+fig, ax = plt.subplots(1,1, figsize =(8,6))
+ax.plot(range(2,kmax),lp[2:kmax])
+ax.set_xlabel('k')
+ax.set_ylabel('lp')
+
+print("Recap of ll and lp:")
+ll = model.logLikelihood(df_vect)
+lp = model.logPerplexity(df_vect)
+print("The lower bound on the log likelihood of the entire corpus: " + str(ll))
+print("The upper bound on perplexity: " + str(lp))
+print("Vocab Size: ", model.vocabSize())
+
+print("The topics described by their top-weighted terms:")
+topics = model.describeTopics(maxTermsPerTopic = 4)
+topics = topics.collect()
+vocablist = cvmodel.vocabulary
+for x, topic in enumerate(topics):
+    print(" ")
+    print('TOPIC: ' + str(x))
+    # This is like a temp holder
+    topic = topics
+    # Then we extract the words from the topics
+    words = topic[x][1]
+    # Then print the words by topics
+    for n in range(len(words)):
+        print(vocablist[words[n]]) # + ' ' + str(weights[n])
+
+# Make predictions
+transformed = model.transform(df_vect)
+transformed.toPandas()
+
+# Convert topicdistribution col from vector to array
+to_array = udf(lambda x: x.toArray().tolist(), ArrayType(DoubleType()))
+recommendations = transformed.withColumn('array', to_array('topicDistribution'))
+
+# Find the best topic value that we will call "max"
+max_vals = recommendations.withColumn("max",array_max("array"))
+
+# Find the index of the max value found above which translates to our topic!
+argmaxUdf = udf(lambda x,y: [i for i, e in enumerate(x) if e==y ])
+results = max_vals.withColumn('topic', argmaxUdf(max_vals.array,max_vals.max))
+results.printSchema()
+results.limit(4).toPandas()

@@ -565,3 +565,61 @@ result = spark.createDataFrame(zip(input_columns,pvalues), schema=['feature','P-
 print(result.orderBy(result["P-Value"].desc()).show(truncate=False))
 print(" ")
 
+############### K-MEANS - LDA
+
+from pyspark.sql.functions import *
+
+def null_value_calc(df):
+    null_columns_counts = []
+    numRows = df.count()
+    for k in df.columns:
+        nullRows = df.where(col(k).isNull()).count()
+        if(nullRows > 0):
+            temp = k,nullRows,(nullRows/numRows)*100
+            null_columns_counts.append(temp)
+    return(null_columns_counts)
+
+null_columns_calc_list = null_value_calc(df)
+spark.createDataFrame(null_columns_calc_list, ['Column_Name', 'Null_Values_Count','Null_Value_Percent']).show()
+
+from pyspark.sql.functions import *
+def fill_with_mean(df, include=set()): 
+    stats = df.agg(*(avg(c).alias(c) for c in df.columns if c in include))
+    return df.na.fill(stats.first().asDict())
+
+columns = df.columns
+columns = columns[1:]
+df = fill_with_mean(df, columns)
+
+from pyspark.ml.feature import VectorAssembler
+input_columns = df.columns # Collect the column names as a list
+input_columns = input_columns[1:] # keep only relevant columns: from column 8 until the end
+vecAssembler = VectorAssembler(inputCols=input_columns, outputCol="features")
+df_kmeans = vecAssembler.transform(df) #.select('CUST_ID', 'features')
+df_kmeans.limit(4).toPandas()
+
+from pyspark.ml.clustering import KMeans
+from pyspark.ml.evaluation import ClusteringEvaluator
+import numpy as np
+
+kmax = 50
+kmcost = np.zeros(kmax)
+for k in range(2,kmax):
+    kmeans = KMeans().setK(k).setSeed(1).setFeaturesCol("features")
+    model = kmeans.fit(df_kmeans)
+    # Fill in the zeros of your array with cost....
+    # Computes the "cost" (sum of squared distances) between the input points and their corresponding cluster centers.
+    predictions = model.transform(df_kmeans)
+    evaluator = ClusteringEvaluator()
+    kmcost[k] = evaluator.evaluate(predictions) #computing Silhouette score
+
+## ELBOW
+
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+fig, ax = plt.subplots(1,1, figsize =(8,6))
+ax.plot(range(2,kmax),kmcost[2:kmax])
+ax.set_xlabel('k')
+ax.set_ylabel('cost')
+plt.show()

@@ -372,5 +372,39 @@ features_list = numeric_inputs + string_inputs
 assembler = VectorAssembler(inputCols=features_list,outputCol='features')
 output = assembler.transform(indexed).select('features','label')
 
+output.toPandas()
 
-     
+                                               features  label
+0     (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, ...    1.0
+1     (1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, ...    0.0
+2     (1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, ...    0.0
+3     [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, ...    0.0
+4     [1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, ...    0.0
+...                                                 ...    ...
+1049  (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ...    1.0
+1050  (0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, ...    0.0
+1051  [1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, ...    0.0
+1052  (1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, ...    1.0
+1053  [1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, ...    0.0
+       
+scaler = MinMaxScaler(inputCol="features", outputCol="scaledFeatures",min=0,max=1000)
+# Compute summary statistics and generate MinMaxScalerModel
+scalerModel = scaler.fit(output)
+scaled_data = scalerModel.transform(output)
+final_data = scaled_data.select('label','scaledFeatures')
+final_data = final_data.withColumnRenamed("scaledFeatures","features")
+final_data.show()
+
++-----+--------------------+
+|label|            features|
++-----+--------------------+
+|  1.0|(17,[6,7,9,10,11,...|
+|  0.0|(17,[0,1,5,6,10,1...|
+|  0.0|(17,[0,6,7,9,10,1...|
+|  0.0|[1000.0,1000.0,10...|
+|  0.0|[1000.0,1000.0,0....|
+|  0.0|[1000.0,1000.0,0....|
+|  0.0|(17,[0,3,4,5,8,10...|
++-----+--------------------+
+    
+

@@ -426,7 +426,10 @@ evaluator = BinaryClassificationEvaluator()
 print('Test Area Under ROC', evaluator.evaluate(predictions))
 
 #####################
-            
+
+# Amount labels
+
+class_count=final_data.select(countDistinct("label")).collect()
 
 classifier = LogisticRegression()
 # Then Set up your parameter grid for the cross validator to conduct hyperparameter tuning
@@ -450,4 +453,19 @@ predictions = fitModel.transform(test)
 accuracy = (MC_evaluator.evaluate(predictions))*100
 print(accuracy)
 
+####################### MLP
             
+from pyspark.ml.classification import MultilayerPerceptronClassifier
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+
+train.toPandas().shape[0]
+
+layers=[17,128,128,train.toPandas().shape[1]]
+classifier = MultilayerPerceptronClassifier(maxIter=100,layers=layers,blockSize=128,seed=4)
+fitModel = classifier.fit(train)
+
+predictionAndLabels = fitModel.transform(test)
+
+accuracy = (MC_evaluator.evaluate(predictions))*100
+print(accuracy)
+

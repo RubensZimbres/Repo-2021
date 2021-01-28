@@ -494,3 +494,74 @@ array([7.42616028e-02, 2.33261315e-02, 1.57644374e-02, 1.83837109e-02,
 ####### Gradient Boosted Trees
 classifier = GBTClassifier()
 paramGrid = (ParamGridBuilder().addGrid(classifier.maxDepth, [2,5,10]).build())
+
+############# REGRESSION
+from pyspark.ml.stat import Correlation
+from pyspark.ml.regression import *
+from pyspark.ml.evaluation import *
+from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+          
+pearsonCorr = Correlation.corr(final_data, 'features', 'pearson').collect()[0][0]
+array = pearsonCorr.toArray()
+
+for item in array:
+    print(item[0])
+    print(" ")
+    print(item[1])
+    print(" ")
+    print(item[2])
+    #etc
+
+regressor = LinearRegression()
+fitModel = regressor.fit(train)
+
+evaluator = RegressionEvaluator(metricName="rmse")
+predictions = fitModel.transform(test)
+
+rmse = evaluator.evaluate(predictions)
+print("Root Mean Squared Error (RMSE) on test data = %g" % rmse)
+
+trainingSummary = fitModel.summary
+
+print('\033[1m' + "Linear Regression Model Summary without cross validation:"+ '\033[0m')
+print(" ")
+print("Intercept: %s" % str(fitModel.intercept))
+print("")
+coeff_array = fitModel.coefficients.toArray()
+coeff_scores = []
+for x in coeff_array:
+    coeff_scores.append(float(x))
+
+result = spark.createDataFrame(zip(input_columns,coeff_scores), schema=['feature','coeff'])
+print(result.orderBy(result["coeff"].desc()).show(truncate=False))
+            
+-------------
+            
+paramGrid = (ParamGridBuilder()              .addGrid(regressor.maxIter, [10, 15])              .addGrid(regressor.regParam, [0.1, 0.01])              .build())
+
+evaluator = RegressionEvaluator(metricName="rmse")
+
+crossval = CrossValidator(estimator=regressor,
+                          estimatorParamMaps=paramGrid,
+                          evaluator=evaluator,
+                          numFolds=2) # 3 is best practice
+
+print('\033[1m' + "Linear Regression Model Summary WITH cross validation:"+ '\033[0m')
+print(" ")
+
+fitModel = crossval.fit(train)
+
+LR_BestModel = fitModel.bestModel
+
+ModelSummary = LR_BestModel.summary
+print("Coefficient Standard Errors: ")
+coeff_ste = ModelSummary.coefficientStandardErrors
+result = spark.createDataFrame(zip(input_columns,coeff_ste), schema=['feature','coeff std error'])
+print(result.orderBy(result["coeff std error"].desc()).show(truncate=False))
+print(" ")
+print("P Values: ") 
+pvalues = ModelSummary.pValues
+result = spark.createDataFrame(zip(input_columns,pvalues), schema=['feature','P-Value'])
+print(result.orderBy(result["P-Value"].desc()).show(truncate=False))
+print(" ")
+

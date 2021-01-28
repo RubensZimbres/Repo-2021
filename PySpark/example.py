@@ -469,3 +469,14 @@ predictionAndLabels = fitModel.transform(test)
 accuracy = (MC_evaluator.evaluate(predictions))*100
 print(accuracy)
 
+##### NAIVE BAYES
+classifier = NaiveBayes()
+paramGrid = (ParamGridBuilder().addGrid(classifier.smoothing, [0,.2, .4,.6]).build())
+
+##### SVM
+classifier = LinearSVC()
+paramGrid = (ParamGridBuilder().addGrid(classifier.maxIter, [10, 15]).addGrid(classifier.regParam, [.1, .01]).build())
+
+###### DECISION TREES
+classifier = DecisionTreeClassifier()
+paramGrid = (ParamGridBuilder().addGrid(classifier.maxBins, [10, 20,40,80,100]).build())

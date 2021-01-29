@@ -1,0 +1,21 @@
+## .ipynb from 
+
+Alexander Mordvintsev 
+
+Google
+
+Ettore Randazzo
+
+Google
+
+Eyvind Niklasson
+
+Google
+
+Michael Levin - Google
+
+https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/growing_ca.ipynb#scrollTo=IeWf6HeTe8kM
+
+https://znah.net/hexells/#41
+
+https://distill.pub/2020/growing-ca/

@@ -1,4 +1,9 @@
-## source ./bin/activate
+$ sudo snap install --classic code
+
+$ source ./bin/activate
+
+$ code
+
 
 # Interpreter: /home/anaconda3/bin/python3.7
 

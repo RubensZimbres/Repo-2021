@@ -1,0 +1,15 @@
+## source ./bin/activate
+
+# Interpreter: /home/anaconda3/bin/python3.7
+
+# Python 3.7.3 64bits (base:conda)
+
+{
+    "jupyter.alwaysTrustNotebooks": true,
+    "python.cwd": "/home/anaconda3",
+    "python.defaultInterpreterPath": "/home/anaconda3/bin/python3.7",
+    "python.pythonPath": "/home/anaconda3",
+    "editor.wordWrap": "on"
+    
+    
+}

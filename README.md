@@ -8,4 +8,6 @@
     
 <b>Neural Cellular Automata </b>  
   
-<img src=https://github.com/RubensZimbres/Repo-2021/blob/main/Neural_Cellular_Automata_Google/output_batches.gif>
+<img src=https://github.com/RubensZimbres/Repo-2021/blob/main/Neural_Cellular_Automata_Google/output_batches.gif>  
+  
+<img src=https://github.com/RubensZimbres/Repo-2021/blob/main/VS_Code/git_history.png width="900" height="350">

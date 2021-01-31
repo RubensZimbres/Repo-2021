@@ -1,16 +1,4 @@
-$ sudo snap install --classic code
 
-$ source ./bin/activate
-
-$ code
-
-CTRL+P
-
-$ ext install donjayamanne.githistory
-
-# Interpreter: /home/anaconda3/bin/python3.7
-
-# Python 3.7.3 64bits (base:conda)
 
 {
     "jupyter.alwaysTrustNotebooks": true,

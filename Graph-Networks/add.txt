@@ -1,0 +1,3 @@
+https://medium.com/@SmartLabAI/link-prediction-on-large-graphs-with-variational-autoencoders-ac8019ad9cdf
+
+Also, add "K-Means" k=hidden layers + Dropout

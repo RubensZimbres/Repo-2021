@@ -4,6 +4,9 @@ $ source ./bin/activate
 
 $ code
 
+CTRL+P
+
+$ ext install donjayamanne.githistory
 
 # Interpreter: /home/anaconda3/bin/python3.7
 

@@ -1,11 +1,11 @@
-########### LOCAL
+LOCAL
 
 ```
 $ sudo snap install --classic code
 $ source ./bin/activate
 $ code
 ```
-########### GCP
+GCP
 
 ```
 $ wget https://github.com/cdr/code-server/releases/download/2.1688-vsc1.39.2/code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz
@@ -19,6 +19,6 @@ CTRL+P
 ```
 $ ext install donjayamanne.githistory
 ```
-# Interpreter: /home/anaconda3/bin/python3.7
+Interpreter: /home/anaconda3/bin/python3.7
 
-# Python 3.7.3 64bits (base:conda)
+Python 3.7.3 64bits (base:conda)

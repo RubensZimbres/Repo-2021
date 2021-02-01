@@ -19,3 +19,7 @@ https://colab.research.google.com/github/google-research/self-organising-systems
 https://znah.net/hexells/#41
 
 https://distill.pub/2020/growing-ca/
+
+########################################################
+
+https://plato.stanford.edu/entries/cellular-automata/#SomeBasiNotiResu

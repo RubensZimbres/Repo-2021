@@ -17,6 +17,9 @@ from spacy import displacy
 from nltk import Tree
 #nltk.download('punkt')
 
+def norm(x):
+    return (x-np.min(x))/(np.max(x)-np.min(x))
+
 en_nlp = spacy.load('en_core_web_sm')
 phrase="The quick brown fox jumps over the lazy dog"
 doc = en_nlp(phrase)

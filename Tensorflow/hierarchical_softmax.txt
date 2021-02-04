@@ -1,0 +1,5 @@
+https://github.com/AshwinDeshpande96/Hierarchical-Softmax
+
+https://github.com/AshwinDeshpande96/Hierarchical-Softmax/blob/master/hsm.ipynb
+
+https://talbaumel.github.io/blog/softmax/

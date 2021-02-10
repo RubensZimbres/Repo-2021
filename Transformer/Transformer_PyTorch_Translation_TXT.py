@@ -453,7 +453,11 @@ def greedy_decode(model, src, src_mask, max_len, start_symbol):
 
 model.eval()
 src = Variable(torch.LongTensor([[1,2,3,4,5,6,7,8,9,10]]) )
+src.shape
+
 src_mask = Variable(torch.ones(1, 1, 10) )
+src_mask.shape
+
 print(greedy_decode(model, src, src_mask, max_len=10, start_symbol=1))
 
 ##### TXT DATA #############################################################
@@ -541,7 +545,7 @@ model_opt = NoamOpt(model.src_embed[0].d_model, 1, 2000,
             torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
 
-for epoch in range(10):
+for epoch in range(2):
     run_epoch((rebatch(pad_idx, b) for b in train_iter), 
                 model, 
                 SimpleLossCompute(model.generator, criterion, model_opt))
@@ -549,3 +553,81 @@ for epoch in range(10):
                         model, 
                 SimpleLossCompute(model.generator, criterion, model_opt))
     print(loss)
+
+
+
+
+
+words = next(iter(testset.src))
+
+
+for i, batch in enumerate(valid_iter):
+    src = batch.src.transpose(0, 1)[:1]
+    src_mask = (src != SRC.vocab.stoi["<blank>"]).unsqueeze(-2)
+    out = greedy_decode(model, src, src_mask, 
+                        max_len=60, start_symbol=TGT.vocab.stoi["<s>"])
+    print("Translation:", end="\t")
+    for i in range(1, out.size(1)):
+        sym = TGT.vocab.itos[out[0, i]]
+        if sym == "</s>": break
+        print(sym, end =" ")
+    print()
+    print("Target:", end="\t")
+    for i in range(1, batch.trg.size(0)):
+        sym = TGT.vocab.itos[batch.trg.data[i, 0]]
+        if sym == "</s>": break
+        print(sym, end =" ")
+    print()
+    break
+
+
+#####
+model, SRC, TGT = torch.load("en-de-model.pt")
+
+model.eval()
+sent = words
+src = torch.LongTensor([[SRC.stoi[w] for w in sent]])
+src = Variable(src)
+src_mask = (src != SRC.stoi["<blank>"]).unsqueeze(-2)
+out = greedy_decode(model, src, src_mask, 
+                    max_len=60, start_symbol=TGT.stoi["<s>"])
+print("Translation:", end="\t")
+trans = "<s> "
+for i in range(1, out.size(1)):
+    sym = TGT.itos[out[0, i]]
+    if sym == "</s>": break
+    trans += sym + " "
+print(trans)
+
+###### ATTENTION VISUALIZATION
+
+tgt_sent = trans.split()
+def draw(data, x, y, ax):
+    seaborn.heatmap(data, 
+                    xticklabels=x, square=True, yticklabels=y, vmin=0.0, vmax=1.0, 
+                    cbar=False, ax=ax)
+    
+for layer in range(1, 6, 2):
+    fig, axs = plt.subplots(1,4, figsize=(20, 10))
+    print("Encoder Layer", layer+1)
+    for h in range(4):
+        draw(model.encoder.layers[layer].self_attn.attn[0, h].data, 
+            sent, sent if h ==0 else [], ax=axs[h])
+    plt.show()
+    
+for layer in range(1, 6, 2):
+    fig, axs = plt.subplots(1,4, figsize=(20, 10))
+    print("Decoder Self Layer", layer+1)
+    for h in range(4):
+        draw(model.decoder.layers[layer].self_attn.attn[0, h].data[:len(tgt_sent), :len(tgt_sent)], 
+            tgt_sent, tgt_sent if h ==0 else [], ax=axs[h])
+    plt.show()
+    print("Decoder Src Layer", layer+1)
+    fig, axs = plt.subplots(1,4, figsize=(20, 10))
+    for h in range(4):
+        draw(model.decoder.layers[layer].self_attn.attn[0, h].data[:len(tgt_sent), :len(sent)], 
+            sent, tgt_sent if h ==0 else [], ax=axs[h])
+    plt.show()
+
+
+

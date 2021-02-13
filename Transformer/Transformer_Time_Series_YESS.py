@@ -21,7 +21,7 @@ import pandas as pd
 import numpy as np
 from  sklearn.preprocessing import MinMaxScaler
 
-dataset = np.array(dataset.astype('int8')).reshape(-1,1)
+dataset = np.array(dataset.astype('float32')).reshape(-1,1)
 
 def norm(x):
     return (x-np.min(x))/(np.max(x)-np.min(x))
@@ -56,9 +56,8 @@ trainY
 X0=trainX
 Y0=trainY
 
-X0=X0.reshape(X0.shape[0],X0.shape[1],1).astype(np.int8)
+X0=X0.reshape(X0.shape[0],X0.shape[1],1).astype(np.float32)
 testX=testX.reshape(testX.shape[0],testX.shape[1],1)
-
 
 
 
@@ -199,12 +198,12 @@ class DecoderLayer(nn.Module):
 def subsequent_mask(size):
     "Mask out subsequent positions."
     attn_shape = (1, size, size)
-    subsequent_mask = np.triu(np.ones(attn_shape), k=1).astype('uint8')
+    subsequent_mask = np.triu(np.ones(attn_shape), k=1).astype('float32')
     return torch.from_numpy(subsequent_mask) == 0
 
 plt.figure(figsize=(5,5))
 plt.imshow(subsequent_mask(20)[0])
-plt.show()
+#
 
 #we compute the attention function on a set of queries simultaneously, packed together into a matrix Q. The keys and values are also packed together into matrices K and  V
 
@@ -266,14 +265,27 @@ class PositionwiseFeedForward(nn.Module):
     def forward(self, x):
         return self.w_2(self.dropout(F.relu(self.w_1(x))))
 
-class Embeddings(nn.Module):
+class Embeddings1(nn.Module):
     def __init__(self, d_model, vocab):
-        super(Embeddings, self).__init__()
-        self.lut = nn.Embedding(vocab, d_model)
+        super(Embeddings1, self).__init__()
+        #self.lut = nn.Embedding(vocab, d_model)
         self.d_model = d_model
-
+        #nn.Sequential(Embeddings(d_model, src_vocab), c(position)),
+        #nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
+ 
     def forward(self, x):
-        return self.lut(x) * math.sqrt(self.d_model)
+        return torch.cat(512*[x]).reshape(100,8,self.d_model)  * math.sqrt(self.d_model)
+ 
+class Embeddings2(nn.Module):
+    def __init__(self, d_model, vocab):
+        super(Embeddings2, self).__init__()
+        #self.lut = nn.Embedding(vocab, d_model)
+        self.d_model = d_model
+        #nn.Sequential(Embeddings(d_model, src_vocab), c(position)),
+        #nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
+ 
+    def forward(self, x):
+        return torch.cat(512*[x]).reshape(100,7,self.d_model)  * math.sqrt(self.d_model)
 
 class PositionalEncoding(nn.Module):
     "Implement the PE function."
@@ -301,7 +313,7 @@ pe = PositionalEncoding(20, 0.05)
 y = pe.forward(Variable(torch.zeros(1, 100, 20)))
 plt.plot(np.arange(100), y[0, :, 4:8].data.numpy())
 plt.legend(["dim %d"%p for p in [4,5,6,7]])
-plt.show()
+#
 
 def make_model(src_vocab, tgt_vocab, N=6, 
                d_model=512, d_ff=2048, h=8, dropout=0.1):
@@ -314,8 +326,8 @@ def make_model(src_vocab, tgt_vocab, N=6,
         Encoder(EncoderLayer(d_model, c(attn), c(ff), dropout), N),
         Decoder(DecoderLayer(d_model, c(attn), c(attn), 
                              c(ff), dropout), N),
-        nn.Sequential(Embeddings(d_model, src_vocab), c(position)),
-        nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
+        nn.Sequential(Embeddings1(d_model, src_vocab), c(position)),
+        nn.Sequential(Embeddings2(d_model, tgt_vocab), c(position)),
         Generator(d_model, tgt_vocab))
     
     # This was important from their code. 
@@ -418,9 +430,20 @@ opts = [NoamOpt(512, 1, 4000, None),
         NoamOpt(256, 1, 4000, None)]
 plt.plot(np.arange(1, 20000), [[opt.rate(i) for opt in opts] for i in range(1, 20000)])
 plt.legend(["512:4000", "512:8000", "256:4000"])
-plt.show()
+#
 
 #During training, we employed label smoothing of value. This hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score.
+
+
+
+def data_gen(V, batch, nbatches):
+    "Generate random data for a src-tgt copy task."
+    for i in range(nbatches):
+        data1 = torch.from_numpy(X0.reshape(3774,8)[-100:])#.long()
+        data1[:, 0] = 1
+        src = Variable(data1, requires_grad=False)
+        tgt = Variable(data1, requires_grad=False)
+        yield Batch(src, tgt, 0)
 
 class LabelSmoothing(nn.Module):
     "Implement label smoothing."
@@ -437,7 +460,8 @@ class LabelSmoothing(nn.Module):
         assert x.size(1) == self.size
         true_dist = x.data.clone()
         true_dist.fill_(self.smoothing / (self.size - 2))
-        true_dist.scatter_(1, target.data.unsqueeze(1), self.confidence)
+        
+        true_dist.scatter_(1, target.data.unsqueeze(1).type(torch.long), self.confidence)
         true_dist[:, self.padding_idx] = 0
         mask = torch.nonzero(target.data == self.padding_idx)
         if mask.dim() > 0:
@@ -445,32 +469,11 @@ class LabelSmoothing(nn.Module):
         self.true_dist = true_dist
         return self.criterion(x, Variable(true_dist, requires_grad=False))
 
-crit = LabelSmoothing(5, 0, 0.4)
-predict = torch.FloatTensor([[0, 0.2, 0.7, 0.1, 0],
-                             [0, 0.2, 0.7, 0.1, 0], 
-                             [0, 0.2, 0.7, 0.1, 0]])
-v = crit(Variable(predict.log()), 
-         Variable(torch.LongTensor([2, 1, 0])))
-
-# Show the target distributions expected by the system.
-plt.imshow(crit.true_dist)
-plt.show()
-
-
-def data_gen(V, batch, nbatches):
-    "Generate random data for a src-tgt copy task."
-    for i in range(nbatches):
-        data = torch.from_numpy(np.random.randint(1, V, size=(batch, 10)))
-        data[:, 0] = 1
-        src = Variable(data, requires_grad=False)
-        tgt = Variable(data, requires_grad=False)
-        yield Batch(src, tgt, 0)
-
 class SimpleLossCompute:
     "A simple loss compute and train function."
     def __init__(self, generator, criterion, opt=None):
         self.generator = generator
-        self.criterion = criterion
+        self.criterion = criterion #nn.MSELoss()
         self.opt = opt
         
     def __call__(self, x, y, norm):
@@ -484,37 +487,23 @@ class SimpleLossCompute:
         return loss.data * norm
 
 
-V = 11
+V = 200
 criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
-model = make_model(V, V, N=2)
-model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
-        torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
+#criterion = nn.MSELoss()
 
-
-X0.shape
-
-def data_gen(V, batch, nbatches):
-    "Generate random data for a src-tgt copy task."
-    for i in range(nbatches):
-        data1 = torch.from_numpy(X0.reshape(3774,8)[-100:]).long()
-        data1[:, 0] = 1
-        src = Variable(data1, requires_grad=False)
-        tgt = Variable(data1, requires_grad=False)
-        yield Batch(src, tgt, 0)
-
-V = 80
-criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
 model = make_model(V, V, N=2)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
         torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
 for epoch in range(10):
     #model.train()
-    run_epoch(data_gen(V, 20, 10), model, 
+    run_epoch(data_gen(V, 30, 20), model, 
               SimpleLossCompute(model.generator, criterion, model_opt))
     #model.eval()
-    print(run_epoch(data_gen(V, 20, 10), model, 
+    print(run_epoch(data_gen(V, 30, 5), model, 
                     SimpleLossCompute(model.generator, criterion, None)))
+
+
 
 def greedy_decode(model, src, src_mask, max_len, start_symbol):
     memory = model.encode(src, src_mask)
@@ -531,16 +520,8 @@ def greedy_decode(model, src, src_mask, max_len, start_symbol):
                         torch.ones(1, 1).type_as(src.data).fill_(next_word)], dim=1)
     return ys
 
-def data_gen2(V, batch, nbatches):
-    "Generate random data for a src-tgt copy task."
-    for i in range(nbatches):
-        data1 = torch.from_numpy(Y0.reshape(3774,8)[-1]).long()
-        data1[:, 0] = 1
-        src = Variable(data1, requires_grad=False)
-        tgt = Variable(data1, requires_grad=False)
-        yield Batch(src, tgt, 0)
-
 model.eval()
-src = Variable(torch.from_numpy(np.array([Y0.reshape(1,-1)[0][-8:]])).long())
-src_mask = Variable(torch.ones(1, 1, 8) )
-print(greedy_decode(model, src, src_mask, max_len=8, start_symbol=1))
+src = Variable(torch.LongTensor([[1,2,3,4,5,6,7,8,9,10]]) )
+src_mask = Variable(torch.ones(1, 1, 10) )
+
+print(greedy_decode(model, src, src_mask, max_len=10, start_symbol=1))

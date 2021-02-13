@@ -421,11 +421,11 @@ class NoamOpt:
             step = self._step
         return self.factor * \
             (self.model_size ** (-0.5) *
-            min(step ** (-0.5), step * self.warmup ** (-1.5)))
+            min(step ** (-0.5), step * self.warmup ** (-0.8)))
         
 def get_std_opt(model):
     return NoamOpt(model.src_embed[0].d_model, 2, 4000,
-            torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
+            torch.optim.Adam(model.parameters(), lr=0.01, betas=(0.9, 0.98), eps=1e-9))
 
 opts = [NoamOpt(128, 1, 4000, None), 
         NoamOpt(128, 1, 8000, None),
@@ -478,9 +478,9 @@ model = make_model(V, V, N=2)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
         torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
-PATH = './time_series_model.pth'
+PATH = './time_series_model2.pth'
 
-for epoch in range(40):
+for epoch in range(5):
     #model.train()
     run_epoch(data_gen(V, 30, 20), model, 
               SimpleLossCompute(model.generator, criterion, model_opt))

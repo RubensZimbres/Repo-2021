@@ -447,29 +447,6 @@ def data_gen(V, batch, nbatches):
         tgt = Variable(data1, requires_grad=False)
         yield Batch(src, tgt, 0)
 
-class LabelSmoothing(nn.Module):
-    "Implement label smoothing."
-    def __init__(self, size, padding_idx, smoothing=0.0):
-        super(LabelSmoothing, self).__init__()
-        self.criterion = nn.MSELoss(size_average=True)
-        self.padding_idx = padding_idx
-        self.confidence = 1.0 - smoothing
-        self.smoothing = smoothing
-        self.size = size
-        self.true_dist = None
-        
-    def forward(self, x, target):
-        assert x.size(1) == self.size
-        true_dist = x.data.clone()
-        true_dist.fill_(self.smoothing / (self.size - 2))
-        
-        true_dist.scatter_(1, target.data.unsqueeze(1).type(torch.long), self.confidence)
-        true_dist[:, self.padding_idx] = 0
-        mask = torch.nonzero(target.data == self.padding_idx)
-        if mask.dim() > 0:
-            true_dist.index_fill_(0, mask.squeeze(), 0.0)
-        self.true_dist = true_dist
-        return self.criterion(x, Variable(true_dist, requires_grad=False))
 
 class SimpleLossCompute:
     "A simple loss compute and train function."
@@ -480,8 +457,11 @@ class SimpleLossCompute:
         
     def __call__(self, x, y, norm):
         x = self.generator(x)
-        x=torch.sum(x.reshape(700,200,-1), (2))
-        loss = self.criterion(x.contiguous().view(-1, x.size(-1)), 
+        print(x.shape)
+        print(y.shape)
+        x=torch.sum(x.reshape(100,7,-1), (2))
+        print(x.shape)
+        loss = self.criterion(x.contiguous().view(-1), 
                               y.contiguous().view(-1)) / norm
         loss.backward()
         if self.opt is not None:
@@ -491,8 +471,8 @@ class SimpleLossCompute:
 
 
 V = 200
-criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
-#criterion = nn.MSELoss()
+#criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
+criterion = nn.MSELoss()
 
 model = make_model(V, V, N=2)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,

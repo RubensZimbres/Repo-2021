@@ -459,8 +459,6 @@ class LabelSmoothing(nn.Module):
         self.true_dist = None
         
     def forward(self, x, target):
-        print(x.size(1))
-        print(self.size)
         assert x.size(1) == self.size
         true_dist = x.data.clone()
         true_dist.fill_(self.smoothing / (self.size - 2))
@@ -482,11 +480,7 @@ class SimpleLossCompute:
         
     def __call__(self, x, y, norm):
         x = self.generator(x)
-        print(x.shape)
-        print(x.shape)
-        print(y.shape)
         x=torch.sum(x.reshape(700,200,-1), (2))
-        print(x.shape)
         loss = self.criterion(x.contiguous().view(-1, x.size(-1)), 
                               y.contiguous().view(-1)) / norm
         loss.backward()
@@ -504,12 +498,12 @@ model = make_model(V, V, N=2)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
         torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
-#for epoch in range(10):
+for epoch in range(10):
     #model.train()
-run_epoch(data_gen(V, 30, 20), model, 
+    run_epoch(data_gen(V, 30, 20), model, 
               SimpleLossCompute(model.generator, criterion, model_opt))
     #model.eval()
-print(run_epoch(data_gen(V, 30, 5), model, 
+    print(run_epoch(data_gen(V, 30, 5), model, 
                     SimpleLossCompute(model.generator, criterion, None)))
 
 print('no error until here')

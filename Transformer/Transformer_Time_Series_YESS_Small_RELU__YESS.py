@@ -276,7 +276,7 @@ class Embeddings1(nn.Module):
         #nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
  
     def forward(self, x):
-        return torch.cat(512*[x]).reshape(100,8,self.d_model)  * math.sqrt(self.d_model)
+        return torch.cat(128*[x]).reshape(100,8,self.d_model)  * math.sqrt(self.d_model)
  
 class Embeddings2(nn.Module):
     def __init__(self, d_model, vocab):
@@ -287,7 +287,7 @@ class Embeddings2(nn.Module):
         #nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
  
     def forward(self, x):
-        return torch.cat(512*[x]).reshape(100,7,self.d_model)  * math.sqrt(self.d_model)
+        return torch.cat(128*[x]).reshape(100,7,self.d_model)  * math.sqrt(self.d_model)
 
 class PositionalEncoding(nn.Module):
     "Implement the PE function."
@@ -318,7 +318,7 @@ plt.legend(["dim %d"%p for p in [4,5,6,7]])
 #
 
 def make_model(src_vocab, tgt_vocab, N=6, 
-               d_model=512, d_ff=2048, h=8, dropout=0.1):
+               d_model=128, d_ff=2048, h=8, dropout=0.1):
     "Helper: Construct a model from hyperparameters."
     c = copy.deepcopy
     attn = MultiHeadedAttention(h, d_model)
@@ -427,11 +427,11 @@ def get_std_opt(model):
     return NoamOpt(model.src_embed[0].d_model, 2, 4000,
             torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
-opts = [NoamOpt(512, 1, 4000, None), 
-        NoamOpt(512, 1, 8000, None),
+opts = [NoamOpt(128, 1, 4000, None), 
+        NoamOpt(128, 1, 8000, None),
         NoamOpt(256, 1, 4000, None)]
 plt.plot(np.arange(1, 20000), [[opt.rate(i) for opt in opts] for i in range(1, 20000)])
-plt.legend(["512:4000", "512:8000", "256:4000"])
+plt.legend(["128:4000", "128:8000", "256:4000"])
 #
 
 #During training, we employed label smoothing of value. This hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score.
@@ -457,10 +457,10 @@ class SimpleLossCompute:
         
     def __call__(self, x, y, norm):
         x = self.generator(x)
-        print(x.shape)
-        print(y.shape)
+        #print(x.shape)
+        #print(y.shape)
         x=torch.sum(x.reshape(100,7,-1), (2))
-        print(x.shape)
+        #print(x.shape)
         loss = self.criterion(x.contiguous().view(-1), 
                               y.contiguous().view(-1)) / norm
         loss.backward()
@@ -478,27 +478,30 @@ model = make_model(V, V, N=2)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
         torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
-for epoch in range(10):
+PATH = './time_series_model.pth'
+
+for epoch in range(40):
     #model.train()
     run_epoch(data_gen(V, 30, 20), model, 
               SimpleLossCompute(model.generator, criterion, model_opt))
     #model.eval()
-    print(run_epoch(data_gen(V, 30, 5), model, 
-                    SimpleLossCompute(model.generator, criterion, None)))
+    #print(run_epoch(data_gen(V, 30, 5), model, 
+    #                SimpleLossCompute(model.generator, criterion, None)))
+    torch.save(model.state_dict(), PATH)
 
-print('no error until here')
 
-
+model = make_model(V, V, N=2)
+model.load_state_dict(torch.load(PATH))
 
 def greedy_decode(model, src, src_mask, max_len, start_symbol):
     memory = model.encode(src, src_mask)
-    ys = torch.ones(1, 1).fill_(start_symbol).type_as(src.data)
+    #ys = torch.ones(1, 1).fill_(start_symbol).type_as(src.data)
     for i in range(max_len-1):
 #        out = model.decode(memory, src_mask, 
 #                           Variable(ys), 
 #                           Variable(subsequent_mask(ys.size(1))
 #                                    .type_as(src.data)))
-        prob = model.generator(memory[:, -1])
+        prob = torch.sum(model.generator(memory[:, -1]),(1))
 #        _, next_word = torch.max(prob, dim = 1)
 #        next_word = next_word.data[0]
 #        ys = torch.cat([ys, 
@@ -507,7 +510,9 @@ def greedy_decode(model, src, src_mask, max_len, start_symbol):
 
 model.eval()
 
-src = Variable(torch.LongTensor(X0[-100:]))
+src = Variable(torch.Tensor(X0[-100:]))
 src_mask = Variable(torch.ones(1, 1, 8 ))
 
 print(greedy_decode(model, src, src_mask, max_len=100, start_symbol=1))
+
+np.mean(Y0[-100:].reshape(1,-1)/greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).cpu().detach().numpy())

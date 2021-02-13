@@ -514,5 +514,3 @@ src = Variable(torch.Tensor(X0[-100:]))
 src_mask = Variable(torch.ones(1, 1, 8 ))
 
 print(greedy_decode(model, src, src_mask, max_len=100, start_symbol=1))
-
-np.mean(Y0[-100:].reshape(1,-1)/greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).cpu().detach().numpy())

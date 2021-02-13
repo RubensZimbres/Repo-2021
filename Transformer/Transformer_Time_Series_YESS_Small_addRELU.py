@@ -274,7 +274,7 @@ class Embeddings1(nn.Module):
         #nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
  
     def forward(self, x):
-        return torch.cat(128*[x]).reshape(100,look_back,self.d_model)  * math.sqrt(self.d_model)
+        return torch.cat(512*[x]).reshape(100,8,self.d_model)  * math.sqrt(self.d_model)
  
 class Embeddings2(nn.Module):
     def __init__(self, d_model, vocab):
@@ -285,7 +285,7 @@ class Embeddings2(nn.Module):
         #nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
  
     def forward(self, x):
-        return torch.cat(128*[x]).reshape(100,look_back-1,self.d_model)  * math.sqrt(self.d_model)
+        return torch.cat(512*[x]).reshape(100,7,self.d_model)  * math.sqrt(self.d_model)
 
 class PositionalEncoding(nn.Module):
     "Implement the PE function."
@@ -316,7 +316,7 @@ plt.legend(["dim %d"%p for p in [4,5,6,7]])
 #
 
 def make_model(src_vocab, tgt_vocab, N=6, 
-               d_model=128, d_ff=2048, h=8, dropout=0.1):
+               d_model=512, d_ff=2048, h=8, dropout=0.1):
     "Helper: Construct a model from hyperparameters."
     c = copy.deepcopy
     attn = MultiHeadedAttention(h, d_model)
@@ -425,11 +425,11 @@ def get_std_opt(model):
     return NoamOpt(model.src_embed[0].d_model, 2, 4000,
             torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
-opts = [NoamOpt(128, 1, 4000, None), 
-        NoamOpt(128, 1, 8000, None),
-        NoamOpt(64, 1, 4000, None)]
+opts = [NoamOpt(512, 1, 4000, None), 
+        NoamOpt(512, 1, 8000, None),
+        NoamOpt(256, 1, 4000, None)]
 plt.plot(np.arange(1, 20000), [[opt.rate(i) for opt in opts] for i in range(1, 20000)])
-plt.legend(["128:4000", "128:8000", "64:4000"])
+plt.legend(["512:4000", "512:8000", "256:4000"])
 #
 
 #During training, we employed label smoothing of value. This hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score.
@@ -449,7 +449,7 @@ class LabelSmoothing(nn.Module):
     "Implement label smoothing."
     def __init__(self, size, padding_idx, smoothing=0.0):
         super(LabelSmoothing, self).__init__()
-        self.criterion = nn.MSELoss(size_average=False)
+        self.criterion = nn.KLDivLoss(size_average=False)
         self.padding_idx = padding_idx
         self.confidence = 1.0 - smoothing
         self.smoothing = smoothing
@@ -495,12 +495,12 @@ model = make_model(V, V, N=2)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
         torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
-for epoch in range(2):
+#for epoch in range(10):
     #model.train()
-    run_epoch(data_gen(V, 30, 20), model, 
+run_epoch(data_gen(V, 30, 20), model, 
               SimpleLossCompute(model.generator, criterion, model_opt))
     #model.eval()
-    print(run_epoch(data_gen(V, 30, 5), model, 
+print(run_epoch(data_gen(V, 30, 5), model, 
                     SimpleLossCompute(model.generator, criterion, None)))
 
 print('no error until here')
@@ -527,4 +527,4 @@ model.eval()
 src = Variable(torch.LongTensor(X0[-100:]))
 src_mask = Variable(torch.ones(1, 1, 8 ))
 
-print(greedy_decode(model, src, src_mask, max_len=8, start_symbol=1))
+print(greedy_decode(model, src, src_mask, max_len=100, start_symbol=1))

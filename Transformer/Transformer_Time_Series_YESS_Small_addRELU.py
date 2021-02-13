@@ -94,6 +94,7 @@ class EncoderDecoder(nn.Module):
     
     def decode(self, memory, src_mask, tgt, tgt_mask):
         return self.decoder(self.tgt_embed(tgt), memory, src_mask, tgt_mask)
+import torch.nn.functional as F
 
 class Generator(nn.Module):
     "Define standard linear + softmax generation step."
@@ -102,8 +103,9 @@ class Generator(nn.Module):
         self.proj = nn.Linear(d_model, vocab)
 
     def forward(self, x):
-        return F.log_softmax(self.proj(x), dim=-1)
-
+        return F.relu(self.proj(x))
+        
+        
 def clones(module, N):
     "Produce N identical layers."
     return nn.ModuleList([copy.deepcopy(module) for _ in range(N)])
@@ -449,7 +451,7 @@ class LabelSmoothing(nn.Module):
     "Implement label smoothing."
     def __init__(self, size, padding_idx, smoothing=0.0):
         super(LabelSmoothing, self).__init__()
-        self.criterion = nn.KLDivLoss(size_average=False)
+        self.criterion = nn.MSELoss(size_average=True)
         self.padding_idx = padding_idx
         self.confidence = 1.0 - smoothing
         self.smoothing = smoothing
@@ -457,6 +459,8 @@ class LabelSmoothing(nn.Module):
         self.true_dist = None
         
     def forward(self, x, target):
+        print(x.size(1))
+        print(self.size)
         assert x.size(1) == self.size
         true_dist = x.data.clone()
         true_dist.fill_(self.smoothing / (self.size - 2))
@@ -478,6 +482,11 @@ class SimpleLossCompute:
         
     def __call__(self, x, y, norm):
         x = self.generator(x)
+        print(x.shape)
+        print(x.shape)
+        print(y.shape)
+        x=torch.sum(x.reshape(700,200,-1), (2))
+        print(x.shape)
         loss = self.criterion(x.contiguous().view(-1, x.size(-1)), 
                               y.contiguous().view(-1)) / norm
         loss.backward()

@@ -508,11 +508,13 @@ def greedy_decode(model, src, src_mask, max_len, start_symbol):
 #                        torch.ones(1, 1).type_as(src.data).fill_(next_word)], dim=1)
     return prob
 
-model.eval()
+#model.eval()
 
 src = Variable(torch.Tensor(X0[-100:]))
 src_mask = Variable(torch.ones(1, 1, 8 ))
 
 greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-5:]
 Y0.reshape(1,-1)[0][-5:]
-1-np.mean(Y0.reshape(1,-1)[0][-10:]-greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-10:])/np.mean(dataset[-10,:])
+
+from sklearn.metrics import mean_absolute_error
+1-mean_absolute_error(Y0.reshape(1,-1)[0][-10:],greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-10:])/np.mean(Y0.reshape(1,-1)[0][-10:])

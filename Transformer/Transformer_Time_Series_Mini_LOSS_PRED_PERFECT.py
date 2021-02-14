@@ -49,15 +49,12 @@ trainX, trainY = create_dataset(train, look_back)
 testX, testY = create_dataset(test, look_back)
 trainX
 
-trainY = trainY.reshape(len(trainY), 1)
-testY = testY.reshape(len(testY), 1)
-trainY
 
-X0=trainX
-Y0=trainY
+X0=trainX[0:-2]
+Y0=trainX[1:-1]
 
 X0=X0.reshape(X0.shape[0],X0.shape[1],1).astype(np.float32)
-testX=testX.reshape(testX.shape[0],testX.shape[1],1)
+Y0=Y0.reshape(Y0.shape[0],Y0.shape[1],1).astype(np.float32)
 
 
 
@@ -276,7 +273,7 @@ class Embeddings1(nn.Module):
         #nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
  
     def forward(self, x):
-        return torch.cat(4*[x]).reshape(100,8,self.d_model)  * math.sqrt(self.d_model)
+        return torch.cat(4*[x]).reshape(3772,8,self.d_model)  * math.sqrt(self.d_model)
  
 class Embeddings2(nn.Module):
     def __init__(self, d_model, vocab):
@@ -287,7 +284,7 @@ class Embeddings2(nn.Module):
         #nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
  
     def forward(self, x):
-        return torch.cat(4*[x]).reshape(100,7,self.d_model)  * math.sqrt(self.d_model)
+        return torch.cat(4*[x]).reshape(3772,7,self.d_model)  * math.sqrt(self.d_model)
 
 class PositionalEncoding(nn.Module):
     "Implement the PE function."
@@ -310,12 +307,6 @@ class PositionalEncoding(nn.Module):
                          requires_grad=True)
         return self.dropout(x)
 
-plt.figure(figsize=(15, 5))
-pe = PositionalEncoding(20, 0.05)
-y = pe.forward(Variable(torch.zeros(1, 100, 20)))
-plt.plot(np.arange(100), y[0, :, 4:8].data.numpy())
-plt.legend(["dim %d"%p for p in [4,5,6,7]])
-#
 
 def make_model(src_vocab, tgt_vocab, N=2, 
                d_model=4, d_ff=32, h=4, dropout=0.1):
@@ -436,10 +427,12 @@ def get_std_opt(model):
 def data_gen(V, batch, nbatches):
     "Generate random data for a src-tgt copy task."
     for i in range(nbatches):
-        data1 = torch.from_numpy(X0.reshape(3774,8)[-100:])#.long()
+        data1 = torch.from_numpy(X0.reshape(3772,8))#.long()
         data1[:, 0] = 1
+        data2 = torch.from_numpy(Y0.reshape(3772,8))#.long()
+        data2[:, 0] = 1
         src = Variable(data1, requires_grad=False)
-        tgt = Variable(data1, requires_grad=False)
+        tgt = Variable(data2, requires_grad=False)
         yield Batch(src, tgt, 0)
 
 
@@ -452,7 +445,7 @@ class SimpleLossCompute:
         
     def __call__(self, x, y, norm):
         x = self.generator(x)
-        x=torch.sum(x.reshape(100,7,-1), (2))
+        x=torch.sum(x.reshape(3772,7,-1), (2))
         #print(x.shape)
         loss = self.criterion(torch.sum(x,(0)), 
                               torch.sum(y,(0))) #/ norm
@@ -496,13 +489,13 @@ for epoch in range(100):
 
 
 
-src = Variable(torch.Tensor(X0[-100:].reshape(8,-1)) )
+src = Variable(torch.Tensor(X0.reshape(8,-1)) )
 src_mask = Variable(torch.ones(1, 1, 8))
 memory = model.encode(src, src_mask)
 
 result=[]
 for i in range(0,memory.shape[0]):
-    ys = torch.ones(100,7).fill_(1).type_as(src.data)
+    ys = torch.ones(3772,7).fill_(1).type_as(src.data)
     out = model.decode(memory, src_mask, 
                         Variable(ys), 
                         Variable(subsequent_mask(ys.size(1)).type_as(src.data)))
@@ -511,9 +504,15 @@ for i in range(0,memory.shape[0]):
 
 
 from sklearn.metrics import mean_absolute_error
-1-mean_absolute_error(Y0.reshape(1,-1)[0][-100:],np.array([i for i in result])
-)/np.mean(Y0.reshape(1,-1)[0][-100:])
+1-mean_absolute_error(Y0.reshape(1,-1)[0],np.array([i for i in result])
+)/np.mean(Y0.reshape(1,-1)[0])
 
-plt.plot(Y0.reshape(1,-1)[0][-100:])
+X0=trainX[0:-2]
+Y0=trainX[1:-1]
+
+X0=X0.reshape(X0.shape[0],X0.shape[1],1).astype(np.float32)
+Y0=Y0.reshape(Y0.shape[0],Y0.shape[1],1).astype(np.float32)
+
+plt.plot(Y0.reshape(1,-1)[0])
 plt.plot(np.array([i for i in result]))
 plt.show()

@@ -411,8 +411,8 @@ class NoamOpt:
         self._step += 1
         #rate = self.rate()
         for p in self.optimizer.param_groups:
-            p['lr'] = 0.01
-        self._rate = 0.01
+            p['lr'] = learning
+        self._rate = learning
         self.optimizer.step()
         
     #def rate(self, step = None):
@@ -455,62 +455,65 @@ class SimpleLossCompute:
         x=torch.sum(x.reshape(100,7,-1), (2))
         #print(x.shape)
         loss = self.criterion(torch.sum(x,(0)), 
-                              torch.sum(y,(0))) / norm
+                              torch.sum(y,(0))) #/ norm
+        if loss<0.015:
+            learning=learning/3
+
+        #if loss<0.02:
+        #    torch.save(model.state_dict(), PATH)
         #print(torch.sum(x,(0)))
         #print(torch.sum(y,(0)))
         loss.backward()
         if self.opt is not None:
             self.opt.step()
             self.opt.optimizer.zero_grad()
-        return loss.data * norm
+        return loss.data #* norm
 
 
 V = 200
 #criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
 criterion = nn.MSELoss()
-
+learning=0.001
 model = make_model(V, V, N=2)
 #model.load_state_dict(torch.load(PATH))
-model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
-        torch.optim.Adam(model.parameters(), lr=0.01, betas=(0.9, 0.98), eps=1e-9))
+model_opt = NoamOpt(model.src_embed[0].d_model, 10, 400,
+        torch.optim.Adam(model.parameters(), lr=learning, betas=(0.9, 0.98), eps=1e-9))
 
-#PATH = './pytorch_time_series_model_95.7.pth'
+PATH = './pytorch_time_series_model_loss_OK.pth'
 
-for epoch in range(10):
+for epoch in range(100):
     #model.train()
     run_epoch(data_gen(V, 30, 20), model, 
               SimpleLossCompute(model.generator, criterion, model_opt))
     #model.eval()
     #print(run_epoch(data_gen(V, 30, 5), model, 
     #                SimpleLossCompute(model.generator, criterion, None)))
-#torch.save(model.state_dict(), PATH)
+
 
 
 #model = make_model(V, V, N=2)
 #model.load_state_dict(torch.load(PATH))
 
-def greedy_decode(model, src, src_mask, max_len, start_symbol):
-    memory = model.encode(src, src_mask)
-    #ys = torch.ones(1, 1).fill_(start_symbol).type_as(src.data)
-    for i in range(max_len-1):
-#        out = model.decode(memory, src_mask, 
-#                           Variable(ys), 
-#                           Variable(subsequent_mask(ys.size(1))
-#                                    .type_as(src.data)))
-        prob = torch.sum(model.generator(memory[:, -1]),(1))
-#        _, next_word = torch.max(prob, dim = 1)
-#        next_word = next_word.data[0]
-#        ys = torch.cat([ys, 
-#                        torch.ones(1, 1).type_as(src.data).fill_(next_word)], dim=1)
-    return prob
 
-#model.eval()
 
-src = Variable(torch.Tensor(X0[-100:]))
-src_mask = Variable(torch.ones(1, 1, 8 ))
+src = Variable(torch.Tensor(X0[-100:].reshape(8,-1)) )
+src_mask = Variable(torch.ones(1, 1, 8))
+memory = model.encode(src, src_mask)
 
-greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-50:]
-Y0.reshape(1,-1)[0][-50:]
+result=[]
+for i in range(0,memory.shape[0]):
+    ys = torch.ones(100,7).fill_(1).type_as(src.data)
+    out = model.decode(memory, src_mask, 
+                        Variable(ys), 
+                        Variable(subsequent_mask(ys.size(1)).type_as(src.data)))
+    prob = model.generator(out[i])
+    result.append(torch.sum(prob,(1)).detach().numpy()[-1])
+
 
 from sklearn.metrics import mean_absolute_error
-1-mean_absolute_error(Y0.reshape(1,-1)[0][-100:],greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-100:])/np.mean(Y0.reshape(1,-1)[0][-100:])
+1-mean_absolute_error(Y0.reshape(1,-1)[0][-100:],np.array([i for i in result])
+)/np.mean(Y0.reshape(1,-1)[0][-100:])
+
+plt.plot(Y0.reshape(1,-1)[0][-100:])
+plt.plot(np.array([i for i in result]))
+plt.show()

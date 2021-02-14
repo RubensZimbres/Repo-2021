@@ -381,7 +381,7 @@ def run_epoch(data_iter, model, loss_compute):
                     (i, loss / batch.ntokens, tokens / elapsed))
             start = time.time()
             tokens = 0
-    return total_loss / total_tokens
+    return total_loss #/ total_tokens
 
 global max_src_in_batch, max_tgt_in_batch
 def batch_size_fn(new, count, sofar):
@@ -465,7 +465,7 @@ class SimpleLossCompute:
         return loss.data #* norm
 
 
-V = 20
+V = 5
 #criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
 criterion = nn.MSELoss()
 
@@ -476,7 +476,7 @@ model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
 
 PATH = './pytorch_time_series_model_95.7.pth'
 
-for epoch in range(10):
+for epoch in range(100):
     #model.train()
     run_epoch(data_gen(V, 30, 20), model, 
               SimpleLossCompute(model.generator, criterion, model_opt))
@@ -509,8 +509,8 @@ def greedy_decode(model, src, src_mask, max_len, start_symbol):
 src = Variable(torch.Tensor(X0[-100:]))
 src_mask = Variable(torch.ones(1, 1, 8 ))
 
-greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-5:]
-Y0.reshape(1,-1)[0][-5:]
+greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-50:]
+Y0.reshape(1,-1)[0][-50:]
 
 from sklearn.metrics import mean_absolute_error
 1-mean_absolute_error(Y0.reshape(1,-1)[0][-10:],greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-10:])/np.mean(Y0.reshape(1,-1)[0][-10:])

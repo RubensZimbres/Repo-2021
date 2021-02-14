@@ -470,15 +470,16 @@ class SimpleLossCompute:
         return loss.data #* norm
 
 
-V = 200
+V = 190
 #criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
 criterion = nn.MSELoss()
 
 model = make_model(V, V, N=2)
+model.load_state_dict(torch.load(PATH))
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
         torch.optim.Adam(model.parameters(), lr=0.02, betas=(0.9, 0.98), eps=1e-9))
 
-#PATH = './time_series_model2.pth'
+PATH = './pytorch_time_series_model_95.7.pth'
 
 for epoch in range(10):
     #model.train()
@@ -487,7 +488,7 @@ for epoch in range(10):
     #model.eval()
     #print(run_epoch(data_gen(V, 30, 5), model, 
     #                SimpleLossCompute(model.generator, criterion, None)))
-    #torch.save(model.state_dict(), PATH)
+#torch.save(model.state_dict(), PATH)
 
 
 #model = make_model(V, V, N=2)

@@ -452,12 +452,12 @@ class SimpleLossCompute:
         
     def __call__(self, x, y, norm):
         x = self.generator(x)
-        #print(x.shape)
-        #print(y.shape)
         x=torch.sum(x.reshape(100,7,-1), (2))
         #print(x.shape)
-        loss = self.criterion(x.contiguous().view(-1), 
-                              y.contiguous().view(-1)) / norm
+        loss = self.criterion(torch.sum(x,(0)), 
+                              torch.sum(y,(0))) / norm
+        #print(torch.sum(x,(0)))
+        #print(torch.sum(y,(0)))
         loss.backward()
         if self.opt is not None:
             self.opt.step()
@@ -465,18 +465,18 @@ class SimpleLossCompute:
         return loss.data #* norm
 
 
-V = 5
+V = 200
 #criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
 criterion = nn.MSELoss()
 
 model = make_model(V, V, N=2)
-model.load_state_dict(torch.load(PATH))
+#model.load_state_dict(torch.load(PATH))
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
         torch.optim.Adam(model.parameters(), lr=0.02, betas=(0.9, 0.98), eps=1e-9))
 
-PATH = './pytorch_time_series_model_95.7.pth'
+#PATH = './pytorch_time_series_model_95.7.pth'
 
-for epoch in range(100):
+for epoch in range(10):
     #model.train()
     run_epoch(data_gen(V, 30, 20), model, 
               SimpleLossCompute(model.generator, criterion, model_opt))
@@ -513,4 +513,4 @@ greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().
 Y0.reshape(1,-1)[0][-50:]
 
 from sklearn.metrics import mean_absolute_error
-1-mean_absolute_error(Y0.reshape(1,-1)[0][-10:],greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-10:])/np.mean(Y0.reshape(1,-1)[0][-10:])
+1-mean_absolute_error(Y0.reshape(1,-1)[0][-100:],greedy_decode(model, src, src_mask, max_len=100, start_symbol=1).detach().cpu().numpy()[-100:])/np.mean(Y0.reshape(1,-1)[0][-100:])

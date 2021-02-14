@@ -409,19 +409,19 @@ class NoamOpt:
     def step(self):
         "Update parameters and rate"
         self._step += 1
-        rate = self.rate()
+        #rate = self.rate()
         for p in self.optimizer.param_groups:
-            p['lr'] = rate
-        self._rate = rate
+            p['lr'] = 0.01
+        self._rate = 0.01
         self.optimizer.step()
         
-    def rate(self, step = None):
-        "Implement `lrate` above"
-        if step is None:
-            step = self._step
-        return self.factor * \
-            (self.model_size ** (-0.5) *
-            min(step ** (-0.5), step * self.warmup ** (-0.8)))
+    #def rate(self, step = None):
+     #   "Implement `lrate` above"
+      #  if step is None:
+       #     step = self._step
+        #return self.factor * \
+         #   (self.model_size ** (-0.5) *
+          #  min(step ** (-0.5), step * self.warmup ** (-0.8)))
         
 def get_std_opt(model):
     return NoamOpt(model.src_embed[0].d_model, 2, 4000,
@@ -462,7 +462,7 @@ class SimpleLossCompute:
         if self.opt is not None:
             self.opt.step()
             self.opt.optimizer.zero_grad()
-        return loss.data #* norm
+        return loss.data * norm
 
 
 V = 200
@@ -472,7 +472,7 @@ criterion = nn.MSELoss()
 model = make_model(V, V, N=2)
 #model.load_state_dict(torch.load(PATH))
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
-        torch.optim.Adam(model.parameters(), lr=0.02, betas=(0.9, 0.98), eps=1e-9))
+        torch.optim.Adam(model.parameters(), lr=0.01, betas=(0.9, 0.98), eps=1e-9))
 
 #PATH = './pytorch_time_series_model_95.7.pth'
 

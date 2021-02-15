@@ -494,24 +494,18 @@ src_mask = Variable(torch.ones(1, 1, 8))
 memory = model.encode(src, src_mask)
 
 result=[]
+ys = torch.ones(3772,7).fill_(1).type_as(src.data)
+out = model.decode(memory, src_mask, 
+                Variable(ys), 
+                Variable(subsequent_mask(ys.size(1)).type_as(src.data)))
 for i in range(0,memory.shape[0]):
-    ys = torch.ones(3772,7).fill_(1).type_as(src.data)
-    out = model.decode(memory, src_mask, 
-                        Variable(ys), 
-                        Variable(subsequent_mask(ys.size(1)).type_as(src.data)))
     prob = model.generator(out[i])
     result.append(torch.sum(prob,(1)).detach().numpy()[-1])
 
 
 from sklearn.metrics import mean_absolute_error
-1-mean_absolute_error(Y0.reshape(1,-1)[0],np.array([i for i in result])
-)/np.mean(Y0.reshape(1,-1)[0])
+1-mean_absolute_error(train[9:-1].reshape(1,-1)[0],result)/np.mean(train[9:-1].reshape(1,-1)[0])
 
-X0=trainX[0:-2]
-Y0=trainX[1:-1]
-
-X0=X0.reshape(X0.shape[0],X0.shape[1],1).astype(np.float32)
-Y0=Y0.reshape(Y0.shape[0],Y0.shape[1],1).astype(np.float32)
 
 plt.plot(Y0.reshape(1,-1)[0])
 plt.plot(np.array([i for i in result]))

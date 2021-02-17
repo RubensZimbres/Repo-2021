@@ -19,8 +19,12 @@ CTRL+SHIFT+P
 ```
 $ ext install donjayamanne.githistory
 ```
-CTRL+SHIFT+P Select Interpreter: 
+CTRL+SHIFT+P 
 
+>Select Interpreter: 
 /home/anaconda3/bin/python3.7
 GCP /opt/anaconda3/bin/python
 Python 3.7.3 64bits (base:conda)
+
+> Terminal
+> 

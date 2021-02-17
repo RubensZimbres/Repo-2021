@@ -481,7 +481,45 @@ model_opt = NoamOpt(model.src_embed[0].d_model, 10, 400,
 #              SimpleLossCompute(model.generator, criterion, model_opt))
 
 
+PATH = './pytorch_time_series_model_loss_OK_norm.pth'
 
+def greedy_decode(model, src, src_mask, max_len, start_symbol):
+    memory = model.encode(src, src_mask)
+    ys = torch.ones(1, 7).fill_(start_symbol).type_as(src.data)
+    for i in range(8-1):
+        out = model.decode(memory, src_mask, 
+                           Variable(ys), 
+                           Variable(subsequent_mask(ys.size(1))
+                                    .type_as(src.data)))
+        prob = torch.sum(src*torch.sum(model.generator(out),(1)))
+    return prob
+
+model.load_state_dict(torch.load(PATH))
+
+res=[]
+for place in range(0,len(test)):
+
+    X0=testX[0:-2]
+    Y0=testX[1:-1]
+
+    X0=X0.reshape(X0.shape[0],X0.shape[1],1).astype(np.float32)
+    Y0=Y0.reshape(Y0.shape[0],Y0.shape[1],1).astype(np.float32)
+
+
+    X0=X0[place]
+    Y0=[Y0[place][0:7].reshape(1,-1)]
+
+
+    src = Variable(torch.Tensor(X0.reshape(1,-1)) )
+    src_mask = Variable(torch.ones(1,1,8))
+
+
+    pred=greedy_decode(model, src, src_mask, max_len=8, start_symbol=1)
+
+    res.append(Y0[0][0][-1]/pred.detach().numpy())
+    print("actual:", Y0[0][0][-1],"prediction:",pred.detach().numpy(),"acc:", Y0[0][0][-1]/pred.detach().numpy())
+
+np.mean(res)
 
 PATH = './pytorch_time_series_model_loss_OK_norm.pth'
 

@@ -14,11 +14,13 @@ $ cd code-server2.1688-vsc1.39.2-linux-x86_64
 $ sudo PASSWORD=123123 ./code-server --port 8888
 ```
 
-CTRL+P
+CTRL+SHIFT+P
 
 ```
 $ ext install donjayamanne.githistory
 ```
-Interpreter: /home/anaconda3/bin/python3.7
+CTRL+SHIFT+P Select Interpreter: 
 
+/home/anaconda3/bin/python3.7
+GCP /opt/anaconda3/bin/python
 Python 3.7.3 64bits (base:conda)

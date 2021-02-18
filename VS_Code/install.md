@@ -27,7 +27,7 @@ CTRL+SHIFT+P
 $ ext install donjayamanne.githistory
 ```
 CTRL+SHIFT+P 
-
+ext install ms-python.python
 >Select Interpreter: 
 /home/anaconda3/bin/python3.7
 GCP /opt/anaconda3/bin/python

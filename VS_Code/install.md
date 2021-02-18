@@ -27,12 +27,9 @@ CTRL+SHIFT+P
 $ ext install donjayamanne.githistory
 
 CTRL+SHIFT+P 
-ext install ms-python.python
+ext install ms-python.python / chg version to 2020.3
 >Select Interpreter: 
 /home/anaconda3/bin/python3.7
 GCP /opt/anaconda3/bin/python
 Python 3.7.3 64bits (base:conda)
-
-> Terminal
-> 
 ```

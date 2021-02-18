@@ -25,7 +25,7 @@ CTRL+SHIFT+P
 
 ```
 $ ext install donjayamanne.githistory
-```
+
 CTRL+SHIFT+P 
 ext install ms-python.python
 >Select Interpreter: 
@@ -35,3 +35,4 @@ Python 3.7.3 64bits (base:conda)
 
 > Terminal
 > 
+```

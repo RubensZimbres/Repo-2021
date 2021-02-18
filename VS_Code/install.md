@@ -18,7 +18,7 @@ $ sudo apt install libgconf-2-4
 $ sudo apt --fix-broken install
 $ sudo dpkg -i code_XXXXXXXXXX_amd64.deb
 
-
+$ sudo ./code-server --port 8888 --auth none --host 0.0.0.
 ```
 
 CTRL+SHIFT+P

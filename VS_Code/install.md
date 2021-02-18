@@ -32,4 +32,6 @@ ext install ms-python.python / chg version to 2020.3
 /home/anaconda3/bin/python3.7
 GCP /opt/anaconda3/bin/python
 Python 3.7.3 64bits (base:conda)
+
+FUCKING JOKE: Just make sure that the LAST line you run when using (Shift + Enter) is not indented. If the last line is indented, you will either get an indentation error or be shown your code again in output -> https://github.com/microsoft/vscode-python/issues/2837
 ```

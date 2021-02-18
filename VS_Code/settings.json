@@ -9,3 +9,17 @@
     
     
 }
+
+
+############## GCP
+
+{
+    "jupyter.alwaysTrustNotebooks": true,
+    "python.cwd": "/home/rubensvectomobile_gmail_com",
+    "python.defaultInterpreterPath": "/opt/anaconda3/bin/python3.7",
+    "editor.wordWrap": "on",
+    "python.pythonPath": "/opt/anaconda3/bin/python",
+		"terminal.integrated.inheritEnv": true,
+    "editor.insertSpaces": false,
+    "editor.foldingStrategy": "indentation",
+  }

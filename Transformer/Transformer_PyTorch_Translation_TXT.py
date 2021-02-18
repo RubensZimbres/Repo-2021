@@ -138,9 +138,6 @@ def subsequent_mask(size):
     subsequent_mask = np.triu(np.ones(attn_shape), k=1).astype('uint8')
     return torch.from_numpy(subsequent_mask) == 0
 
-plt.figure(figsize=(5,5))
-plt.imshow(subsequent_mask(20)[0])
-plt.show()
 
 #we compute the attention function on a set of queries simultaneously, packed together into a matrix Q. The keys and values are also packed together into matrices K and  V
 
@@ -232,13 +229,6 @@ class PositionalEncoding(nn.Module):
                          requires_grad=False)
         return self.dropout(x)
 
-plt.figure(figsize=(15, 5))
-pe = PositionalEncoding(20, 0.05)
-y = pe.forward(Variable(torch.zeros(1, 100, 20)))
-plt.plot(np.arange(100), y[0, :, 4:8].data.numpy())
-plt.legend(["dim %d"%p for p in [4,5,6,7]])
-plt.show()
-
 def make_model(src_vocab, tgt_vocab, N=6, 
                d_model=512, d_ff=2048, h=8, dropout=0.1):
     "Helper: Construct a model from hyperparameters."
@@ -261,8 +251,6 @@ def make_model(src_vocab, tgt_vocab, N=6,
             nn.init.xavier_uniform(p)
     return model
 
-tmp_model = make_model(10, 10, 2)
-tmp_model
 
 class Batch:
     "Object for holding a batch of data with mask during training."
@@ -349,12 +337,6 @@ def get_std_opt(model):
     return NoamOpt(model.src_embed[0].d_model, 2, 4000,
             torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
-opts = [NoamOpt(512, 1, 4000, None), 
-        NoamOpt(512, 1, 8000, None),
-        NoamOpt(256, 1, 4000, None)]
-plt.plot(np.arange(1, 20000), [[opt.rate(i) for opt in opts] for i in range(1, 20000)])
-plt.legend(["512:4000", "512:8000", "256:4000"])
-plt.show()
 
 #During training, we employed label smoothing of value. This hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score.
 
@@ -381,16 +363,6 @@ class LabelSmoothing(nn.Module):
         self.true_dist = true_dist
         return self.criterion(x, Variable(true_dist, requires_grad=False))
 
-crit = LabelSmoothing(5, 0, 0.4)
-predict = torch.FloatTensor([[0, 0.2, 0.7, 0.1, 0],
-                             [0, 0.2, 0.7, 0.1, 0], 
-                             [0, 0.2, 0.7, 0.1, 0]])
-v = crit(Variable(predict.log()), 
-         Variable(torch.LongTensor([2, 1, 0])))
-
-# Show the target distributions expected by the system.
-plt.imshow(crit.true_dist)
-plt.show()
 
 
 def data_gen(V, batch, nbatches):
@@ -426,7 +398,7 @@ model = make_model(V, V, N=2)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
         torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
-for epoch in range(10):
+for epoch in range(2):
     #model.train()
     run_epoch(data_gen(V, 30, 20), model, 
               SimpleLossCompute(model.generator, criterion, model_opt))
@@ -584,7 +556,7 @@ for i, batch in enumerate(valid_iter):
     break
 
 
-#####
+##############################################################################
 model, SRC, TGT = torch.load("en-de-model.pt")
 
 model.eval()
@@ -631,6 +603,5 @@ for layer in range(1, 6, 2):
         draw(model.decoder.layers[layer].self_attn.attn[0, h].data[:len(tgt_sent), :len(sent)], 
             sent, tgt_sent if h ==0 else [], ax=axs[h])
     plt.show()
-
 
 

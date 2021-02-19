@@ -472,12 +472,14 @@ TGT = data.Field(tokenize=tokenize_en, init_token = BOS_WORD,
                                       )
 
 
-list(enumerate(testset))
+#list(enumerate(testset))
 
 import pandas as pd
 
-df = pd.read_csv("CDF.csv", sep=';',header=None)
+df = pd.read_csv("./SQuAD_csv/train_SQuAD.csv", sep=';',header=None)
+
 df=df.iloc[1:,:]
+df=df.iloc[:,[1,2]]
 
 from sklearn.model_selection import train_test_split
 train, val = train_test_split(df, test_size=0.1)
@@ -560,11 +562,12 @@ for epoch in range(2):
 
 
 
-words = next(iter(testset.src))
+words = "Quem foi Madre Teresa ?"
 
 
 for i, batch in enumerate(valid_iter):
-    src = batch.src.transpose(0, 1)[:1]
+    src = Variable(torch.LongTensor([[SRC.vocab.stoi[w] for w in words]]))
+
     src_mask = (src != SRC.vocab.stoi["<blank>"]).unsqueeze(-2)
     out = greedy_decode(model, src, src_mask, 
                         max_len=60, start_symbol=TGT.vocab.stoi["<s>"])
@@ -586,19 +589,22 @@ for i, batch in enumerate(valid_iter):
 ##############################################################################
 
 model.eval()
-sent = "Eu gostaria de reclamar de uma geladeira"
-src = torch.LongTensor([[SRC.stoi[w] for w in sent]])
+sent = "Quem foi madre Teresa ?".split()
+src = torch.LongTensor([[SRC.vocab.stoi[w] for w in sent]])
 src = Variable(src)
-src_mask = (src != SRC.stoi["<blank>"]).unsqueeze(-2)
+src_mask = (src != SRC.vocab.stoi["<blank>"]).unsqueeze(-2)
 out = greedy_decode(model, src, src_mask, 
-                    max_len=60, start_symbol=TGT.stoi["<s>"])
+                    max_len=60, start_symbol=TGT.vocab.stoi["<s>"])
 print("Translation:", end="\t")
 trans = "<s> "
 for i in range(1, out.size(1)):
-    sym = TGT.itos[out[0, i]]
+    sym = TGT.vocab.itos[out[0, i]]
     if sym == "</s>": break
     trans += sym + " "
 print(trans)
+
+
+break
 
 ###### ATTENTION VISUALIZATION
 

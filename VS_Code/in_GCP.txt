@@ -1,0 +1,4 @@
+gcloud beta compute ssh --zone "blabla" "machinelearning-ABC" --project "machinelearning-ABC"
+instalar a extensão ssh remote no vscode
+Ctrl + shift + p => add remote host
+ssh -i ~/.ssh/google_compute_engine usuario@ipdoservidor

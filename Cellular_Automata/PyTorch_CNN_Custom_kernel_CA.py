@@ -147,7 +147,9 @@ for epoch in range(2):  # loop over the dataset multiple times
 PATH = './cifar_net.pth'
 torch.save(net.state_dict(), PATH)
 
-net = Net()
+c=torch.from_numpy(cellular_automaton()[1:4,1:4].astype(np.float16).reshape(1,3,3,1)).type(torch.FloatTensor)
+print(c)
+net = Net(c)
 net.load_state_dict(torch.load(PATH))
 
 outputs = net(images)

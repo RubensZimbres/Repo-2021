@@ -1,6 +1,8 @@
 import numpy as np
 import itertools
 regra=2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
+base1=5
+states=np.arange(0,base1)
 
 kernel=np.random.randint(2, size=(3,3))
 
@@ -8,12 +10,13 @@ kernel=np.random.randint(2, size=(3,3))
 def cellular_automaton():
     global kernel
 
-    lista=[0,1,2,3,4]
+    lista=states
     kernel=np.pad(kernel, (1, 1), 'constant', constant_values=(0))
     q12=np.array([p for p in itertools.product(lista, repeat=3)])[::-1]
 
-    uau12 = np.base_repr(int(regra),base=5)
-
+    uau12 = np.zeros(q12.shape[0])
+    temp = [int(i) for i in np.base_repr(int(regra),base=base1)]
+    uau12[-len(temp):]=temp
     ru12=np.array(range(0,len(uau12)))
 
     tod12=[]

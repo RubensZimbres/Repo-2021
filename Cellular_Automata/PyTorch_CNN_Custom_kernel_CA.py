@@ -133,7 +133,7 @@ for epoch in range(2):  # loop over the dataset multiple times
         outputs = net(inputs)
         #print(outputs.shape)
         loss = criterion(outputs, labels)
-        print(loss)
+        #print(loss)
         loss.backward()
         optimizer.step()
 

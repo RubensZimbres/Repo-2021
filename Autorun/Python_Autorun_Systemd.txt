@@ -13,6 +13,8 @@ Conflicts=getty@tty1.service
 Type=simple
 ExecStart=home/user/anaconda3/bin/python /home/user/script.py
 StandardInput=tty-force
+Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target

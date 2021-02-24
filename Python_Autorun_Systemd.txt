@@ -1,0 +1,24 @@
+GCP
+```
+$ sudo vi /lib/systemd/system/test-py.service
+
+
+#!/bin/bash
+[Unit]
+Description=Test Service
+After=multi-user.target
+Conflicts=getty@tty1.service
+
+[Service]
+Type=simple
+ExecStart=home/user/anaconda3/bin/python /home/user/script.py
+StandardInput=tty-force
+
+[Install]
+WantedBy=multi-user.target
+
+$ sudo systemctl daemon-reload
+
+$ sudo systemctl enable test-py.service
+$ sudo systemctl start test-py.service
+```

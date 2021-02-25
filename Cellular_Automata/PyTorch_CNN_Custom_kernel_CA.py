@@ -72,53 +72,53 @@ output_size = 10
 import torch.nn.functional as F
 import torch.nn as nn
 
-class CustomConv(nn.Module):
-    def __init__(self, kernel):
-        super(CustomConv, self).__init__()
-        self.conv1 = nn.Conv2d(1, 1, 3, 1, 1, bias=False)
-        # Add other layers here
-        
-        # Initialize conv1 with custom kernel
-        self.conv1.weight = nn.Parameter(kernel)
-        
-    def forward(self, x):
-        x = self.conv1(x)
-        # pass x to other modules
-        return x        
-
-model = CustomConv(torch.from_numpy(cellular_automaton()[1:4,1:4].reshape(1,3,3,1)).type(torch.FloatTensor))
-x = torch.randn(1, 3, 3, 1)
-output = model(x)
-
 class Net(nn.Module):
     def __init__(self,kernel):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 1, kernel_size=3,bias=False)
-        self.conv2 = nn.Conv2d(1, 20, kernel_size=3,bias=False)
-        self.conv2_drop = nn.Dropout2d()
-        self.fc1 = nn.Linear(336, 10)
-        self.fc2 = nn.Linear(25, 10)
-        self.conv1.weight = nn.Parameter(kernel)
-    def forward(self, x):
-        x = F.relu(F.max_pool2d(self.conv1(x), 2))
-        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
-        x = x.view(-1, 336)
-        x = F.relu(self.fc1(x))
-        x = F.dropout(x, training=self.training)
-        x = self.fc2(x.view(10,-1))
-        return F.log_softmax(x)
+        self.conv1 = nn.Conv2d(3, 6, 3,bias=False)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(6, 16, 3,bias=False)
+        self.fc1 = nn.Linear(800, 120)
+        self.fc2 = nn.Linear(120, 84)
+        self.fc3 = nn.Linear(84, 100)
+        self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
 
+
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x))).view(5,6,-1,16)
+        #print(x.shape)
+        x = self.pool(F.relu(self.conv2(x).view(10,1,16,21)))
+        x = x.view(-1, 800)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        
+        #print('output',x.shape)
+        return F.log_softmax(x,dim=1).view(-1,10)
 
 import torch.optim as optim
+
+PATH = './cifar_net.pth'
+
+c=torch.from_numpy(cellular_automaton()[1:4,1:4].astype(np.float16).reshape(1,3,3,1)).type(torch.FloatTensor)
+#print(c)
+net = Net(c)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
+#net.load_state_dict(torch.load(PATH))
+loss = nn.CrossEntropyLoss()
+input = torch.randn(3, 5, requires_grad=True)
+target = torch.empty(3, dtype=torch.long).random_(5)
+output = loss(input, target)
+output.backward()
+
+
+
+
 
 
 for epoch in range(2):  # loop over the dataset multiple times
 
-    c=torch.from_numpy(cellular_automaton()[1:4,1:4].astype(np.float16).reshape(1,3,3,1)).type(torch.FloatTensor)
-    print(c)
-    net = Net(c)
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
     running_loss = 0.0
     for i, data in enumerate(trainloader, 0):
@@ -131,7 +131,8 @@ for epoch in range(2):  # loop over the dataset multiple times
 
         # forward + backward + optimize
         outputs = net(inputs)
-        #print(outputs.shape)
+        ##print(outputs)
+        #print(labels)
         loss = criterion(outputs, labels)
         #print(loss)
         loss.backward()
@@ -143,13 +144,19 @@ for epoch in range(2):  # loop over the dataset multiple times
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))
             running_loss = 0.0
+    torch.save(net.state_dict(), PATH)
 
-PATH = './cifar_net.pth'
-torch.save(net.state_dict(), PATH)
 
-c=torch.from_numpy(cellular_automaton()[1:4,1:4].astype(np.float16).reshape(1,3,3,1)).type(torch.FloatTensor)
-print(c)
-net = Net(c)
-net.load_state_dict(torch.load(PATH))
 
-outputs = net(images)
+correct = 0
+total = 0
+with torch.no_grad():
+    for data in testloader:
+        images, labels = data
+        outputs = net(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+print('Accuracy of the network on the 10000 test images: %d %%' % (
+    100 * correct / total))

@@ -98,12 +98,6 @@ import torch.optim as optim
 
 PATH = './cifar_net.pth'
 
-c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(1,1,5,5)).type(torch.FloatTensor)
-#print(c)
-net = Net(c)
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
-#net.load_state_dict(torch.load(PATH))
 
 n_epochs = 3
 batch_size_train = 128
@@ -117,9 +111,17 @@ train_counter = []
 test_losses = []
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
 
+c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(1,1,5,5)).type(torch.FloatTensor)
+#print(c)
+net = Net(c)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
+
 def train(epoch):
-  net.train()
   for batch_idx, (data, target) in enumerate(train_loader):
+    #net.load_state_dict(torch.load(PATH))
+    net.train()
+
     optimizer.zero_grad()
     output = net(data)
     loss = F.nll_loss(output, target)
@@ -137,23 +139,23 @@ def train(epoch):
 
 
 def test():
-  net.eval()
-  test_loss = 0
-  correct = 0
-  with torch.no_grad():
-    for data, target in test_loader:
-      output = net(data)
-      test_loss += F.nll_loss(output, target, size_average=False).item()
-      pred = output.data.max(1, keepdim=True)[1]
-      correct += pred.eq(target.data.view_as(pred)).sum()
-  test_loss /= len(test_loader.dataset)
-  test_losses.append(test_loss)
-  print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-    test_loss, correct, len(test_loader.dataset),
-    100. * correct / len(test_loader.dataset)))
+    net.eval()
+    test_loss = 0
+    correct = 0
+    with torch.no_grad():
+        for data, target in test_loader:
+            output = net(data)
+            test_loss += F.nll_loss(output, target, size_average=False).item()
+            pred = output.data.max(1, keepdim=True)[1]
+            correct += pred.eq(target.data.view_as(pred)).sum()
+            test_loss /= len(test_loader.dataset)
+            test_losses.append(test_loss)
+            print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+                test_loss, correct, len(test_loader.dataset),
+                100. * correct / len(test_loader.dataset)))
 
 
 
 for epoch in range(1, n_epochs + 1):
-  train(epoch)
-  test()
+    train(epoch)
+    test()

@@ -58,7 +58,7 @@ trainTransform  = tv.transforms.Compose([tv.transforms.ToTensor(), tv.transforms
 trainset = tv.datasets.MNIST(root='./data',  train=True,download=True, transform=transform)
 dataloader = torch.utils.data.DataLoader(trainset, batch_size=32, shuffle=False, num_workers=4)
 testset = tv.datasets.MNIST(root='./data', train=False, download=True, transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=4, shuffle=False, num_workers=2)
+testloader = torch.utils.data.DataLoader(testset, batch_size=32, shuffle=False, num_workers=2)
 
 
 import torch.nn.functional as F
@@ -84,10 +84,9 @@ class Net(nn.Module):
 
 import torch.optim as optim
 
-PATH = './cifar_net.pth'
 
 
-n_epochs = 3
+n_epochs = 1
 batch_size_train = 128
 batch_size_test = 1000
 learning_rate = 0.01
@@ -115,6 +114,9 @@ def train(epoch):
     #print(output.view(32,196).shape)
     #print(F.interpolate(data.view(32,1,784), size=196).view(32,196).shape)
     loss = criterion(output.view(32,196),F.interpolate(data.view(32,1,784), size=196).view(32,196))
+    if loss < 0.1:
+        torch.save(net.state_dict(), './results/model.pth')
+        torch.save(optimizer.state_dict(), './results/optimizer.pth')
     loss.backward()
     optimizer.step()
     if batch_idx % log_interval == 0:
@@ -127,25 +129,56 @@ def train(epoch):
       torch.save(net.state_dict(), './results/model.pth')
       torch.save(optimizer.state_dict(), './results/optimizer.pth')
 
-
-def test():
-    net.eval()
-    test_loss = 0
-    correct = 0
-    with torch.no_grad():
-        for data, data in testloader:
-            output = net(data)
-            test_loss += F.nll_loss(output, target, size_average=False).item()
-            pred = output.data.max(1, keepdim=True)[1]
-            correct += pred.eq(target.data.view_as(pred)).sum()
-            test_loss /= len(testloader.dataset)
-            test_losses.append(test_loss)
-            print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-                test_loss, correct, len(testloader.dataset),
-                100. * correct / len(testloader.dataset)))
-
-
-
 for epoch in range(1, n_epochs + 1):
     train(epoch)
-    test()
+
+
+c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(1,1,5,5)).type(torch.FloatTensor)
+#print(c)
+net = Net(c)
+
+net.load_state_dict(torch.load('./results/model.pth'))
+
+
+generated=[]
+for data, target in testloader:
+    try:
+        generated.append(net(data.view(32,1,28,28)))
+    except:
+        pass
+
+
+
+
+plt.imshow(generated[0][0].view(14,14).detach().numpy())
+plt.show()
+
+
+img2=np.array([i for i in list(generated[0].view(32,14,14).detach().numpy())])*255
+
+plt.imshow(np.sum(img2.reshape(32,14,14),axis=0))
+plt.savefig('/home/anaconda3/work/caa/flatten.png')
+plt.show()
+
+import cv2
+import time
+for i in range(0,len(img2)):
+    fig=plt.figure(figsize=(8, 8))
+    fig.clf()
+    ax = fig.subplots()
+    ax.axis('off')
+    ax.set_title('Automata')
+    ax.imshow(img2[i])
+    plt.savefig('/home/anaconda3/work/caa/foo %s .png' % format(time.time()))
+
+
+import glob
+from PIL import Image
+
+# filepaths
+fp_in = "./caa/foo*.png"
+fp_out = "./caa/CA_movie.gif"
+
+img, *imgs = [Image.open(f) for f in sorted(glob.glob(fp_in))]
+img.save(fp=fp_out, format='GIF', append_images=imgs,
+         save_all=True, duration=200, loop=0)

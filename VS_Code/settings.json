@@ -23,3 +23,27 @@
     "editor.insertSpaces": false,
     "editor.foldingStrategy": "indentation",
   }
+
+
+Andy
+{
+
+    "jupyter.alwaysTrustNotebooks": true,
+    "python.cwd": "/home/anaconda3/bin/python",
+    "python.defaultInterpreterPath": "/home/anaconda3/bin/python3.7",
+    "python.pythonPath": "/home/anaconda3/bin",
+    "editor.wordWrap": "on",
+    "diffEditor.renderSideBySide": false,
+    "explorer.confirmDelete": false,
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "remote.SSH.showLoginTerminal": true,
+    "remote.SSH.useLocalServer": false,
+    "remote.SSH.remotePlatform": {
+        "35.XXX.XXX.14": "linux",
+        {"key": "shift+enter",           "command": "python.execSelectionInteractive", "when": "editorTextFocus"
+        }
+    }
+    
+    
+}

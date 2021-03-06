@@ -1,0 +1,27 @@
+# FOLDER keras
+
+https://cloud.google.com/sdk/gcloud/reference/ai-platform/local/train
+
+## Train Local
+
+$ gcloud ai-platform local train --package-path trainer --module-name trainer.task --job-dir local-training-output --worker-count 1 --distributed
+
+## Model exported to:  local-training-output/keras_export/blablabla
+
+## Train AI Platform
+
+$ gcloud ai-platform jobs submit training keras_job --package-path trainer/ --module-name trainer.task --resgion us-central1 --python-version 3.7 --runtime-version 1.15 --job-dir gs://keras-job-train --stream-logs
+
+also optional
+
+$gcloud ai-platform jobs submit training keras_job_hpt --config hptuning_config.yaml --package-path trainer/ --module-name trainer.task --region $REGION --python-version 3.7 --runtime-version 1.15 --job-dir $JOB_DIR --stream-logs
+
+$ gcloud ai-platform models create keras_model --regions us-central1
+
+$ MODEL_VERSION="v1"
+$ SAVED_MODEL_PATH=$(gsutil ls keras-job-train/keras_export | tail -n 1)
+
+$ gcloud ai-platform versions create $MODEL_VERSION --model keras-model --runtime-version 1.15 --python-version 3.7 --framework tensorflow --origin $SAVED_MODEL_PATH
+
+# inside tf-keras folder command line / python -> prepare_input_prediction.py
+

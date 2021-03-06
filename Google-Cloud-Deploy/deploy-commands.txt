@@ -20,4 +20,4 @@ $ gcloud ai-platform versions create version0 --model=randomforest --origin=gs:/
 
 $ gcloud ai-platform versions describe version0 --model=randomforest
 
-$ gcloud ai-platform predict --model randomforest --version version0 --json-instances input.json
+$ gcloud ai-platform predict --model randomforest --version version0 --json-instances ./Deploy/input.json

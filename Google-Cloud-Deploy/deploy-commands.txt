@@ -1,0 +1,15 @@
+# After model
+
+$ gsutil mb -l us-central1 gs://deploy-random
+
+$ gsutil cp /home/rubens/Deploy/model.joblib gs://deploy-random/model.joblib
+
+$ tar -czvf /home/rubens/Deploy/modelo.tar.gz /home/rubens/Deploy/random_forest.py
+
+$ gsutil cp -r ./Deploy/* gs://deploy-random
+
+$ cd /usr/lib/google-cloud-sdk/lib/googlecloudsdk/command_lib/ml_engine
+
+$ sudo rm -rf *.pyc
+
+$ gcloud ai-platform local predict --model-dir gs://deploy-random/model.joblib --json-instances /home/rubens/Deploy/input.json --framework scikit-learn

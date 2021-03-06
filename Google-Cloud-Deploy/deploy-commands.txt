@@ -18,4 +18,6 @@ $ gcloud ai-platform models create randomforest --regions=us-central1
 
 $ gcloud ai-platform versions create version0 --model=randomforest --origin=gs://deploy-random --runtime-version=2.2 --framework=scikit-learn --python-version=3.7
 
+$ gcloud ai-platform versions describe version0 --model=randomforest
 
+$ gcloud ai-platform predict --model randomforest --version version0 --json-instances input.json

@@ -12,4 +12,4 @@ $ cd /usr/lib/google-cloud-sdk/lib/googlecloudsdk/command_lib/ml_engine
 
 $ sudo rm -rf *.pyc
 
-$ gcloud ai-platform local predict --model-dir gs://deploy-random/model.joblib --json-instances /home/rubens/Deploy/input.json --framework scikit-learn
+$ gcloud ai-platform local predict --model-dir gs://deploy-random --json-instances /home/rubens/Deploy/input.json --framework scikit-learn

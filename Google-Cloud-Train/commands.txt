@@ -19,9 +19,9 @@ $gcloud ai-platform jobs submit training keras_job_hpt --config hptuning_config.
 $ gcloud ai-platform models create keras_model --regions us-central1
 
 $ MODEL_VERSION="v1"
-$ SAVED_MODEL_PATH=$(gsutil ls keras-job-train/keras_export | tail -n 1)
+$ SAVED_MODEL_PATH=$(gsutil ls gs://keras-job-train/keras_export | tail -n 1)
 
-$ gcloud ai-platform versions create $MODEL_VERSION --model keras-model --runtime-version 1.15 --python-version 3.7 --framework tensorflow --origin $SAVED_MODEL_PATH
+$ gcloud ai-platform versions create $MODEL_VERSION --model keras_model --runtime-version 1.15 --python-version 3.7 --framework tensorflow --origin gs://keras-job-train/keras_export
 
 # inside tf-keras folder command line / python -> prepare_input_prediction.py
 

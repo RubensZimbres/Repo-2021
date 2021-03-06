@@ -13,3 +13,9 @@ $ cd /usr/lib/google-cloud-sdk/lib/googlecloudsdk/command_lib/ml_engine
 $ sudo rm -rf *.pyc
 
 $ gcloud ai-platform local predict --model-dir gs://deploy-random --json-instances /home/rubens/Deploy/input.json --framework scikit-learn
+
+$ gcloud ai-platform models create randomforest --regions=us-central1
+
+$ gcloud ai-platform versions create version0 --model=randomforest --origin=gs://deploy-random --runtime-version=2.2 --framework=scikit-learn --python-version=3.7
+
+

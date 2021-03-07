@@ -1,1 +1,3 @@
+$ tar -czvf keras.tar.gz ./*
+
 $ gcloud functions deploy main --trigger-resource bucket-job --trigger-event providers/cloud.storage/eventTypes/object.change

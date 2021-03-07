@@ -10,7 +10,7 @@ $ gcloud ai-platform local train --package-path trainer --module-name trainer.ta
 
 ## Train AI Platform
 
-$ gcloud ai-platform jobs submit training keras_job --package-path trainer/ --module-name trainer.task --resgion us-central1 --python-version 3.7 --runtime-version 1.15 --job-dir gs://keras-job-train --stream-logs
+$ gcloud ai-platform jobs submit training keras_job --package-path trainer/ --module-name trainer.task --region us-central1 --python-version 3.7 --runtime-version 1.15 --job-dir gs://keras-job-train --stream-logs
 
 also optional
 

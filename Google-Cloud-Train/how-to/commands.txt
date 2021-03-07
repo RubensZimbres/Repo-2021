@@ -14,7 +14,7 @@ $ gcloud ai-platform jobs submit training keras_job --package-path trainer/ --mo
 
 also optional
 
-$gcloud ai-platform jobs submit training keras_job_hpt --config hptuning_config.yaml --package-path trainer/ --module-name trainer.task --region $REGION --python-version 3.7 --runtime-version 1.15 --job-dir $JOB_DIR --stream-logs
+$ gcloud ai-platform jobs submit training keras_job_hpt --config hptuning_config.yaml --package-path trainer/ --module-name trainer.task --region $REGION --python-version 3.7 --runtime-version 1.15 --job-dir $JOB_DIR --stream-logs
 
 $ gcloud ai-platform models create keras_model --regions us-central1
 

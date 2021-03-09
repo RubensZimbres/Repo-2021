@@ -11,6 +11,7 @@ Conflicts=getty@tty1.service
 
 [Service]
 Type=simple
+ExecStartPre=source /home/gustavo_xxx/anaconda3/bin/activate
 ExecStart=home/user/anaconda3/bin/python /home/user/script.py
 StandardInput=tty-force
 Restart=on-failure

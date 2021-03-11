@@ -12,6 +12,7 @@ if torch.cuda.is_available():
 else:
     device = 'cpu'
 
+######################################
 configuration = GPT2Config()
 model = GPT2Model(configuration)
 configuration = model.config
@@ -25,6 +26,32 @@ outputs = model(**inputs)
 
 last_hidden_states = outputs.last_hidden_state
 
+#####################################
+
+## GENERATE
+from transformers import TFGPT2LMHeadModel, GPT2Tokenizer
+
+model = TFGPT2LMHeadModel.from_pretrained("gpt2", pad_token_id=tokenizer.eos_token_id)
+
+input_ids = tokenizer.encode('I enjoy walking with my cute dog', return_tensors='tf')
+
+greedy_output = model.generate(input_ids, max_length=50)
+
+beam_output = model.generate(
+    input_ids, 
+    max_length=50, 
+    num_beams=5, 
+    no_repeat_ngram_size=2, 
+    early_stopping=True,top_p=0.92, 
+    top_k=0
+)
+
+print("Output:\n" + 100 * '-')
+print(tokenizer.decode(beam_output[0], skip_special_tokens=True))
+
+
+
+#######################################
 def generate_example(n):
     bits = np.random.randint(low=0, high=2, size=(2, n))
     xor = np.logical_xor(bits[0], bits[1]).astype(np.long)
@@ -149,3 +176,5 @@ input_ids = tf.constant(encoded_choices)[None, :]  # Batch size: 1, number of ch
 mc_token_ids = tf.constant([cls_token_location])  # Batch size: 1
 outputs = model(input_ids, mc_token_ids=mc_token_ids)
 lm_prediction_scores, mc_prediction_scores = outputs[:2]
+
+tokenizer.decode(lm_prediction_scores)

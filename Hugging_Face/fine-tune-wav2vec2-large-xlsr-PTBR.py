@@ -83,7 +83,10 @@ processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tok
 
 #from google.colab import drive
 #drive.mount('/content/gdrive/')
-#processor.save_pretrained("/content/gdrive/MyDrive/wav2vec2-large-xlsr-rubens-demo")
+
+processor.save_pretrained("/home/anaconda3/work/modelo_voice/wav2vec2-large-xlsr-PTBR-demo")
+
+
 common_voice_train = common_voice_train.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
 common_voice_test = common_voice_test.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
 
@@ -257,7 +260,7 @@ training_args = TrainingArguments(
   gradient_accumulation_steps=2,
   evaluation_strategy="steps",
   num_train_epochs=30,
-  fp16=False,   ####################True,
+  fp16=False,#True,
   save_steps=400,
   eval_steps=400,
   logging_steps=400,

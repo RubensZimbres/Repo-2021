@@ -81,14 +81,13 @@ from transformers import Wav2Vec2Processor
 
 processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)
 
-#from google.colab import drive
-#drive.mount('/content/gdrive/')
+processor.save_pretrained("/home/rubensvectomobile_gmail_com/hugging-xlsxr/wav2vec2-large-xlsr-PTBR-demo")
 
-processor.save_pretrained("/home/anaconda3/work/modelo_voice/wav2vec2-large-xlsr-PTBR-demo")
+output_dir="/home/rubensvectomobile_gmail_com/hugging-xlsxr/wav2vec2-large-xlsr-PTBR-demo",
 
 
-common_voice_train = common_voice_train.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
-common_voice_test = common_voice_test.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
+#common_voice_train = common_voice_train.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
+#common_voice_test = common_voice_test.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
 
 print(common_voice_train[0])
 
@@ -104,7 +103,6 @@ def speech_file_to_array_fn(batch):
 common_voice_train = common_voice_train.map(speech_file_to_array_fn, remove_columns=common_voice_train.column_names)
 common_voice_test = common_voice_test.map(speech_file_to_array_fn, remove_columns=common_voice_test.column_names)
 
-###
 
 import librosa
 import numpy as np
@@ -116,6 +114,7 @@ def resample(batch):
 
 common_voice_train = common_voice_train.map(resample, num_proc=4)
 common_voice_test = common_voice_test.map(resample, num_proc=4)
+
 
 import IPython.display as ipd
 import numpy as np
@@ -252,20 +251,23 @@ model.freeze_feature_extractor()
 
 from transformers import TrainingArguments
 
+
+### HERE
+
+
 training_args = TrainingArguments(
-  output_dir="/home/anaconda3/work/modelo_voice/wav2vec2-large-xlsr-PTBR-demo",
-  # output_dir="./wav2vec2-large-xlsr-turkish-demo",
+  output_dir="/home/rubensvectomobile_gmail_com/hugging-xlsxr/wav2vec2-large-xlsr-PTBR-demo",
   group_by_length=True,
   per_device_train_batch_size=16,
   gradient_accumulation_steps=2,
   evaluation_strategy="steps",
-  num_train_epochs=30,
-  fp16=False,#True,
-  save_steps=400,
-  eval_steps=400,
-  logging_steps=400,
+  num_train_epochs=20,
+  fp16=False,
+  save_steps=200,
+  eval_steps=200,
+  logging_steps=200,
   learning_rate=3e-4,
-  warmup_steps=500,
+  warmup_steps=200,
   save_total_limit=2,
 )
 
@@ -292,22 +294,20 @@ trainer = Trainer(
 
 trainer.train()
 
+##########################
 
-### COLAB
+# Download preprocessor_config.json, special_tokens_map.json, tokenizer_config.json, vocab.json, config.json, pytorch_model.bin
 
-model = Wav2Vec2ForCTC.from_pretrained("patrickvonplaten/wav2vec2-large-xlsr-turkish-demo").to("cuda")
-processor = Wav2Vec2Processor.from_pretrained("patrickvonplaten/wav2vec2-large-xlsr-turkish-demo")
+pip install huggingface_hub
+huggingface-cli login
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt-get install git-lfs
+git lfs install
 
-input_dict = processor(common_voice_test["input_values"][0], return_tensors="pt", padding=True)
+NOVA PASTA CLEAN
 
-logits = model(input_dict.input_values.to("cuda")).logits
+git clone https://huggingface.co/Rubens/modelo_voice
 
-pred_ids = torch.argmax(logits, dim=-1)[0]
+ADD FILES
 
-common_voice_test_transcription = load_dataset("common_voice", "pt", data_dir="./cv-corpus-6.1-2020-12-11", split="test")
-
-print("Prediction:")
-print(processor.decode(pred_ids))
-
-print("\nReference:")
-print(common_voice_test_transcription["sentence"][0].lower())
+git add . && git commit -m "Add model files" && git push

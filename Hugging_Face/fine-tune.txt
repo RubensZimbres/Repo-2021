@@ -36,7 +36,7 @@ git add README.md
 
 git config --global http.postBuffer 524288000
 
-git remote add origin https://github.com/RubensZimbres/TestePush
+git remote add origin https://huggingface.co/Rubens/modelo-XXX
 
 git pull
 

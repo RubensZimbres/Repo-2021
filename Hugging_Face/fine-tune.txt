@@ -3,10 +3,10 @@ huggingface-cli login
 curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
 sudo apt-get install git-lfs
 
-git clone https://huggingface.co/Rubens/modelo-voice
+git clone https://huggingface.co/Rubens/modelo-XXX
 VS open folder modelo-voice
 cd folder
-gsutil cp -r gs://hugging-xlsr/checkpoint-1000-008/* ./
+gsutil cp -r gs://hugging-XXX/checkpoint-1000-XXX/* ./
 
 select:
 preprocessor_config.json

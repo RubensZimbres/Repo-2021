@@ -18,7 +18,7 @@ pytorch_model.bin
 
 git add . && git commit -m "Add model files" && git push
 
-Model card:
+Model card = readme.md
 What kind of model is it?
 What is your model useful for?
 What data was your model trained on?

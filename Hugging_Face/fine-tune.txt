@@ -22,6 +22,8 @@ git add .
 git commit -m "commit from $USER"
 git push
 
+-------------------------------------------------------------------------------------------
+
 Model card = readme.md
 What kind of model is it?
 What is your model useful for?

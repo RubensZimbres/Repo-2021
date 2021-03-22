@@ -25,29 +25,14 @@ git commit -m "commit from $USER"
 git push
 
 -------------------------------------------------------------------------------------------
-
-Model card = readme.md
-What kind of model is it?
-What is your model useful for?
-What data was your model trained on?
-How well does your model perform?
-
-git config --global user.name "username"
-
-git config --global user.email "email@mail.com"
-
-rm -rf .git
-
-git init
-
-git add README.md
-
-git config --global http.postBuffer 524288000
-
-git remote add origin https://huggingface.co/Rubens/modelo-XXX
-
-git pull
-
-git status
-
-git add . && git commit -m "Add model files" && git push
+Nan loss:
+If you encounter nan it means some of your audio files have a problem. Mostly it becomes much more problematic when you have a large audio with a very small text associated to it or a very small audio with a very large text associated to it.
+Wav2vec2 has inbuilt loss scale that can handle nan loss. The loss scale starts from 128 and goes down by a factor of 2 every time there is a overflow detected to a minimum of 0.06
+Augmentation:
+You can start with augmentations on pace, pitch, volume. You can also add white/pink noise to make model more robust. But there are instances where I have observed that if the training data (text data) is repeated across sentences i.e. across various speakers the model tends to overfit.
+Training/Validation Loss:
+I have seen training and validation loss have less correlation with WER. It is quite possible that the validation loss stays constant while the validation WER keeps on decreasing.
+Audio Length:
+I always make sure that the input wav length during training is not more than 480000 frames, at 16000 sample rate it comes out to be 30 seconds. For XLSR it is a mandatory rule for me because I train on 16GB X 16 V-100's.
+Parameters:
+The XLSR has close to 300M parameters, so finetuning a model with XLSR is not easy in terms of compute. There is a parameter called max_tokens. If you set max_tokens to 480000 it means you are allowing a maximum of 30 seconds audio in one batch and that is the minimum batch size you can set given the fact your maximum frames in the input were 480000 as explained in previous point.

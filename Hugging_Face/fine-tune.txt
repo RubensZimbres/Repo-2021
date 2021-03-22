@@ -10,6 +10,8 @@ open folder Wav2Vec2-Large-XLSR-53-Portuguese
 cd folder
 gsutil cp -r gs://hugging-XXX/checkpoint-1000-XXX/* ./
 
+update train/evaluate code pt + model at Readme.md
+
 select:
 preprocessor_config.json
 special_tokens_map.json

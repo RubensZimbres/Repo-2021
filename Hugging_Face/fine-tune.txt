@@ -1,10 +1,12 @@
 pip install huggingface_hub
 huggingface-cli login
+huggingface-cli repo create Wav2Vec2-Large-XLSR-53-Portuguese
+
 curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
 sudo apt-get install git-lfs
 
-git clone https://huggingface.co/Rubens/modelo-XXX
-VS open folder modelo-voice
+git clone https://huggingface.co/Rubens/Wav2Vec2-Large-XLSR-53-Portuguese
+open folder Wav2Vec2-Large-XLSR-53-Portuguese
 cd folder
 gsutil cp -r gs://hugging-XXX/checkpoint-1000-XXX/* ./
 
@@ -16,7 +18,9 @@ vocab.json
 config.json
 pytorch_model.bin
 
-git add . && git commit -m "Add model files" && git push
+git add .
+git commit -m "commit from $USER"
+git push
 
 Model card = readme.md
 What kind of model is it?

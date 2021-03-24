@@ -3,6 +3,9 @@ ssh-keygen -t rsa -f my_ssh_key -C user
 gcloud beta compute ssh --zone "blabla" "machinelearning-ABC" --project "machinelearning-ABC"
 install ssh-remote no vscode
 Ctrl + shift + p => add remote host
+
+VPC IP estático + Firewall porta 22
+
 ssh -i ~/.ssh/google_compute_engine user@ip
 
 config:

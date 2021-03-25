@@ -35,10 +35,14 @@ def show_random_elements(dataset, num_examples=10):
 show_random_elements(common_voice_train)
 
 import re
-chars_to_ignore_regex = '[\,\?\.\!\-\;\:\"\“\%\‘\”\�]'
+import unidecode
+chars_to_ignore_regex = "[-()\"#/@;:<>{}=~|.?,]"
+chars_to_consider_regex = "[a-zA-Z]+"
 
 def remove_special_characters(batch):
-    batch["sentence"] = re.sub(chars_to_ignore_regex, '', batch["sentence"]).lower() + " "
+    batch["sentence"]= unidecode.unidecode(batch["sentence"])
+    batch["sentence"] = re.sub(chars_to_ignore_regex, '', batch["sentence"]).lower()
+    batch["sentence"] = " ".join(re.findall(chars_to_consider_regex, batch["sentence"])).lower() + " "
     return batch
 
 common_voice_train = common_voice_train.map(remove_special_characters)
@@ -81,13 +85,9 @@ from transformers import Wav2Vec2Processor
 
 processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)
 
-processor.save_pretrained("/home/rubensvectomobile_gmail_com/hugging-xlsxr/wav2vec2-large-xlsr-PTBR-demo")
+processor.save_pretrained("/home/rubensvectomobile_gmail_com/pytorch/out")
 
-output_dir="/home/rubensvectomobile_gmail_com/hugging-xlsxr/wav2vec2-large-xlsr-PTBR-demo",
-
-
-#common_voice_train = common_voice_train.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
-#common_voice_test = common_voice_test.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
+output_dir="/home/rubensvectomobile_gmail_com/pytorch/out"
 
 print(common_voice_train[0])
 
@@ -115,7 +115,7 @@ def resample(batch):
 common_voice_train = common_voice_train.map(resample, num_proc=4)
 common_voice_test = common_voice_test.map(resample, num_proc=4)
 
-
+#device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 import IPython.display as ipd
 import numpy as np
 import random
@@ -130,7 +130,6 @@ print("Input array shape:", np.asarray(common_voice_train[rand_int]["speech"]).s
 print("Sampling rate:", common_voice_train[rand_int]["sampling_rate"])
 
 def prepare_dataset(batch):
-    # check that all files have the correct sampling rate
     assert (
         len(set(batch["sampling_rate"])) == 1
     ), f"Make sure all inputs have the same sampling rate of {processor.feature_extractor.sampling_rate}."
@@ -145,10 +144,9 @@ def prepare_dataset(batch):
 common_voice_train = common_voice_train.map(prepare_dataset, remove_columns=common_voice_train.column_names, batch_size=8, num_proc=4, batched=True)
 common_voice_test = common_voice_test.map(prepare_dataset, remove_columns=common_voice_test.column_names, batch_size=8, num_proc=4, batched=True)
 
-### AQUI 
 
 import torch
-
+#torch.backends.cudnn.enabled = False
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Union
 
@@ -186,8 +184,6 @@ class DataCollatorCTCWithPadding:
     pad_to_multiple_of_labels: Optional[int] = None
 
     def __call__(self, features: List[Dict[str, Union[List[int], torch.Tensor]]]) -> Dict[str, torch.Tensor]:
-        # split inputs and labels since they have to be of different lenghts and need
-        # different padding methods
         input_features = [{"input_values": feature["input_values"]} for feature in features]
         label_features = [{"input_ids": feature["labels"]} for feature in features]
 
@@ -207,7 +203,6 @@ class DataCollatorCTCWithPadding:
                 return_tensors="pt",
             )
 
-        # replace padding with -100 to ignore loss correctly
         labels = labels_batch["input_ids"].masked_fill(labels_batch.attention_mask.ne(1), -100)
 
         batch["labels"] = labels
@@ -225,7 +220,7 @@ def compute_metrics(pred):
     pred.label_ids[pred.label_ids == -100] = processor.tokenizer.pad_token_id
 
     pred_str = processor.batch_decode(pred_ids)
-    # we do not want to group tokens when computing the metrics
+
     label_str = processor.batch_decode(pred.label_ids, group_tokens=False)
 
     wer = wer_metric.compute(predictions=pred_str, references=label_str)
@@ -233,42 +228,42 @@ def compute_metrics(pred):
     return {"wer": wer}
 
 from transformers import Wav2Vec2ForCTC
-
+from torch import nn
 model = Wav2Vec2ForCTC.from_pretrained(
     "facebook/wav2vec2-large-xlsr-53",
-    attention_dropout=0.1,
-    hidden_dropout=0.1,
+    attention_dropout=0.05,
+    hidden_dropout=0.05,
     feat_proj_dropout=0.0,
     mask_time_prob=0.05,
-    layerdrop=0.1,
+    layerdrop=0.05,
     gradient_checkpointing=True,
     ctc_loss_reduction="mean",
     pad_token_id=processor.tokenizer.pad_token_id,
     vocab_size=len(processor.tokenizer)
 )
 
+for param in model.parameters():
+    param.requires_grad = False
+model.lm_head = nn.Linear(1024, 512)
+model.fc = nn.Linear(512, 29)
 model.freeze_feature_extractor()
-
+model
 from transformers import TrainingArguments
 
-
-### HERE
-
-
 training_args = TrainingArguments(
-  output_dir="/home/rubensvectomobile_gmail_com/hugging-xlsxr/wav2vec2-large-xlsr-PTBR-demo",
+  output_dir="/home/rubensvectomobile_gmail_com/pytorch/out",
   group_by_length=True,
-  per_device_train_batch_size=16,
-  gradient_accumulation_steps=2,
+  per_device_train_batch_size=1,
+  gradient_accumulation_steps=1,
   evaluation_strategy="steps",
-  num_train_epochs=20,
+  num_train_epochs=60,
   fp16=False,
   save_steps=200,
   eval_steps=200,
   logging_steps=200,
-  learning_rate=3e-4,
-  warmup_steps=200,
-  save_total_limit=2,
+  learning_rate=0.23e-4,
+  warmup_steps=100,
+  save_total_limit=10,
 )
 
 from transformers import Trainer
@@ -283,31 +278,4 @@ trainer = Trainer(
     tokenizer=processor.feature_extractor,
 )
 
-
-#Colab - (right mouse click -> inspect -> Console tab and insert code).
-
-#function ConnectButton(){
-#    console.log("Connect pushed");
-#    document.querySelector("#top-toolbar > colab-connect-button").shadowRoot.querySelector("#connect").click()
-#}
-#setInterval(ConnectButton,60000);
-
 trainer.train()
-
-##########################
-
-# Download preprocessor_config.json, special_tokens_map.json, tokenizer_config.json, vocab.json, config.json, pytorch_model.bin
-
-pip install huggingface_hub
-huggingface-cli login
-curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
-sudo apt-get install git-lfs
-git lfs install
-
-NOVA PASTA CLEAN
-
-git clone https://huggingface.co/Rubens/modelo_voice
-
-ADD FILES
-
-git add . && git commit -m "Add model files" && git push

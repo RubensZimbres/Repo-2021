@@ -1,0 +1,11 @@
+
+Include /etc/ssh/ssh_config.d/*.conf
+
+Host *
+    Port 22
+    PasswordAuthentication no
+
+Host 34.122.182.67
+    HostName 34.122.182.67
+    IdentityFile ~/.ssh/google_compute_engine
+    User rubens_zimbres_bla_bla

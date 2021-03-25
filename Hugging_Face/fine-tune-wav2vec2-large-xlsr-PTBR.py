@@ -85,9 +85,9 @@ from transformers import Wav2Vec2Processor
 
 processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)
 
-processor.save_pretrained("/home/rubensvectomobile_gmail_com/pytorch/out")
+processor.save_pretrained("/home/rubens/pytorch/out")
 
-output_dir="/home/rubensvectomobile_gmail_com/pytorch/out"
+output_dir="/home/rubens/pytorch/out"
 
 print(common_voice_train[0])
 
@@ -141,12 +141,12 @@ def prepare_dataset(batch):
     return batch
 
 
-common_voice_train = common_voice_train.map(prepare_dataset, remove_columns=common_voice_train.column_names, batch_size=8, num_proc=4, batched=True)
-common_voice_test = common_voice_test.map(prepare_dataset, remove_columns=common_voice_test.column_names, batch_size=8, num_proc=4, batched=True)
+common_voice_train = common_voice_train.map(prepare_dataset, remove_columns=common_voice_train.column_names, batch_size=1, num_proc=4, batched=True)
+common_voice_test = common_voice_test.map(prepare_dataset, remove_columns=common_voice_test.column_names, batch_size=1, num_proc=4, batched=True)
 
 
 import torch
-#torch.backends.cudnn.enabled = False
+
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Union
 
@@ -212,8 +212,11 @@ class DataCollatorCTCWithPadding:
 data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
 
 wer_metric = load_metric("wer")
-
+import gc
 def compute_metrics(pred):
+    gc.collect()
+    torch.cuda.empty_cache()
+
     pred_logits = pred.predictions
     pred_ids = np.argmax(pred_logits, axis=-1)
 
@@ -231,11 +234,11 @@ from transformers import Wav2Vec2ForCTC
 from torch import nn
 model = Wav2Vec2ForCTC.from_pretrained(
     "facebook/wav2vec2-large-xlsr-53",
-    attention_dropout=0.05,
-    hidden_dropout=0.05,
+    attention_dropout=0.1,
+    hidden_dropout=0.1,
     feat_proj_dropout=0.0,
     mask_time_prob=0.05,
-    layerdrop=0.05,
+    layerdrop=0.1,
     gradient_checkpointing=True,
     ctc_loss_reduction="mean",
     pad_token_id=processor.tokenizer.pad_token_id,
@@ -244,26 +247,26 @@ model = Wav2Vec2ForCTC.from_pretrained(
 
 for param in model.parameters():
     param.requires_grad = False
-model.lm_head = nn.Linear(1024, 512)
-model.fc = nn.Linear(512, 29)
 model.freeze_feature_extractor()
+model.lm_head = nn.Linear(1024, 29)
+#model.fc = nn.Linear(1024, 29)
 model
 from transformers import TrainingArguments
 
 training_args = TrainingArguments(
-  output_dir="/home/rubensvectomobile_gmail_com/pytorch/out",
+  output_dir="/home/rubens/pytorch/out",
   group_by_length=True,
   per_device_train_batch_size=1,
-  gradient_accumulation_steps=1,
+  gradient_accumulation_steps=2,
   evaluation_strategy="steps",
   num_train_epochs=60,
-  fp16=False,
+  fp16=True,
   save_steps=200,
   eval_steps=200,
   logging_steps=200,
   learning_rate=0.23e-4,
   warmup_steps=100,
-  save_total_limit=10,
+  save_total_limit=8,
 )
 
 from transformers import Trainer

@@ -45,6 +45,7 @@ def remove_special_characters(batch):
     batch["sentence"] = " ".join(re.findall(chars_to_consider_regex, batch["sentence"])).lower() + " "
     return batch
 
+
 common_voice_train = common_voice_train.map(remove_special_characters)
 common_voice_test = common_voice_test.map(remove_special_characters)
 
@@ -55,8 +56,8 @@ def extract_all_chars(batch):
   vocab = list(set(all_text))
   return {"vocab": [vocab], "all_text": [all_text]}
 
-vocab_train = common_voice_train.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=True, remove_columns=common_voice_train.column_names)
-vocab_test = common_voice_test.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=True, remove_columns=common_voice_test.column_names)
+vocab_train = common_voice_train.map(extract_all_chars, batched=True, batch_size=1, keep_in_memory=True, remove_columns=common_voice_train.column_names)
+vocab_test = common_voice_test.map(extract_all_chars, batched=True, batch_size=1, keep_in_memory=True, remove_columns=common_voice_test.column_names)
 
 vocab_list = list(set(vocab_train["vocab"][0]) | set(vocab_test["vocab"][0]))
 
@@ -85,9 +86,9 @@ from transformers import Wav2Vec2Processor
 
 processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)
 
-processor.save_pretrained("/home/rubens/pytorch/out")
+processor.save_pretrained("/home/rubensvectomobile_gmail_com/pytorch/out")
 
-output_dir="/home/rubens/pytorch/out"
+output_dir="/home/rubensvectomobile_gmail_com/pytorch/out"
 
 print(common_voice_train[0])
 
@@ -251,10 +252,11 @@ model.freeze_feature_extractor()
 model.lm_head = nn.Linear(1024, 29)
 #model.fc = nn.Linear(1024, 29)
 model
+
 from transformers import TrainingArguments
 
 training_args = TrainingArguments(
-  output_dir="/home/rubens/pytorch/out",
+  output_dir="/home/rubensvectomobile_gmail_com/pytorch/out",
   group_by_length=True,
   per_device_train_batch_size=1,
   gradient_accumulation_steps=2,

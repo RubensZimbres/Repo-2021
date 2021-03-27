@@ -21,7 +21,8 @@ Reboot
 Firewall - 22
 VSCode
 
-gsutil cp -r gs://hugging-xlsr/cont____/5600-3055 ./
+mkdir model
+gsutil cp -r gs://hugging-xlsr/cont____/5600-3055/* ./
 
 mkdir out
 

@@ -26,9 +26,13 @@ VSCode
 mkdir model
 gsutil cp -r gs://hugging-xlsr/cont____/5600-3055/* ./
 
+wget https://raw.githubusercontent.com/RubensZimbres/Repo-2021/main/Hugging_Face/fine-tune-wav2vec2-large-xlsr-PTBR.py
+
 mkdir out
 
-screen
+screen (each one hour)
 
+
+screen
 python run.py
 

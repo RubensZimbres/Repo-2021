@@ -24,14 +24,28 @@ Firewall - 22
 VSCode
 
 mkdir model
-gsutil cp -r gs://hugging-xlsr/cont____/5600-3055/* ./
+gsutil cp -r gs://hugging-xxx/cont____/5600-3055/* ./
 
 wget https://raw.githubusercontent.com/RubensZimbres/Repo-2021/main/Hugging_Face/fine-tune-wav2vec2-large-xlsr-PTBR.py
 
 mkdir out
 
-screen 1:
+1 -- screen:
 python run.py
 
-screen 2 (each one hour):
+2 -- crontab (each one hour):
 
+/home/rubens/cron/run.sh:
+#!/bin/bash
+gsutil cp /home/rubens/pytorch/checkpoint-* gs://hugging-xxx/cont____
+
+sudo systemctl start cron
+sudo systemctl status cron
+crontab –e
+
+add:
+0 */1 * * * /home/rubens/cron/run.sh
+
+to kill:
+systemctl status cron
+sudo kill -___ pid

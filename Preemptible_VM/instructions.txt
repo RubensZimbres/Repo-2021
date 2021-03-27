@@ -1,6 +1,7 @@
 VM Image - Anaconda + Pytorch
 GPU 2 V100 = 195.00 R$/day -- 0.74 USD x 2 x 5.5 R$ x 24
 Preemptible
+Disk 250 Gb
 
 sudo pip install pip-list-pytorch.txt
 
@@ -16,6 +17,9 @@ sudo sh cuda_11.2.2_460.32.03_linux.run
 in config also
 
 Reboot
+
+Firewall - 22
+VSCode
 
 gsutil cp -r gs://hugging-xlsr/cont____/5600-3055 ./
 

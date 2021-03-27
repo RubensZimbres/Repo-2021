@@ -33,7 +33,7 @@ mkdir out
 1 -- screen:
 python run.py
 
-2 -- crontab (each one hour):
+2 -- crontab (each one hour): https://crontab.guru/#*/1_*_*_*_*
 
 /home/rubens/cron/run.sh:
 #!/bin/bash

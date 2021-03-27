@@ -37,7 +37,7 @@ python run.py
 
 /home/rubens/cron/run.sh:
 #!/bin/bash
-gsutil cp /home/rubens/pytorch/checkpoint-* gs://hugging-xxx/cont____
+gsutil cp -n -r /home/rubens/pytorch/checkpoint-* gs://hugging-xxx/cont____
 
 sudo systemctl start cron
 sudo systemctl status cron

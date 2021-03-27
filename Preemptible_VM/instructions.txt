@@ -30,9 +30,8 @@ wget https://raw.githubusercontent.com/RubensZimbres/Repo-2021/main/Hugging_Face
 
 mkdir out
 
-screen (each one hour)
-
-
-screen
+screen 1:
 python run.py
+
+screen 2 (each one hour):
 

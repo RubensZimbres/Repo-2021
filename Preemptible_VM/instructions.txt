@@ -44,7 +44,7 @@ sudo systemctl status cron
 crontab –e
 
 add:
-0 */1 * * * /home/rubens/cron/run.sh
+0 */1 * * * /bin/bash /home/rubens/cron/run.sh
 
 to kill:
 systemctl status cron

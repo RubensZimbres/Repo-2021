@@ -3,8 +3,6 @@ GPU 2 V100 = 195.00 R$/day -- 0.74 USD x 2 x 5.5 R$ x 24
 Preemptible
 Disk 250 Gb
 
-sudo pip install pip-list-pytorch.txt
-
 cd /
 
 sudo apt purge nvidia-*
@@ -17,6 +15,10 @@ sudo sh cuda_11.2.2_460.32.03_linux.run
 in config also
 
 Reboot
+
+sudo pip install pip-list-pytorch.txt
+
+pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
 
 Firewall - 22
 VSCode

@@ -1,0 +1,27 @@
+VM Image - Anaconda + Pytorch
+GPU 2 V100 = 195.00 R$/day -- 0.74 USD x 2 x 5.5 R$ x 24
+Preemptible
+
+sudo pip install pip-list-pytorch.txt
+
+cd /
+
+sudo apt purge nvidia-*
+
+Reboot
+
+sudo wget https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/cuda_11.2.2_460.32.03_linux.run
+sudo sh cuda_11.2.2_460.32.03_linux.run
+
+in config also
+
+Reboot
+
+gsutil cp -r gs://hugging-xlsr/cont____/5600-3055 ./
+
+mkdir out
+
+screen
+
+python run.py
+

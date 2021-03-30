@@ -2,7 +2,7 @@ VM Image - Anaconda + Pytorch
 GPU 2 x T4 x 9 hs x 30 days = 2 x 0,11 USD x 5,50 R$ x 9 x 30 = 326,00 (24h = 871,00)
 GPU 2 x V100 x 9 hs x 30 days = 2 x 0,74 USD x 5,50 R$ x 9 x 30 = 2197,80
 
-Image Pytorch 1.8 XLA fastai 1.8
+Image Pytorch 1.8 XLA fastai 1.8 XLA
 
 Preemptible
 Disk 250 Gb

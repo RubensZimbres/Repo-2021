@@ -1,6 +1,6 @@
 ssh-keygen -t rsa -f my_ssh_key -C user
 
-gcloud beta compute ssh --zone "blabla" "machinelearning-ABC" --project "machinelearning-ABC"
+gcloud beta compute ssh --zone "us-central1-a" "instance-ABC" --project "machinelearning-ABC"
 install ssh-remote no vscode
 Ctrl + shift + p => add remote host
 

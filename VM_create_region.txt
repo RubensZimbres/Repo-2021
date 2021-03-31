@@ -1,0 +1,1 @@
+gcloud compute instances create hugg-poc --image https://compute.googleapis.com/compute/v1/projects/machinelearning-XXX/global/images/image-hugg-XXX --zone southamerica-east1-b

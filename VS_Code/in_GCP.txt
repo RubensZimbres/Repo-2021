@@ -19,3 +19,5 @@ Host 34.XXX.87.XXX
     #IdentityFile ~/.ssh/google_compute_engine
     IdentityFile /home/theone/id_rsaXXXX   ##### ADD VM Key
     User rubens_zimbres_blablabla
+
+Install Python

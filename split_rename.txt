@@ -1,0 +1,3 @@
+split -l 1000 book.txt new
+
+for f in *;do mv $f $f.txt;done

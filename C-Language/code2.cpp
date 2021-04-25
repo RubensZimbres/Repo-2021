@@ -33,7 +33,7 @@ int main()
     }
 
 
-    printf("\n%d\n",saida[3]);
+    printf("\n%d%d%d%d%d%d%d%d\n",saida[0],saida[1],saida[2],saida[3],saida[4],saida[5],saida[6],saida[7]);
     return 0;
     
 }

@@ -3,7 +3,8 @@
 
 
 int main()
-{   int i;
+{   fflush( stdout );
+    int i;
     int in[3]={0,1,1};
     int arr[3];
     int posicao[8];
@@ -29,12 +30,10 @@ int main()
     {
     outputs[i]=regra/multi[i];
     saida[i]=outputs[i]%2;
-    return 0;
     }
 
 
-
-    printf("%i",saida[3]);
+    printf("\n%d\n",saida[3]);
     return 0;
     
 }

@@ -9,10 +9,9 @@ int main()
     while(g<3)
     {
         remainder = dno % 2;
-        bno = bno + remainder * f;
-        a[g]=bno;
-        f = f * 10;
         dno = dno / 2;
+        bno = remainder;
+        a[g]=bno;
         g=g+1;
     }
 

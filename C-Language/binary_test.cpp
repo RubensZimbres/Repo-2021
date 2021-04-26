@@ -15,6 +15,6 @@ int main()
         g=g+1;
     }
 
-    printf("\nBinary of Given Number is=%d%d%d",a[0],a[1],a[2]);    
+    printf("\nBinary of Given Number is=%d%d%d",a[2],a[1],a[0]);    
     return 0;  
 }  

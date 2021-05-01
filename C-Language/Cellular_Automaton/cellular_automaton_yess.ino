@@ -7,10 +7,9 @@ void setup()
   Serial.begin(9600);
 }
 
-int ca_final[6];
-
 void loop()
-{   
+{   int* ca_final = (int *) malloc(sizeof(int));
+
     int array[8][3]={{0, 0, 0},
        {0, 0, 1},
        {0, 1, 0},
@@ -80,7 +79,7 @@ void loop()
     }
     ///printf("\n%d%d%d%d%d%d\n", ca_final[0], ca_final[1], ca_final[2], ca_final[3], ca_final[4], ca_final[5]);
     for (int p=0;p<6;p++) {
-      Serial.print(ca_final[p]);
+      Serial.print(ca_final[p],DEC);
       }
     Serial.println();
 

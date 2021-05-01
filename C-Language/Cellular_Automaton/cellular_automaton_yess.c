@@ -27,8 +27,23 @@ int main()
     }
     int ca_final[6]={1,0,0,1,0,1};
     int m=0;
+    int i=0;
+    int posicao[8];
+    int states=2;
+    int multi[8];
+    int regra=30;
+    
+    int outputs[8];
+    int saida[8];
 
-    while (m<10)
+    for (i = 0; i <8; i++){
+        posicao[i] = i;
+        multi[i] = pow(states,i);
+        outputs[i]=regra/multi[i];
+        saida[i]=outputs[i]%2;}
+        ///printf("\n%d\n",saida[i]);
+
+    while (m<9)
     {    
     m=m+1;
     int k=0;
@@ -48,14 +63,6 @@ int main()
         split_array[k][1]=ca_final[k];
         split_array[k][2]=ca_final[(int)(k+1)];
     }
-    int i=0;
-    int posicao[8];
-    int states=2;
-    int multi[8];
-    int regra=30;
-    
-    int outputs[8];
-    int saida[8];
 
     
     int iter=0;
@@ -63,18 +70,12 @@ int main()
 
     ///printf("Which CA rule ?");
     ///scanf("%d",&regra);
-    for (i = 0; i <8; i++){
-        posicao[i] = i;
-        multi[i] = pow(states,i);
-        outputs[i]=regra/multi[i];
-        saida[i]=outputs[i]%2;
-        ///printf("\n%d\n",saida[i]);
     for (int ii = 0; ii <6; ii++){
         for (iter2=0;iter2<8;++iter2){
             if (split_array[ii][0]==array[iter2][0] && split_array[ii][1]==array[iter2][1] && split_array[ii][2]==array[iter2][2]){
                 ca_final[ii]=saida[iter2];
     
-    }
+    
     }
     ///printf("\n%d%d%d%d%d%d%d%d\n",saida[0],saida[1],saida[2],saida[3],saida[4],saida[5],saida[6],saida[7]);
     }

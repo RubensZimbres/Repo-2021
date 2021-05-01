@@ -69,8 +69,8 @@ int main()
         outputs[i]=regra/multi[i];
         saida[i]=outputs[i]%2;
         ///printf("\n%d\n",saida[i]);
-    for (int ii = 0; ii <8; ii++){
-        for (iter2=0;iter2<8;++iter2){
+    for (int ii = 0; ii <6; ii++){
+        for (iter2=0;iter2<6;++iter2){
             if (split_array[ii][0]==array[iter2][0] && split_array[ii][1]==array[iter2][1] && split_array[ii][2]==array[iter2][2]){
                 ca_final[ii]=saida[iter2];
     

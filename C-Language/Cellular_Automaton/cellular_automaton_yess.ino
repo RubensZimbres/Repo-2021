@@ -7,31 +7,18 @@ void setup()
   Serial.begin(9600);
 }
 
+int ca_final[6];
+
 void loop()
 {   
-    int array[8][3];
-    int input1;
-    int dno;
-    int remainder;
-    int g=0;
-    
-    for (int j=0;j<8;++j)
-    {
-    dno=j;
-    g=2;
-    while(g>=0)
-    {   
-        remainder = dno % 2;
-        dno = dno / 2;
-        array[j][g] = remainder;
-        ///printf("\n%d\n",array[j][g]);
-        g=g-1;
-    }
-
-    ///printf("\nBinary of Given Number is:\n%d%d%d\n",array[j][0],array[j][1],array[j][2]);    
-    }
-    
-    int ca_final[6];
+    int array[8][3]={{0, 0, 0},
+       {0, 0, 1},
+       {0, 1, 0},
+       {0, 1, 1},
+       {1, 0, 0},
+       {1, 0, 1},
+       {1, 1, 0},
+       {1, 1, 1}};
     int m=0;
     if (m==0){
       ca_final[0]=1;

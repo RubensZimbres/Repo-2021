@@ -30,13 +30,16 @@ void loop()
 
     ///printf("\nBinary of Given Number is:\n%d%d%d\n",array[j][0],array[j][1],array[j][2]);    
     }
-    delay(6000);
-    int ca_final[6]={1,0,0,1,0,1};
+    
+    int ca_final[6];
     int m=0;
+    if (m==0){
+      ca_final[0]=1;
+      ca_final[3]=1;
+      ca_final[5]=1;
+    }
 
 
-    while (m<20)
-    {    
       delay(3000);
     m=m+1;
     int k=0;
@@ -95,7 +98,6 @@ void loop()
     Serial.println();
 
 
-    }
     ///return 0;
     
 }

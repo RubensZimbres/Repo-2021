@@ -14,3 +14,9 @@ int main(){
         fun();
     }
 }
+
+automatic= 0, static = 0
+automatic= 0, static = 1
+automatic= 0, static = 2
+automatic= 0, static = 3
+automatic= 0, static = 4

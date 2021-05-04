@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main(){
-    int w1=3;
+    unsigned int w1=3;
     /// 00000011
     int w2=0;
 

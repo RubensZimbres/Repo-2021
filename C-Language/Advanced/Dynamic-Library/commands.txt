@@ -1,3 +1,4 @@
 gcc -g -fPIC main.c -shared -o libStringFunctions.so
 gcc -I ./ -c test.c -o main.o
 // gcc main.o libStringFunctions.so -o test
+LIBRARY_PATH=/home/anaconda3/work/C/Advanced/Dynamic_Library

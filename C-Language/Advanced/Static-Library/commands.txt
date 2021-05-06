@@ -1,0 +1,10 @@
+```
+cd /home/anaconda3/work/C/Advanced/Static_Library
+gcc -c StringFunctions.c -o lib_StringFunctions.o
+ar rcs lib_StringFunctions.a lib_StringFunctions.o
+ar -t lib_StringFunctions.a
+gcc -I ./ -c test.c -o StringFunctions.o
+gcc -o test StringFunctions.o ./lib_StringFunctions.a
+./test
+
+=)))

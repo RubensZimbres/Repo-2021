@@ -1,4 +1,13 @@
-gcc -g -fPIC main.c -shared -o libStringFunctions.so
-gcc -I ./ -c test.c -o main.o
-// gcc main.o libStringFunctions.so -o test
-LIBRARY_PATH=/home/anaconda3/work/C/Advanced/Dynamic_Library
+//// Folder=StringFunctions
+
+gcc -c -Wall -Werror -fpic StringFunctions.c
+gcc -shared -o StringFunctions.so StringFunctions.o
+gcc -L/home/anaconda3/work/C/Advanced/StringFunctions -Wall -o test main.c ./StringFunctions.so
+
+echo $LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/home/anaconda3/work/C/Advanced/StringFunctions:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/home/anaconda3/work/C/Advanced/StringFunctions:$LD_LIBRARY_PATH
+
+./test
+
+Source: https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html

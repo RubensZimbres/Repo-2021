@@ -1,0 +1,2 @@
+gcc -g -fPIC main.c -shared -o libStringFunctions.so
+gcc -I ./ -c test.c -o main.o

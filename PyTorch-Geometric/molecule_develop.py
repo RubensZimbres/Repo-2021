@@ -9,18 +9,6 @@ from torch_geometric.data import DataLoader
 
 dataset = MoleculeNet(root=".", name="ESOL")
 
-train_size = int(0.8 * len(dataset))
-test_size = len(dataset) - train_size
-train_dataset, test_dataset = torch.utils.data.random_split(
-    dataset, [train_size, test_size])
-print(train_dataset, len(train_dataset))
-print(test_dataset, len(test_dataset))
-
-train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
-test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
-
-next(iter(test_loader))
-
 print("Dataset features: ", dataset.num_features)
 print("Dataset target: ", dataset.num_classes)
 print("Dataset length: ", dataset.len)
@@ -28,9 +16,6 @@ print("Dataset sample: ", dataset[0])
 print("Sample  nodes: ", dataset[0].num_nodes)
 print("Sample  edges: ", dataset[0].num_edges)
 
-for batch in loader:
-    print(batch)
-    print(batch.num_graphs) 
 
 print(dataset[0].x)
 
@@ -40,9 +25,11 @@ from rdkit import Chem
 from rdkit.Chem import Draw
 molecule = Chem.MolFromSmiles(dataset[0]["smiles"])
 
-fig = Draw.MolToImage(molecule, size = (120, 120))
+fig = Draw.MolToImage(molecule, size = (360, 360))
 
-fig.save('/home/anaconda3/work/home/anaconda3/work/molecule_first.png')   
+fig.save('/home/anaconda3/work//molecule_first.png')  
+
+
 #data.num_classes
 
 #data.num_edges
@@ -55,48 +42,71 @@ fig.save('/home/anaconda3/work/home/anaconda3/work/molecule_first.png')
 
 #data.is_directed()
 
-import torch
-import torch.nn.functional as F
-from torch_geometric.nn import GCNConv
 
+from torch.nn import Linear
 import torch
 from torch.nn import Linear
 import torch.nn.functional as F 
+from torch_geometric.nn import GCNConv, global_mean_pool
+from torch_geometric.nn import global_mean_pool, global_max_pool
+embedding_size = 64
 
 class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.conv1 = GCNConv(dataset.num_node_features, 16)
-        self.conv2 = GCNConv(16, dataset.num_classes)
-    def forward(self, data):
-        x, edge_index = data.x.float(), data.edge_index
+        torch.manual_seed(22)
 
-        x = self.conv1(x, edge_index)
-        x = F.relu(x)
-        x = F.dropout(x, training=self.training)
-        x = self.conv2(x, edge_index)
-        return F.relu(x)
+        self.initial_conv = GCNConv(dataset.num_features, embedding_size)
+        self.conv1 = GCNConv(embedding_size, embedding_size)
+        self.conv2 = GCNConv(embedding_size, embedding_size)
+        self.out = Linear(embedding_size*2, dataset.num_classes)
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = Net().to(device)
+    def forward(self, x, edge_index, batch_index):
+        hidden = self.initial_conv(x, edge_index)
+        hidden = F.tanh(hidden)
+        hidden = self.conv1(hidden, edge_index)
+        hidden = F.tanh(hidden)
+        hidden = self.conv2(hidden, edge_index)
+        hidden = F.tanh(hidden)
+        hidden = torch.cat([global_max_pool(hidden, batch_index), 
+                            global_mean_pool(hidden, batch_index)], dim=1)
+        out = self.out(hidden)
 
-for param in model.parameters():
-    param.requires_grad = True
+        return out, hidden
 
-data = dataset[0].to(device)
-optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+model = Net()
+print(model)
+print("Parameters: ", sum(p.numel() for p in model.parameters()))
 
-print("Number of parameters: ", sum(p.numel() for p in model.parameters()))
+from torch_geometric.data import DataLoader
 
-model.train()
-criterion=torch.nn.MSELoss()
+loss_fn = torch.nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.0007)  
 
-for epoch in range(200):
-    optimizer.zero_grad()
-    out = model(data)
-    loss = criterion(torch.tensor([torch.mean(out,axis=0)]), data.y)
-    print(loss)
-    loss.requires_grad = True
-    loss.backward()
-    optimizer.step()
+model = model.to("cpu")
 
+data_size = len(dataset)
+size = 32
+loader = DataLoader(dataset[:int(data_size * 0.8)], 
+                    batch_size=size, shuffle=True)
+test_loader = DataLoader(dataset[int(data_size * 0.8):], 
+                         batch_size=size, shuffle=True)
+
+for batch in loader:
+    print(batch)
+    print(batch.num_graphs) 
+
+def train(data):
+    for batch in loader:
+      batch.to(device)  
+      optimizer.zero_grad() 
+      pred, embedding = model(batch.x.float(), batch.edge_index, batch.batch) 
+      loss = torch.sqrt(loss_fn(pred, batch.y))       
+      loss.backward()  
+      optimizer.step()   
+    return loss, embedding
+
+for epoch in range(3000):
+    loss, h = train(dataset)
+    if epoch % 200 == 0:
+      print(f"Epoch {epoch} - Train Loss {loss}")

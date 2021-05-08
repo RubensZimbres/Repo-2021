@@ -15,7 +15,7 @@ print("Dataset length: ", dataset.len)
 print("Dataset sample: ", dataset[0])
 print("Sample  nodes: ", dataset[0].num_nodes)
 print("Sample  edges: ", dataset[0].num_edges)
-
+print("Edges indexes: ", dataset[0].edge_index.t())
 
 print(dataset[0].x)
 

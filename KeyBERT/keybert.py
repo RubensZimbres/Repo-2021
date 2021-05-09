@@ -12,11 +12,3 @@ model.extract_keywords(doc, keyphrase_ngram_range=(1, 1), stop_words=None)
 
 model.extract_keywords(doc, keyphrase_ngram_range=(1, 2), stop_words=None)
 
-model.extract_keywords(doc, keyphrase_ngram_range=(3, 3), stop_words='english', 
-                           use_maxsum=True, nr_candidates=20, top_n=5)
-
-model.extract_keywords(doc, keyphrase_ngram_range=(3, 3), stop_words='english', 
-use_mmr=True, diversity=0.7)
-
-model.extract_keywords(doc, keyphrase_ngram_range=(3, 3), stop_words='english', 
-                           use_mmr=True, diversity=0.2)

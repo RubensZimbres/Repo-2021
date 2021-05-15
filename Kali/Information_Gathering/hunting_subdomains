@@ -24,6 +24,11 @@ apt install gccgo-go
 go get -v github.com/OWASP/Amass/cmd/amass
 cd $GOPATH/src/github.com/OWASP/Amass
 go install ./...
+### https://golang.org/doc/install
+
+amass enum -passive -d tesla.com -src
+
+amass enum -active -d tesla.com -src -brute >> tesla0.txt
 
 more than sublist3r
 

@@ -5,3 +5,14 @@ https://builtwith.com/tesla.com
 wappalyzer firefox add+
 
 whatweb tesla.com -> versions -> vulnerabilities
+
+Burp suite
+
+Firefox networking -> 127.0.0.1 - 8080 check
+https://burp
+Download Certificate
+Firefox privacy security -> Import certificate
+
+Burp Suite
+Proxy -> Request / Response -> GET to POST -- Forward
+Target

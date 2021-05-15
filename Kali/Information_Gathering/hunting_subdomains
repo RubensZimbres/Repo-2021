@@ -1,0 +1,14 @@
+ID subdomains *.tesla.com
+
+root
+apt install sublist3r
+
+sublist3r -d tesla.com
+
+https://crt.sh/
+%.tesla.com
+
+sso / api / vpn / dev
+sub sub domains
+
+www.vpn1.tesla.com

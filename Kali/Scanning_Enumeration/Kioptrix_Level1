@@ -2,9 +2,7 @@ Attack VM - Kioptric www.vulnhub.com
 
 www.tcm-sec.com/kioptrix -> Google Drive .ova file
 
-Virtualbox - import appliance .ova
-
-find -name ".vmx*" --  replace ethernet0.connectionType = "bridged" -> NAT
+Virtualbox - import appliance .ova -> Rede NAT (pura, sem rede)
 
 
 john TwoCows2

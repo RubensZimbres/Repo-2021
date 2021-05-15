@@ -2,11 +2,13 @@ Attack VM - Kioptrix www.vulnhub.com
 
 www.tcm-sec.com/kioptrix -> Google Drive .ova file
 
-Virtualbox - import appliance .ova -> Rede NAT (pura, sem rede)
+Virtualbox - import appliance .ova -> Rede Bridged
 
 john TwoCows2
 
 ping 192.168.0.1 -> IP
+
+arp-scan -l
 
 nmap 10.2.2.1-254
 

@@ -3,3 +3,5 @@ BuiltWith - check frameworks
 https://builtwith.com/tesla.com
 
 wappalyzer firefox add+
+
+whatweb tesla.com -> versions -> vulnerabilities

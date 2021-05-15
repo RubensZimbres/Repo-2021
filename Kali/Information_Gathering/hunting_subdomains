@@ -4,7 +4,7 @@ ID subdomains *.tesla.com
 root
 apt install sublist3r
 
-sublist3r -d tesla.com
+sublist3r -d tesla.com -t 100 -v  -p 8080 ## parallel + verbosity + ports
 
 https://crt.sh/
 %.tesla.com
@@ -22,3 +22,5 @@ go get -v github.com/OWASP/Amass/cmd/amass
 
 cd $GOPATH/src/github.com/OWASP/Amass
 go install ./...
+
+more than sublist3r

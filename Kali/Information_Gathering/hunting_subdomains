@@ -15,11 +15,13 @@ sub sub domains
 www.vpn1.tesla.com
 -----------------------------------------
 OWASP Amass
-https://github.com/OWASP/Amass
 
+apt-get update
+apt-get install amass
+
+https://github.com/OWASP/Amass
 apt install gccgo-go
 go get -v github.com/OWASP/Amass/cmd/amass
-
 cd $GOPATH/src/github.com/OWASP/Amass
 go install ./...
 

@@ -1,0 +1,12 @@
+bugcrowd.com/tesla - bounty
+
+hunter.io/search
+- users
+- emails
+
+dimain search -> tesla.com
+pattern {f}{last}@tesla.com
+
+git clone https://github.com/hmaverickadams/breach-parse
+root
+./install.sh

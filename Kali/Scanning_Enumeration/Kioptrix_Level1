@@ -1,10 +1,12 @@
 Attack VM - Kioptrix www.vulnhub.com
 
 www.tcm-sec.com/kioptrix -> Google Drive .ova file
-
-Virtualbox - import appliance .ova -> Rede Bridged , mm MAC, promíscuo
+sudo su
+Virtualbox - import appliance .ova -> Rede Bridged , promíscuo
 
 john TwoCows2
+
+Kali -> Bridged
 
 ping 192.168.0.1 -> IP
 
@@ -15,3 +17,7 @@ nmap 10.2.2.1-254
 apt-get install libpcap-dev
 
 netdiscover -r (ifconfig IP).0/24
+
+nmap -sS(SHOWS UP)
+
+nmap -T4 -p- -A  (speed 4 / -p- all ports / -p 80,443 / A everything version, OS)

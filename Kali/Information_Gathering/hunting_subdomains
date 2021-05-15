@@ -24,3 +24,6 @@ cd $GOPATH/src/github.com/OWASP/Amass
 go install ./...
 
 more than sublist3r
+
+-------------------------------------------
+tomnomnom httpprobe github

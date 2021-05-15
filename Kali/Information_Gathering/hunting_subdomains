@@ -1,5 +1,6 @@
 ID subdomains *.tesla.com
 
+-----------------------------------------
 root
 apt install sublist3r
 
@@ -12,3 +13,12 @@ sso / api / vpn / dev
 sub sub domains
 
 www.vpn1.tesla.com
+-----------------------------------------
+OWASP Amass
+https://github.com/OWASP/Amass
+
+apt install gccgo-go
+go get -v github.com/OWASP/Amass/cmd/amass
+
+cd $GOPATH/src/github.com/OWASP/Amass
+go install ./...

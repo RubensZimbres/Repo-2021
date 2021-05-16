@@ -1,0 +1,22 @@
+https://github.com/robertdavidgraham/masscan
+
+masscan -p1-65535 --rate 1000 IP
+Discovered open port 80/tcp on IP                                   
+Discovered open port 111/tcp on IP
+
+nmap -T4 -p- 192.168.0.26
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+111/tcp   open  rpcbind
+139/tcp   open  netbios-ssn
+443/tcp   open  https
+32768/tcp open  filenet-tms
+
+msfconsole
+search portscan
+use auxiliary/scanner/portscan/syn
+set rhosts IP
+set ports 1-65535
+set threads 100
+run

@@ -1,0 +1,14 @@
+SMB
+UNix Samba
+
+open port 22 - SSH 2.9p2
+second attempt = exploitation
+
+ssh IP
+
+ssh 192.168.0.26 -oKexAlgorithms=+diffie-hellman-group1-sha1
+
+ssh 192.168.0.26 -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes128-cbc
+(banner exposed)
+CTRL+C
+

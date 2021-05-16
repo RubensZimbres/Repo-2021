@@ -34,3 +34,10 @@ gedit:
 - New tab CTRL+T
 smbclient -L \\\\192.168.0.26\\
 
+smbclient \\\\192.168.0.26\\ADMIN$
+
+smbclient \\\\192.168.0.26\\IPC$
+
+smb: \> help
+
+

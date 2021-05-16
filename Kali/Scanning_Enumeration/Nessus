@@ -1,0 +1,11 @@
+### Vulnerability scanner
+
+Nessus download 64 Ubuntu 9/10
+
+dpkg -i Nessus-8.14.0-debian6_amd64.deb
+- You can start Nessus Scanner by typing /bin/systemctl start nessusd.service
+- Then go to https://kali:8834/ to configure your scanner
+Nessus essentials - free version
+
+
+

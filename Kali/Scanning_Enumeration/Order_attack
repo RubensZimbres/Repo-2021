@@ -15,3 +15,13 @@ Samba 2.2.1a  exploit -> Rapid7** metasploit - buffer overflow + multiple remote
 
 Remote buffer overflow -> AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
+dos = DDoS
+
+Also:
+$ searchsploit Samba 2.2.1a
+searchsploit mod ssl 2
+searchsploit openssh 2.9
+
+
+
+

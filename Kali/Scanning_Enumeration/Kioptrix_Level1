@@ -29,3 +29,8 @@ Directory busting
 
 Vulnerability discover
 nikto -h http://IP_victim (may be blocked)
+
+dirb
+gobuster
+dirbuster -> http://IP  - go faster - /usr/share/wordlists/dirbuster/...small.txt -- php
+

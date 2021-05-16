@@ -1,0 +1,17 @@
+80/443 - potentially vulnerable https://www.exploit-db.com/exploits/47080 (tb 764) || github.com/heltonWernik/OpenLuck
+139 potentially vulnerable to trans2open -- https://www.rapid7.com/db/modules/exploit/linux/samba/trans2open/
+Webpage Apache - PHP
+server headers disclose version info
+80/tcp    open  http        Apache httpd 1.3.20 ((Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b)  
++ mod_ssl/2.8.4 - mod_ssl 2.8.7 and lower are vulnerable to a remote buffer overflow which may allow a remote shell. http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2002-0082, OSVDB-756.
+
+SMB Samba 2.2.1a - Unix
+Webalyzer v 2.01
+OpenSSH 2.9p2 -prob not
+
+Goo -> mod_ssl/2.8.4 -> exploit-db.com
+Apache httpd 1.3.20  exploit -> exploit-db.com / cvedetails RED = GOOD look for high score 
+Samba 2.2.1a  exploit -> Rapid7** metasploit - buffer overflow + multiple remote code execution x86 check // anonymous access to IPC
+
+Remote buffer overflow -> AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+

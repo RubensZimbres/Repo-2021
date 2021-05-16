@@ -32,7 +32,7 @@ nikto -h http://IP_victim (may be blocked)
 
 dirb
 gobuster
-dirbuster -> http://IP/  - go faster - /usr/share/wordlists/dirbuster/...small.txt -- php
+dirbuster -> http://IP/  - go faster - /usr/share/wordlists/dirbuster/...small.txt -- php - takes 30 min
 results view / tree view tab
 
 Firefox / settings /network manual 127.0.0.1 8080
@@ -42,6 +42,7 @@ Target / site map / response - raw
 Target scope ADD http://IP
 
 
-(dirbuster running)
+(dirbuster running -> tree view) - Firefox proxy on - burp suite intercept off - dirbuster open page
 source code http://IP_victim (passwords, key)
+Open dirbuster files in Firefox to Enumerate
 

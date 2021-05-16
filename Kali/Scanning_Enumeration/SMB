@@ -1,0 +1,8 @@
+nmap -T4 -p- -A IP
+
+msfconsole
+- auxiliary - enumerate
+- exploit shell the machine + postserach smb
+
+search smb
+96 - auxiliary/scanner/smb/smb_version

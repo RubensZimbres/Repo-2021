@@ -20,4 +20,12 @@ netdiscover -r (ifconfig IP).0/24
 
 nmap -sS(SHOWS UP)
 
-nmap -T4 -p- -A  (speed 4 / -p- all ports / -p 80,443 / A everything version, OS)
+nmap -T4 -p- -A  (speed 4 / -p- all ports / -p 80,443 / A everything version, OS) IP_victim
+
+Firefox IP_victim -> Apache
+IP/manual/index.html -> Not found + info
+wappalyzer
+Directory busting
+
+Vulnerability discover
+nikto  (may be blocked)

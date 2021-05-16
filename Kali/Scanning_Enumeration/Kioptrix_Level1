@@ -28,4 +28,4 @@ wappalyzer
 Directory busting
 
 Vulnerability discover
-nikto  (may be blocked)
+nikto -h http://IP_victim (may be blocked)

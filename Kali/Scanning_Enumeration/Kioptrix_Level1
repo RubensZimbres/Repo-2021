@@ -32,5 +32,16 @@ nikto -h http://IP_victim (may be blocked)
 
 dirb
 gobuster
-dirbuster -> http://IP  - go faster - /usr/share/wordlists/dirbuster/...small.txt -- php
+dirbuster -> http://IP/  - go faster - /usr/share/wordlists/dirbuster/...small.txt -- php
+results view / tree view tab
+
+Firefox / settings /network manual 127.0.0.1 8080
+Load http://IP_victim Firefox
+Reload Firefox before Burp suite start /proxy / intercept / right click -> send to repeater / Raw chg to POST HTTP/1.1 + send / Proxy + Forward
+Target / site map / response - raw
+Target scope ADD http://IP
+
+
+(dirbuster running)
+source code http://IP_victim (passwords, key)
 

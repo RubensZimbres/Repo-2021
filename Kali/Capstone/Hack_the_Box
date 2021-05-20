@@ -7,3 +7,7 @@ Starting Point
 Connect to the VPN via your console
 $openvpn /path/to/rubens.ovpn
 
+LEGACY:
+nikto - não é web server
+nmap -A -T4 -p- 10.10.10.4 ### scan TCP. For UDP: -sU
+

@@ -11,3 +11,29 @@ LEGACY:
 nikto - não é web server
 nmap -A -T4 -p- 10.10.10.4 ### scan TCP. For UDP: -sU
 
+ACK
+SYN ACK
+ACK - or RST
+
+Port 139 - 445 - SMB-os related - Windows definitive
+message_signing: disabled (dangerous, but default) -> Vulnerability **
+
+Try:
+smbclient -L \\10.10.10.4
+smbclient -L \\\\10.10.10.4\\$ADMIN 
+
+search smb_version
+use auxiliary/scanner/smb/smb_version   -> auxiliary look for, does not attack
+set RHOSTS 10.10.10.4
+set THREADS 10
+
+Goo Windows XP SP3 exploit
+
+https://www.exploit-db.com
+https://www.rapid7.com/db/modules/exploit/windows/smb/ms08_067_netapi/ -> Makes metasploit
+
+msfconsole
+set options
+set payload
+run
+

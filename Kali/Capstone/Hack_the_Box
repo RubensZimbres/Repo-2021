@@ -1,0 +1,9 @@
+https://www.hackthebox.eu/
+
+https://help.hackthebox.eu/getting-started/v2-machines
+
+Starting Point
+
+Connect to the VPN via your console
+$openvpn /path/to/rubens.ovpn
+

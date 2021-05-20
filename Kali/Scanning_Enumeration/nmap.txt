@@ -1,3 +1,6 @@
+nmap -T4 -p- 10.10.10.27
+
+
 Host is up (0.0012s latency).                                                                           
 Not shown: 65529 closed ports                                                                           
 PORT      STATE SERVICE     VERSION                                                                     

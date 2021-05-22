@@ -61,3 +61,14 @@ SPECTRA
 use unix/webapp/php_include
 
 set payload payload/php/bind_php_ipv6
+
+LAME
+
+openvpn ./rubensz.ovpn
+
+scanning:
+nmap -A -T5 -p- -Pn 10.10.10.3
+-A takes loger, OS, etc
+nmap -A -T5 -p21,80 -Pn 10.10.10.3
+
+samba.py

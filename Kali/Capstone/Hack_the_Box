@@ -221,3 +221,25 @@ post(multi/recon/local_exploit_suggester) > set SESSION 1
 ( se falhar agora vira session 2)
 
 use windows/local/ms10_015_kitrap0d
+
+Perhaps the most beautiful attack so far, on HackTheBox.
+
+
+
+A Windows machine with open ports (21, 80) allowing anonymous FTP connections. A meterpreter payload (aspx) was developed and uploaded into FTP directory of the machine, anonymously.
+
+
+
+After that, a reverse tcp in multi/handler was opened to listen to the refresh of the website page with the meterpreter payload from FTP.
+
+
+
+A shell with user privileges was successfully opened. Then comes privilege escalation:
+
+
+
+While the materpreter shell was still open, I only got 40 seconds to use the session and explore a vulnerability to gain root access.
+
+
+
+Awesome training.

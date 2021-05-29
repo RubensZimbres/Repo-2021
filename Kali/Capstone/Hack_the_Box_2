@@ -60,6 +60,7 @@ ls -la
 https://netsec.ws/?p=337
 python -c 'import pty; pty.spawn("/bin/bash")'
 sudo -u scriptmanager /bin/bash
+cron job running each minute: shell
 
 privilege escalation:
 

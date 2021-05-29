@@ -43,6 +43,7 @@ searchsploit Apache 2.4
 
 php reverse shell - pentestmonkey
 pentestmonkey reverse shell sheet cheat
+chg php IP + Port
 
 local> python -m SimpleHTTPServer 80
 wget na machine

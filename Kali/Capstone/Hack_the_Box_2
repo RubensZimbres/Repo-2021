@@ -74,3 +74,13 @@ run test.py no primeiro shell
 + nikto
 
 --------------------------------------------------------------------------
+
+
+GRANDPA
+
+use windows/iis/iis_webdav_scstoragepathfromurl
+
+ps
+migrate 2184  (******)
+
+use multi/recon/local_exploit_suggester

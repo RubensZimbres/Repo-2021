@@ -14,6 +14,7 @@ wget https://raw.githubusercontent.com/RubensZimbres/Repo-2018/master/OpenCV/ope
 
 cd classifier
 
+2138 files exist
 
 ls -1 | wc -l
 

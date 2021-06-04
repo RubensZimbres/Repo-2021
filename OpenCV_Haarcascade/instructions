@@ -29,8 +29,7 @@ perl ../opencv-haar-classifier-training/bin/createsamples.pl positives.txt negat
 
 python ../Mergevec3.py -v samples/ -o samples.vec
 
-opencv_traincascade -data ./ -vec ./samples.vec -bg negatives.txt -numStages 10 -numPos 2138 -numNeg 2138 -w 50 -h 50 
-
+opencv_traincascade -data ./ -vec ./samples.vec -bg negatives.txt -numStages 10 -numPos 1000 -numNeg 500 -featureType HAAR -minHitRate 0.27 -acceptanceRatio 10e-5 -maxFalseAlarmRate 0.5 -w 50 -h 50
 
 PARAMETERS:
 cascadeDirName: ./

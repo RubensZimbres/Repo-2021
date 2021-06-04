@@ -1,0 +1,56 @@
+https://docs.opencv.org/3.4/dc/d88/tutorial_traincascade.html
+
+cd classifier
+mkdir negative_images
+mkdir positive_images
+
+ffmpeg -i ./IMG_7402.MOV /home/rubens/.../classifier/positive_images/img%04d.jpg
+
+git clone https://github.com/mrnugget/opencv-haar-classifier-training
+
+wget https://raw.githubusercontent.com/RubensZimbres/Repo-2018/master/OpenCV/Mergevec3.py
+
+wget https://raw.githubusercontent.com/RubensZimbres/Repo-2018/master/OpenCV/open_resize_IMG.py
+
+cd classifier
+
+
+ls -1 | wc -l
+
+(delete 94)
+find ./positive_images -maxdepth 1 -type f -name "*.jpg" -print0 | head -z -n 94 | xargs -0 rm
+
+find ./negative_images -iname "*.jpg" > negatives.txt
+find ./positive_images -iname "*.jpg" > positives.txt
+
+
+
+perl ../opencv-haar-classifier-training/bin/createsamples.pl positives.txt negatives.txt samples 2138 "opencv_createsamples -bgcolor 0 bgthresh 0 -maxxangle 1.1 -maxyangle 1.1 -maxzangle 0.5 -maxidev 40 -w 50 -h 50"
+
+python ../Mergevec3.py -v samples/ -o samples.vec
+
+opencv_traincascade -data ./ -vec ./samples.vec -bg negatives.txt -numStages 10 -numPos 2138 -numNeg 2138 -w 50 -h 50 
+
+
+PARAMETERS:
+cascadeDirName: ./
+vecFileName: ./samples.vec
+bgFileName: negatives.txt
+numPos: 2138
+numNeg: 2138
+numStages: 10
+precalcValBufSize[Mb] : 1024
+precalcIdxBufSize[Mb] : 1024
+acceptanceRatioBreakValue : -1
+stageType: BOOST
+featureType: HAAR
+sampleWidth: 50
+sampleHeight: 50
+boostType: GAB
+minHitRate: 0.995
+maxFalseAlarmRate: 0.5
+weightTrimRate: 0.95
+maxDepth: 1
+maxWeakCount: 100
+mode: BASIC
+Number of unique features given windowSize [50,50] : 3024775

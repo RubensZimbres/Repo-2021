@@ -9,7 +9,7 @@ cd classifier
 mkdir negative_images
 mkdir positive_images
 
-ffmpeg -i ./IMG_7402.MOV /home/rubens.../classifier/positive_images/img%04d.jpg
+ffmpeg -i ./IMG_7402.MOV /home/rubensvectomobile_gmail_com/triotec/classifier/positive_images/img%04d.jpg
 
 git clone https://github.com/mrnugget/opencv-haar-classifier-training
 
@@ -33,14 +33,13 @@ find ./positive_images -iname "*.jpg" > positives.txt
 
 
 
-perl ../opencv-haar-classifier-training/bin/createsamples.pl positives.txt negatives.txt samples 1000 "opencv_createsamples -bgcolor 0 bgthresh 0 -maxxangle 1.1 -maxyangle 1.1 -maxzangle 0.5 -maxidev 40 -w 80 -h 160"
+perl ../opencv-haar-classifier-training/bin/createsamples.pl positives.txt negatives.txt samples 1500 "opencv_createsamples -bgcolor 0 bgthresh 0 -maxxangle 1.1 -maxyangle 1.1 -maxzangle 0.5 -maxidev 40 -w 50 -h 50"
 
 python ../Mergevec3.py -v samples/ -o samples.vec
 
 
-opencv_traincascade -data ./ -vec ./samples.vec -bg negatives.txt -numStages 6 -numPos 1000 -numNeg 500 -featureType HAAR -minHitRate 0.8 -acceptanceRatio 0.000412662 -maxFalseAlarmRate 0.5 -w 80 -h 160
-
-
+*
+opencv_traincascade -data ./ -vec ./samples.vec -bg negatives.txt -numStages 10 -numPos 600 -numNeg 300 -featureType HAAR -minHitRate 0.8 -acceptanceRatio 0.00001 -maxFalseAlarmRate 0.5 -w 50 -h 50
 
 PARAMETERS:
 cascadeDirName: ./
@@ -64,3 +63,28 @@ maxDepth: 1
 maxWeakCount: 100
 mode: BASIC
 Number of unique features given windowSize [50,50] : 3024775
+
+
+
+import cv2
+import imutils
+import matplotlib.pyplot as plt
+imagePath = '/home/rubens.../classifier/test/img10100031.jpg'
+cascPath = '/home/rubens.../classifier/cascade.xml'
+
+image = cv2.imread(imagePath)
+image = imutils.resize(image, width=300)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+rects = detector.detectMultiScale(gray, scaleFactor=1.05,
+	minNeighbors=50, minSize=(50, 50),
+	maxSize=(95,95))
+print("[INFO] {} latas detected...".format(len(rects)))
+
+for (x, y, w, h) in rects:
+	# draw the face bounding box on the image
+	cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+  
+plt.imshow(image)
+plt.show()
+detector = cv2.CascadeClassifier(cascPath)

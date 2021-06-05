@@ -1,0 +1,84 @@
+https://docs.opencv.org/3.4/dc/d88/tutorial_traincascade.html
+
+https://stackoverflow.com/questions/16058080/how-to-train-cascade-properly
+
+https://answers.opencv.org/question/776/error-in-parameter-of-traincascade/
+
+https://pythonprogramming.net/haar-cascade-object-detection-python-opencv-tutorial/
+
+
+
+cd classifier
+mkdir negative_images
+mkdir positive_images
+
+ffmpeg -i ./IMG_7402.MOV /home/rubens.../classifier/positive_images/img%04d.jpg
+
+git clone https://github.com/mrnugget/opencv-haar-classifier-training
+
+wget https://raw.githubusercontent.com/RubensZimbres/Repo-2018/master/OpenCV/Mergevec3.py
+
+wget https://raw.githubusercontent.com/RubensZimbres/Repo-2018/master/OpenCV/open_resize_IMG.py
+
+cd classifier
+
+
+ls -1 | wc -l
+
+(delete 94)
+find ./positive_images -maxdepth 1 -type f -name "*.jpg" -print0 | head -z -n 94 | xargs -0 rm
+
+resize
+
+find ./negative_images -iname "*.jpg" > negatives.txt
+find ./positive_images -iname "*.jpg" > positives.txt
+
+
+info.dat
+
+
+import os
+path_pos='/home/rubens.../classifier/positive_images'
+path_neg='/home/rubens.../classifier/negative_images'
+for img in os.listdir(path_pos):
+    line = path_pos+'/'+img+' 1 0 0 50 50\n'
+    with open('/home/rubens.../classifier/info.dat','a') as f:
+        f.write(line)
+
+
+for img in os.listdir(path_neg):
+    line = path_neg+'/'+img+'\n'
+    with open('/home/rubens.../classifier/bg.txt','a') as f:
+        f.write(line)
+
+opencv_createsamples -info info.dat -num 3000 -w 50 -h 50 -img /home/rubensvectomobile_gmail_com/triotec/classifier/positive_images/IMG_6888.JPG -bg bg.txt -vec positives.vec
+
+mkdir data
+
+opencv_traincascade -data ./data -vec positives.vec -bg bg.txt -numPos 1800 -numNeg 900 -numStages 4 -w 50 -h 50
+
+
+
+
+import cv2
+import imutils
+import matplotlib.pyplot as plt
+imagePath = '/home/rubens.../classifier/test/img10100031.jpg'
+cascPath = '/home/rubens.../classifier/cascade.xml'
+
+image = cv2.imread(imagePath)
+image = imutils.resize(image, width=300)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+rects = detector.detectMultiScale(gray, scaleFactor=1.05,
+	minNeighbors=50, minSize=(50, 50),
+	maxSize=(95,95))
+print("[INFO] {} latas detected...".format(len(rects)))
+
+for (x, y, w, h) in rects:
+	# draw the face bounding box on the image
+	cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+  
+plt.imshow(image)
+plt.show()
+detector = cv2.CascadeClassifier(cascPath)

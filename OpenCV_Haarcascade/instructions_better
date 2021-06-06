@@ -31,4 +31,4 @@ opencv_createsamples -info pos/info.dat -vec pos.vec -bg neg/info.dat -w 50 -h 5
 
 mkdir data
 
-opencv_traincascade -data data -vec pos.vec -bg neg/info.dat -w 50 -h 50 -numPos 2500 -numNeg 4000  -precalcValBufSize 2048 -precalcIdxBufSize 2048 -featureType HAAR
+opencv_traincascade -data data -vec pos.vec -bg neg/info.dat -w 50 -h 50 -numPos 2500 -numNeg 4000 -featureType HAAR

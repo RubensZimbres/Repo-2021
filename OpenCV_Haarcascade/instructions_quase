@@ -72,16 +72,16 @@ opencv_traincascade -data ./ -vec ./samples.vec -bg negatives.txt -numStages 4 -
 
 mkdir data
 
-**opencv_traincascade -data ./data2 -vec positives.vec -bg bg.txt -numPos 1000 -numNeg 500 -featureType HAAR -minHitRate 0.8 -acceptanceRatio 0.00001 -maxFalseAlarmRate 0.5 -numStages 8 -w 50 -h 50
+**opencv_traincascade -data ./data2 -vec ./positives.vec -bg ./bg.txt -numPos 1000 -numNeg 500 -featureType HAAR -minHitRate 0.8 -acceptanceRatio 0.00001 -maxFalseAlarmRate 0.5 -numStages 8 -w 50 -h 50
 
 
 PARAMETERS:
-cascadeDirName: ./
-vecFileName: ./samples.vec
-bgFileName: negatives.txt
-numPos: 2138
-numNeg: 2138
-numStages: 10
+cascadeDirName: ./data2
+vecFileName: ./positives.vec
+bgFileName: ./bg.txt
+numPos: 1000
+numNeg: 500
+numStages: 8
 precalcValBufSize[Mb] : 1024
 precalcIdxBufSize[Mb] : 1024
 acceptanceRatioBreakValue : -1
@@ -90,7 +90,7 @@ featureType: HAAR
 sampleWidth: 50
 sampleHeight: 50
 boostType: GAB
-minHitRate: 0.995
+minHitRate: 0.8
 maxFalseAlarmRate: 0.5
 weightTrimRate: 0.95
 maxDepth: 1
@@ -98,6 +98,14 @@ maxWeakCount: 100
 mode: BASIC
 Number of unique features given windowSize [50,50] : 3024775
 
+===== TRAINING 0-stage =====
+<BEGIN
+POS count : consumed   1000 : 1000
+NEG count : acceptanceRatio    500 : 1
+Precalculation time: 4
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
 
 
 import cv2

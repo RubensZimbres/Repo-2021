@@ -57,23 +57,22 @@ não funcionou --- só a partir de uma imagem:
 opencv_createsamples -info info.dat -num 3000 -w 50 -h 50 -img /home/rubensvectomobile_gmail_com/triotec/classifier/positive_images/IMG_6888.JPG -bg bg.txt -vec positives.vec ------ faz só com uma imagem
 
 
-tentar:
-opencv_createsamples positives.txt negatives.txt samples 1500 -info info.dat -bg bg.txt -vec positives.vec -w 50 -h 50
+**tentar:
+opencv_createsamples samples 1500 -info info.dat -bg bg.txt -vec positives.vec -w 50 -h 50
 
 
 
-old testando com o info:
+old com o info KILLED:
 perl ../opencv-haar-classifier-training/bin/createsamples.pl positives.txt negatives.txt -info info.dat -bg bg.txt samples 1500 "opencv_createsamples -bgcolor 0 bgthresh 0 -maxxangle 1.1 -maxyangle 1.1 -maxzangle 0.5 -maxidev 40 -w 50 -h 50"
-
 python ../Mergevec3.py -v samples/ -o samples.vec
 
 
-* não tá errado:
+não tá errado:
 opencv_traincascade -data ./ -vec ./samples.vec -bg negatives.txt -numStages 4 -numPos 3000 -numNeg 1500 -featureType HAAR -minHitRate 0.8 -acceptanceRatio 0.00001 -maxFalseAlarmRate 0.5 -w 50 -h 50
 
 mkdir data
 
-opencv_traincascade -data ./data2 -vec positives.vec -bg bg.txt -numPos 1000 -numNeg 500 -numStages 4 -w 50 -h 50
+**opencv_traincascade -data ./data2 -vec positives.vec -bg bg.txt -numPos 1000 -numNeg 500 -numStages 8 -w 50 -h 50
 
 
 PARAMETERS:

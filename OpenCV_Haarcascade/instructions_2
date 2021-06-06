@@ -1,0 +1,125 @@
+https://docs.opencv.org/3.4/dc/d88/tutorial_traincascade.html
+
+https://stackoverflow.com/questions/16058080/how-to-train-cascade-properly
+
+https://answers.opencv.org/question/776/error-in-parameter-of-traincascade/
+
+https://pythonprogramming.net/haar-cascade-object-detection-python-opencv-tutorial/
+
+http://manpages.ubuntu.com/manpages/impish/man1/opencv_createsamples.1.html
+
+
+
+cd classifier
+mkdir negative_images
+mkdir positive_images
+
+ffmpeg -i ./IMG_7402.MOV /home/rubensvectomobile_gmail_com/triotec/classifier/positive_images/img%04d.jpg
+
+git clone https://github.com/mrnugget/opencv-haar-classifier-training
+
+wget https://raw.githubusercontent.com/RubensZimbres/Repo-2018/master/OpenCV/Mergevec3.py
+
+wget https://raw.githubusercontent.com/RubensZimbres/Repo-2018/master/OpenCV/open_resize_IMG.py
+
+cd classifier
+
+
+ls -1 | wc -l
+
+(delete 94)
+find ./positive_images -maxdepth 1 -type f -name "*.jpg" -print0 | head -z -n 94 | xargs -0 rm
+
+resize
+
+find ./negative_images -iname "*.jpg" > negatives.txt
+find ./positive_images -iname "*.jpg" > positives.txt
+
+
+info.dat
+
+
+import os
+path_pos='/home/rubensvectomobile_gmail_com/triotec/classifier/positive_images'
+path_neg='/home/rubensvectomobile_gmail_com/triotec/classifier/negative_images'
+for img in os.listdir(path_pos):
+    line = path_pos+'/'+img+' 1 0 0 50 50\n'
+    with open('/home/rubensvectomobile_gmail_com/triotec/classifier/info.dat','a') as f:
+        f.write(line)
+
+
+for img in os.listdir(path_neg):
+    line = path_neg+'/'+img+'\n'
+    with open('/home/rubensvectomobile_gmail_com/triotec/classifier/bg.txt','a') as f:
+        f.write(line)
+
+não funcionou --- só a partir de uma imagem:
+opencv_createsamples -info info.dat -num 3000 -w 50 -h 50 -img /home/rubensvectomobile_gmail_com/triotec/classifier/positive_images/IMG_6888.JPG -bg bg.txt -vec positives.vec ------ faz só com uma imagem
+
+
+tentar:
+opencv_createsamples positives.txt negatives.txt samples 1500 -info info.dat -bg bg.txt -vec positives.vec -w 50 -h 50
+
+
+
+old testando com o info:
+perl ../opencv-haar-classifier-training/bin/createsamples.pl positives.txt negatives.txt -info info.dat -bg bg.txt samples 1500 "opencv_createsamples -bgcolor 0 bgthresh 0 -maxxangle 1.1 -maxyangle 1.1 -maxzangle 0.5 -maxidev 40 -w 50 -h 50"
+
+python ../Mergevec3.py -v samples/ -o samples.vec
+
+
+* não tá errado:
+opencv_traincascade -data ./ -vec ./samples.vec -bg negatives.txt -numStages 4 -numPos 3000 -numNeg 1500 -featureType HAAR -minHitRate 0.8 -acceptanceRatio 0.00001 -maxFalseAlarmRate 0.5 -w 50 -h 50
+
+mkdir data
+
+opencv_traincascade -data ./data2 -vec positives.vec -bg bg.txt -numPos 1000 -numNeg 500 -numStages 4 -w 50 -h 50
+
+
+PARAMETERS:
+cascadeDirName: ./
+vecFileName: ./samples.vec
+bgFileName: negatives.txt
+numPos: 2138
+numNeg: 2138
+numStages: 10
+precalcValBufSize[Mb] : 1024
+precalcIdxBufSize[Mb] : 1024
+acceptanceRatioBreakValue : -1
+stageType: BOOST
+featureType: HAAR
+sampleWidth: 50
+sampleHeight: 50
+boostType: GAB
+minHitRate: 0.995
+maxFalseAlarmRate: 0.5
+weightTrimRate: 0.95
+maxDepth: 1
+maxWeakCount: 100
+mode: BASIC
+Number of unique features given windowSize [50,50] : 3024775
+
+
+
+import cv2
+import imutils
+import matplotlib.pyplot as plt
+imagePath = '/home/rubens.../classifier/test/img10100031.jpg'
+cascPath = '/home/rubens.../classifier/cascade.xml'
+
+image = cv2.imread(imagePath)
+image = imutils.resize(image, width=300)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+rects = detector.detectMultiScale(gray, scaleFactor=1.05,
+	minNeighbors=50, minSize=(50, 50),
+	maxSize=(95,95))
+print("[INFO] {} latas detected...".format(len(rects)))
+
+for (x, y, w, h) in rects:
+	# draw the face bounding box on the image
+	cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+  
+plt.imshow(image)
+plt.show()
+detector = cv2.CascadeClassifier(cascPath)

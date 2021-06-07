@@ -13,22 +13,44 @@ copy images
 
 Python:
 import os
-path_pos='/home/rubens.../classifier/pos/img'
-path_neg='/home/rubens.../classifier/neg/img'
+path_pos='/home/rubensvectomobile_gmail_com/triotec/classifier/pos/img'
+path_neg='/home/rubensvectomobile_gmail_com/triotec/classifier/neg/img'
 for img in os.listdir(path_pos):
     line = path_pos+'/'+img+',1,0,5,50,45\n'
-    with open('/home/rubens.../classifier/pos/info.dat','a') as f:
+    with open('/home/rubensvectomobile_gmail_com/triotec/classifier/pos/info.dat','a') as f:
         f.write(line)
 
 
 for img in os.listdir(path_neg):
     line = path_neg+'/'+img+'\n'
-    with open('/home/rubens.../classifier/neg/info.dat','a') as f:
+    with open('/home/rubensvectomobile_gmail_com/triotec/classifier/neg/info.dat','a') as f:
+        f.write(line)
+
+import os
+path_pos='/home/rubensvectomobile_gmail_com/triotec/classifier/pos/img'
+path_neg='/home/rubensvectomobile_gmail_com/triotec/classifier/neg/img'
+for img in os.listdir(path_pos):
+    line = path_pos[-3:]+'/'+img+' 1 0 5 50 45\n'
+    with open('/home/rubensvectomobile_gmail_com/triotec/classifier/pos/info.dat','a') as f:
         f.write(line)
 
 
-opencv_createsamples -info pos/info.dat -vec pos.vec -bg neg/info.dat -w 50 -h 50 -num 3000
+for img in os.listdir(path_neg):
+    line = path_neg[-3:]+'/'+img+'\n'
+    with open('/home/rubensvectomobile_gmail_com/triotec/classifier/neg/info.dat','a') as f:
+        f.write(line)
+
+> classifier
+>> data
+>> pos / img
+>> neg / img
+neg.dat
+pos.dat
+pos.vec
+
+opencv_createsamples -info pos.dat -vec pos.vec -bg neg.dat -w 50 -h 50 -num 1000
 
 mkdir data
 
-opencv_traincascade -data data -vec pos.vec -bg neg/info.dat -w 50 -h 50 -numPos 2500 -numNeg 4000 -featureType HAAR
+opencv_traincascade -data data -vec pos.vec -bg neg.dat -w 50 -h 50 -numPos 900 -numNeg 900  -featureType HAAR -numStages 10
+

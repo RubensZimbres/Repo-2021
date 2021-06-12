@@ -28,7 +28,7 @@ Kali?
 responder -I eth0 -rdwv
 
 https://www.google.com/search?client=firefox-b-e&q=hashcat+wordlist
-/usr/share/wordlists/rockyou.txt
+/usr/share/wordlists/rockyou.txt --> Remember 40 GB downloaded
 
 hashcat --help | grep NTLM
 hashcat -m 5600 hash0.txt rockyou.txt --force

@@ -27,6 +27,7 @@ Kali Bridge enps
 Kali?
 responder -I eth0 -rdwv
 
+https://www.google.com/search?client=firefox-b-e&q=hashcat+wordlist
 /usr/share/wordlists/rockyou.txt
 
 hashcat --help | grep NTLM

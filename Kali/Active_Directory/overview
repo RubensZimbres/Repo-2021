@@ -123,3 +123,5 @@ NOISY:
 msf6 exploit(windows/smb/webexec) > use windows/smb/psexec (noisy - antivirus)
 
 
+--------------------
+IPv6 ATTACKS:

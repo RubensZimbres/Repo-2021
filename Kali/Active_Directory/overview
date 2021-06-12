@@ -3,3 +3,32 @@ https://www.microsoft.com/en-us/evalcenter/
 Windows 10 Enterprise 64 bits
 
 Windows Server 2019 - desktop experience - partition new
+
+https://adam-toscher.medium.com/top-five-ways-i-got-domain-admin-on-your-internal-network-before-lunch-2018-edition-82259ab73aaa
+
+https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/top-five-ways-spiderlabs-got-domain-admin-on-your-internal-network/
+
+LLMNR Poisoning - Link Local Multicast Name Resolution - DNS - wrong network drive
+previously NBT-NS (Netbios)
+server does not resolve DNS
+broadcast - who knows 
+I do, send me hash and I`ll connect
+
+python Responder.py -I tun0 -rdw (Laurent Gaffie - Responder - Inpacket)
+receive fcastle + password hash -> hashcat
+
+hashcat -m 5600 hashes.txt rockyou.txt
+
+
+morning or after lunch (traffic)
+
+VMs
+Server - host only + Server  NAT
+Enterprise 1 - Birdge enps - Intel Pro  NAT
+
+
+Kali?
+responder -I eth0 -rdwv
+
+
+

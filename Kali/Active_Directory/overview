@@ -141,3 +141,24 @@ pip3 install .
 cd lootme - files
     
 https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/
+
+POST COMPROMISE
+
+https://github.com/PowerShellMafia/PowerSploit/tree/master/Recon
+
+Powerview
+
+windows> powershell -ep bypass
+> . .\Powerview.ps1
+Get-NetDomain
+Get-NetDomainController
+Get-DomainPolicy
+(Get-DomainPolicy)."system access" -> spray passwords
+Get-NetUser
+Get-NetUser | select description
+Get-UserProperty
+Get-UserProperty -Properties pwdlastset (or logoncount)
+Get-NetComputer -FullData | Select OperatingSystem
+
+
+

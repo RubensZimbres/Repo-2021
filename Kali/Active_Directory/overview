@@ -20,9 +20,9 @@ receive fcastle + password hash -> hashcat
 morning or after lunch (traffic)
 
 VMs
-Server - Bridge enps + Server /   NAT
-Enterprise 1 - Bridge enps - Intel Pro / NAT
-Kali Bridge enps
+Server - Bridge wlp
+Enterprise 1 - Bridge wlp
+Kali Bridge wlp + NAT
 
 Kali?
 responder -I eth0 -rdwv

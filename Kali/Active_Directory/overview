@@ -159,6 +159,7 @@ Get-NetUser | select description
 Get-UserProperty
 Get-UserProperty -Properties pwdlastset (or logoncount)
 Get-NetComputer -FullData | Select OperatingSystem
-
+Invoke-ShareFinder
+Get-NetGPO
 
 

@@ -162,4 +162,16 @@ Get-NetComputer -FullData | Select OperatingSystem
 Invoke-ShareFinder
 Get-NetGPO
 
+BLOODHOUND
+- download from Active Directory
+neo4j console
+http://localhost:7474/
 
+invoke-bloodhound
+https://github.com/BloodHoundAD/BloodHound/blob/master/Collectors/SharpHound.ps1
+
+put in Frank Castle - user - admin
+
+> powershell -ep bypass
+> . .\SharpHound.ps1
+> Invoke-BloodHound -CollectionMethod All -Domain MARVEL.local -ZipFileName file.zip

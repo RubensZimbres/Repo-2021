@@ -175,3 +175,6 @@ put in Frank Castle - user - admin
 > powershell -ep bypass
 > . .\SharpHound.ps1
 > Invoke-BloodHound -CollectionMethod All -Domain MARVEL.local -ZipFileName file.zip
+
+Bloodhound import file -> zip (with JSONs)
+shortest path to admin

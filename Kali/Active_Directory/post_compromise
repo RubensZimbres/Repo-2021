@@ -17,3 +17,8 @@ FTP Kali
 https://www.tecmint.com/install-ftp-server-in-ubuntu/
 sudo vi /etc/vsftpd.conf
 write_enable=YES
+
+neo4j console
+localhost:7474
+
+bloodhound

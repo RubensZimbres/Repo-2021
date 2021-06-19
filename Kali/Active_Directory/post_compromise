@@ -143,3 +143,16 @@ cd Downloads
 openvpn rubens_.openvpn
 nmap -T4 -p- 10.10.10.100
 
+ldap, ldpassl, kerberos = Domain Controller
+
+Invoke -GPP can also be used
+
+smbclient -L \\\\10.10.10.100\\
+smbclient \\\\10.10.10.100\\Replication
+prompt off
+recurse on
+mget *
+(Groups.xml)
+
+/home/theone/active.htb/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/MACHINE/Preferences/Groups/Groups.xml
+

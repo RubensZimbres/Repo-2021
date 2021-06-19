@@ -44,3 +44,6 @@ DUMPING HASHES (on Pwn3d)
 secretsdump.py marvel/fcastle:Pa$$word@192.168.0.10 
 
 crackmapexec 192.168.0.0/24 -u "Frank Castle" -H secondhash
+
+https://ptestmethod.readthedocs.io/en/latest/cme.html
+

@@ -133,7 +133,13 @@ MITIGATION
 - least privilege
 
 GPP (Group Policy Preferences) MS14-025 Attack / cPassword
+HackTheBox - machine Active
+get cPassword
+gpp-decrypt
 
+metasploit> smb/enum/gpp
 
-
+cd Downloads
+openvpn rubens_.openvpn
+nmap -T4 -p- 10.10.10.100
 

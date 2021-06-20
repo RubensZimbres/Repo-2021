@@ -4,5 +4,17 @@ Go Language
 
 github.com/Gr1mmie/sumrecon
 https://pastebin.com/raw/MhE6zXVt
+https://golang.org/dl/
 
+cd Downloads
+tar -xvf go1.16.5.linux-amd64.tar.gz -C /usr/local
+chown -R root:root /usr/local/go
+chown -R root:root /usr/local/go
+gedit ~/.profile (add)
+export GOPATH=$HOME/go
+export PATH=$PATH$:$GOPATH/bin
+
+. ~/.profile
+echo $PATH
+go
 

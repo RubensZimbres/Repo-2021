@@ -107,3 +107,7 @@ rm $url/recon/f.txt
 
 echo "[+] Probing for alive domains"
 cat $url/recon/f.txt | sort -u | httprobe -s -p https:443 | sed 's/https:\?\/\/// | tr -d ':443' >> $url/recon/alive.txt
+
+cat tesla.com/recon/alive.txt | grep test
+cat tesla.com/recon/alive.txt | grep stag
+cat tesla.com/recon/alive.txt | grep admin

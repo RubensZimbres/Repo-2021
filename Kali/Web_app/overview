@@ -77,4 +77,4 @@ rm $url/recon/f.txt
 HTTProbe
 
 cd Downloads
-cat tesla.com/recon/f.txt | httprobe -s -p https:443 | sed 's/https:\?\/\///
+cat tesla.com/recon/f.txt | httprobe -s -p https:443 | sed 's/https:\?\/\/// | tr -d ':443'

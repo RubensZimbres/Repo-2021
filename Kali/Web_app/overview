@@ -43,3 +43,8 @@ rm $url/recon/assets.txt
 
 chmod +x run.sh
 ./run1.sh tesla.com  
+
+https://github.com/OWASP/Amass
+export GO111MODULE=on
+go get -u github.com/OWASP/Amass/v3
+amass enum -d tesla.com

@@ -74,3 +74,7 @@ amass enum -d $url >> $url/recon/f.txt
 sort -u $url/recon/f.txt >> $url/recon/final.txt
 rm $url/recon/f.txt
 
+HTTProbe
+
+cd Downloads
+cat tesla.com/recon/f.txt | httprob -s -p https:443

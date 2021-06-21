@@ -3,3 +3,12 @@ OWASP TOP 10
 https://owasp.org/
 https://owasp.org/www-project-top-ten/
 https://cheatsheetseries.owasp.org/
+
+DOCKER
+https://airman604.medium.com/installing-docker-in-kali-linux-2017-1-fbaa4d1447fe
+
+curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/docker-archive-keyring.gpg >/dev/null
+echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian buster stable' | sudo tee /etc/apt/sources.list.d/docker.list
+apt update
+apt install docker-ce
+

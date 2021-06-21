@@ -117,3 +117,7 @@ SCREENSHOT Gowitness
 
 go get -u github.com/sensepost/gowitness
 gowitness single --url=https://tesla.com
+
+
+## https://github.com/haccer/subjack
+## https://github.com/tomnomnom/waybackurls (credentials)

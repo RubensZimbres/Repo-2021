@@ -40,3 +40,6 @@ test' (sleep 10)
 SQL INJECTION DEFENSE:
 Parameterized statements WHERE email=?";
 Sanitize input
+
+https://owasp.org/www-project-top-ten/2017/A2_2017-Broken_Authentication
+

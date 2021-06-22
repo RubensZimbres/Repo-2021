@@ -44,4 +44,8 @@ Sanitize input
 https://owasp.org/www-project-top-ten/2017/A2_2017-Broken_Authentication **
 
 
+SENSITIVE DATA EXPOSURE
+mitigation set HSTS
+analyze in securityheaders.com - HSTS
 
+nmap --script=ssl-enum-ciphers -p 443 tesla.com

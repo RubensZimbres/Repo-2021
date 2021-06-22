@@ -21,3 +21,8 @@ docker run --rm -p 3000:3000 bkimminich/juice-shop
 localhost:3000
 
 Burp Suite / FoxyProxy=on / Proxy -Intercept is on -Forward
+raw -> send to repeater
+proxy options -> client and server in target scope
+repeater -> chg GET to POST
+intruder -> payload
+Extender Bapp -> Turbo intruder / Active Scan++

@@ -36,3 +36,7 @@ email: test'' -> Response raw
 input: test' OR 1=1; -- (comment)
 SELECT * FROM Users WHERE email=test' OR 1=1; --'
 test' (sleep 10)
+
+SQL INJECTION DEFENSE:
+Parameterized statements WHERE email=?";
+Sanitize input

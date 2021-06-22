@@ -20,3 +20,4 @@ docker pull bkimminich/juice-shop
 docker run --rm -p 3000:3000 bkimminich/juice-shop
 localhost:3000
 
+Burp Suite / FoxyProxy=on / Proxy -Intercept is on -Forward

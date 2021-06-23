@@ -94,3 +94,6 @@ enter code in search bar <script></script>
 
 STORED XSS:
 <<script>alert('1')</script> semelhante SQL INJECT
+XSS payloads: Burp Suite Attack - Intruder
+
+

@@ -87,3 +87,6 @@ echo "Hi $username1";
 
 steal cookies - keylogging DOM Based XSS
 
+REFLECT XSS:
+DOM tutorial on Docker juice
+

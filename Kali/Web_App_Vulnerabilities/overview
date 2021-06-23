@@ -92,3 +92,5 @@ DOM tutorial on Docker juice
 xss-game.appspot.com
 enter code in search bar <script></script>
 
+STORED XSS:
+<<script>alert('1')</script> semelhante SQL INJECT

@@ -74,4 +74,16 @@ right click - inspect element form - delete div - hidden (forged feedback)
 /administrator
 /administration
 
+SECURITY MISCONFIGURATION
+Default credentials
+
+CROSS SITE SCRIPTING - XSS
+
+index.php
+<?php
+$username = $_GET ['username']
+echo "Hi $username1";
+?>
+
+steal cookies - keylogging DOM Based XSS
 

@@ -96,4 +96,13 @@ STORED XSS:
 <<script>alert('1')</script> semelhante SQL INJECT
 XSS payloads: Burp Suite Attack - Intruder
 
+MITIGATION XSS:
+- encoding
+- filtering
+- validating: white list
+- sanitization: combination above
 
+INSECURE DESERIALIZATION:
+https://owasp.org/www-project-top-ten/2017/A8_2017-Insecure_Deserialization.html
+Goo: ysoserial
+https://github.com/frohoff/ysoserial

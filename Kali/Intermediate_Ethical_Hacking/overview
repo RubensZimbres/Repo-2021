@@ -1,2 +1,6 @@
 https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/
 apt-get update
+apt-get dist-upgrade
+apt autoremove
+
+Metasploitable2 - vulnerable version Ubuntu Linux

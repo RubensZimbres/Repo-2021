@@ -5,3 +5,9 @@ apt autoremove
 
 Metasploitable2 - vulnerable version Ubuntu Linux
 https://sourceforge.net/projects/metasploitable/files/Metasploitable2/
+shutdown -r 1
+
+sudo apt install docker-ce4
+sudo systemctl start docker
+mkdir /tmp/webmap
+docker run -d --name webmap -h webmap -p 8000:8000 -v /tmp/webmap:/opt/xml reborntc/webmap

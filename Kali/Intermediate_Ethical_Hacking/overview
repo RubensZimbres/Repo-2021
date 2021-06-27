@@ -11,3 +11,10 @@ sudo apt install docker-ce4
 sudo systemctl start docker
 mkdir /tmp/webmap
 docker run -d --name webmap -h webmap -p 8000:8000 -v /tmp/webmap:/opt/xml reborntc/webmap
+docker start webmap
+
+nmap -sT -A -T4 -oX /tmp/webmap/myscan.xml 192.168.0.32 (metasploitable)
+docker exec -ti webmap /root/token
+localhost:8000
+
+

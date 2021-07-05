@@ -88,3 +88,5 @@ for (x, y, w, h) in rects:
 plt.imshow(image)
 plt.show()
 detector = cv2.CascadeClassifier(cascPath)
+
+ffmpeg -i output_PERFECT.mp4 -filter:v "setpts=PTS/6" output_fast6.mp4

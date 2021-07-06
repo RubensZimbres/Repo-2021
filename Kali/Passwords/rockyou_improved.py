@@ -1,11 +1,10 @@
-
 import numpy as np
 from itertools import permutations
 from collections import OrderedDict
 
 x=0
 outcome=[]
-with open('/home/rubens______m/Password/rockyou.txt','r', encoding="latin-1") as f:
+with open('/home/rubens/Password/rockyou.txt','r', encoding="latin-1") as f:
     my_list = list(f)
     my_list = [x.rstrip() for x in my_list] 
 #    my_list=np.array(my_list).astype(str)
@@ -83,10 +82,8 @@ with open('/home/rubens______m/Password/rockyou.txt','r', encoding="latin-1") as
             pass
 
 
-lista=list(OrderedDict.fromkeys(outcome))
-len(lista)
-n=500000
-for i in range(0, len(lista), n):
-    with open("/home/rubens_____/Password/outputs/rockyou_improved_{}.txt".format(i), 'w') as f:
-        f.write("\n".join(map(str, lista[i:i + n]
+n=1000000
+for i in range(0, len(outcome), n):
+    with open("/home/rubens/Password/outputs/rockyou_improved_{}.txt".format(i), 'w') as f:
+        f.write("\n".join(map(str, outcome[i:i + n]
     )))

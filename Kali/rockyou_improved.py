@@ -1,14 +1,17 @@
+
 import numpy as np
 from itertools import permutations
 from collections import OrderedDict
 
 outcome=[]
-with open('/home/anaconda3/work/rockyou_smol.txt','r', encoding="latin-1") as f:
+with open('/home/rubens/Password/rockyou.txt','r', encoding="latin-1") as f:
     my_list = list(f)
     my_list = [x.rstrip() for x in my_list] 
-    my_list=np.array(my_list).astype(str)
-    for word in my_list[0:4]:
+#    my_list=np.array(my_list).astype(str)
+    for word in my_list:
         try:
+            #print(word)
+            #print(word[::-1])
             outcome.append(word.replace("o","0"))
             outcome.append(word.replace("i","1"))
             outcome.append(word.replace("z","2"))
@@ -41,7 +44,7 @@ with open('/home/anaconda3/work/rockyou_smol.txt','r', encoding="latin-1") as f:
             outcome.append(word.title()+'-')
             outcome.append(word.title()+'%')
 
-            word1 = [''.join(p) for p in permutations(word.title())][-1]
+            word1 = word[::-1]
             outcome.append('+'+word1)
             outcome.append('!'+word1)
             outcome.append('&'+word1)
@@ -76,6 +79,10 @@ with open('/home/anaconda3/work/rockyou_smol.txt','r', encoding="latin-1") as f:
             pass
 
 
-with open("./rockyou_improved_6Mi.txt", 'w') as f:
-    f.write("\n".join(map(str, list(OrderedDict.fromkeys(outcome))
-)))
+lista=list(OrderedDict.fromkeys(outcome))
+len(lista)
+n=2000
+for i in range(0, len(lista), n):
+    with open("/home/rubens/Password/outputs/rockyou_improved_{}.txt".format(i), 'w') as f:
+        f.write("\n".join(map(str, lista[i:i + n]
+    )))

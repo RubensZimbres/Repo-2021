@@ -3,13 +3,17 @@ import numpy as np
 from itertools import permutations
 from collections import OrderedDict
 
+x=0
 outcome=[]
-with open('/home/rubens/Password/rockyou.txt','r', encoding="latin-1") as f:
+with open('/home/rubens______m/Password/rockyou.txt','r', encoding="latin-1") as f:
     my_list = list(f)
     my_list = [x.rstrip() for x in my_list] 
 #    my_list=np.array(my_list).astype(str)
     for word in my_list:
         try:
+            x+=1
+            if x % 100000 == 0:
+                print(x)
             #print(word)
             #print(word[::-1])
             outcome.append(word.replace("o","0"))
@@ -81,8 +85,8 @@ with open('/home/rubens/Password/rockyou.txt','r', encoding="latin-1") as f:
 
 lista=list(OrderedDict.fromkeys(outcome))
 len(lista)
-n=2000
+n=500000
 for i in range(0, len(lista), n):
-    with open("/home/rubens/Password/outputs/rockyou_improved_{}.txt".format(i), 'w') as f:
+    with open("/home/rubens_____/Password/outputs/rockyou_improved_{}.txt".format(i), 'w') as f:
         f.write("\n".join(map(str, lista[i:i + n]
     )))

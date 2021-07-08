@@ -8,6 +8,12 @@ VPC IP estático + Firewall porta 22
 
 ssh -i ~/.ssh/google_compute_engine user@ip
 
+cat /home/theone/id_rsa___.pub
+
+Add VM
+
+rm -rf ~/.vscode-server/
+
 config:
 Host 35.XXX.76.XXX
     HostName 35.XXX.76.XXX

@@ -1,3 +1,12 @@
+Host 35.196.222.107
+  HostName 35.196.222.107
+  IdentityFile /home/theone/Downloads/id_rsa___.pub
+  User theone
+
+add .pub to VM
+
+
+------------------------------------------------
 ssh-keygen -t rsa -f my_ssh_key -C user
 
 gcloud beta compute ssh --zone "us-central1-a" "instance-ABC" --project "machinelearning-ABC"

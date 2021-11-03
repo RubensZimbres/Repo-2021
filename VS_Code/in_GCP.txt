@@ -1,5 +1,5 @@
-Host 35.196.222.107
-  HostName 35.196.222.107
+Host 35.22.222.107
+  HostName 35.22.222.107
   IdentityFile /home/one/Downloads/id_rsa___.pub
   User one
 

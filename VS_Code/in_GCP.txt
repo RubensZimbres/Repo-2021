@@ -1,10 +1,11 @@
 Host 35.196.222.107
   HostName 35.196.222.107
-  IdentityFile /home/theone/Downloads/id_rsa___.pub
-  User theone
+  IdentityFile /home/one/Downloads/id_rsa___.pub
+  User one
 
 add .pub to VM
 
+gcloud compute instances create teste-tera-poc --image https://compute.googleapis.com/compute/v1/projects/machinelearning-240820/global/images/bla_bla
 
 ------------------------------------------------
 ssh-keygen -t rsa -f my_ssh_key -C user

@@ -3,9 +3,9 @@ Host 35.22.222.107
   IdentityFile /home/one/Downloads/id_rsa___.pub
   User one
 
-add .pub to VM
+add .pub to VM - private to VSCode ***
 
-gcloud compute instances create teste-tera-poc --image https://compute.googleapis.com/compute/v1/projects/machinelearning-240820/global/images/bla_bla
+gcloud compute instances create teste-tera-poc --image https://compute.googleapis.com/compute/v1/projects/machinelearning-2222/global/images/bla_bla
 
 ------------------------------------------------
 ssh-keygen -t rsa -f my_ssh_key -C user

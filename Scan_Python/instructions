@@ -1,0 +1,12 @@
+
+wget https://github.com/ShiftLeftSecurity/sast-scan/releases/download/v1.9.27/scan
+
+chmod +x scan
+
+sh <(curl https://slscan.sh)
+
+sudo apt install docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker USER
+
+sudo docker run --rm -e "WORKSPACE=${PWD}" -v "$PWD:/app" shiftleft/sast-scan scan

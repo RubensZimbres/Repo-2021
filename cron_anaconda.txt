@@ -1,0 +1,7 @@
+Add to python script, main.py
+
+#!/home/opt/anaconda3/bin/python3
+
+Add PATH to top of crontab
+
+PATH=/home/anaconda3/bin

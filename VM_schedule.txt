@@ -1,0 +1,2 @@
+#! /bin/bash 
+/opt/anaconda3/bin/python3 /home/theone/diario.py

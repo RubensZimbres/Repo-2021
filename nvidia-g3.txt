@@ -2,6 +2,9 @@ Disconnect docker
 Install DisplayLink 5.4.1
 Reboot
 Connect Monitors
+
+Software Updates / Other Software NVIDIA - update
+
 sudo apt install nvidia-driver-440
 Reboot
 

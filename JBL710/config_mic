@@ -34,3 +34,6 @@ After a new update, you also need to enable pipewire-media-session-service
 You can ensure that Pipewire is now running through:
     pactl info
 
+Revert:
+
+https://www.reddit.com/r/debian/comments/oj0z4w/debian_11_how_to_revert_back_to_pulseaudio/

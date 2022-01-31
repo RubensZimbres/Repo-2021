@@ -1,0 +1,36 @@
+
+We will use a PPA for adding Pipewire to Ubuntu 20.04, which is maintained regularly:
+    sudo add-apt-repository ppa:pipewire-debian/pipewire-upstream
+
+To update the PPA packages in your system do:
+    sudo apt update
+    
+Install the package
+    sudo apt install pipewire
+
+There is also a dependency needed to be installed with pipewire otherwise you will face the issue of “Bluetooth headset won’t connect after installing pipewire” . Install the dependency by:
+    sudo apt install libspa-0.2-bluetooth
+
+Now, To install the client libraries.
+    sudo apt install pipewire-audio-client-libraries
+
+Reload the Daemon
+    systemctl — user daemon-reload
+
+Disable Pulseaudio
+    systemctl — user — now disable pulseaudio.service pulseaudio.socket
+
+Enable Pipewire
+    systemctl — user — now enable pipewire pipewire-pulse
+
+If you are on Ubuntu 20.04, you also need to “mask” the Pulseaudio by
+    systemctl — user mask pulseaudio
+
+I am not sure but if possible you can run this on other versions too.
+
+After a new update, you also need to enable pipewire-media-session-service
+    systemctl — user — now enable pipewire-media-session.service
+
+You can ensure that Pipewire is now running through:
+    pactl info
+

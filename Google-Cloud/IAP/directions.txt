@@ -1,0 +1,24 @@
+gcloud compute ssh --zone "us-central1-b" "vm"  --tunnel-through-iap --project "project222" --troubleshoot
+
+Check the following items:
+ - The IAP firewall rule is valid.
+ - IAP tunneling is enabled.
+ - You are connecting using an IAP token.
+ - You have the IAM role of Project Owner, IAP-Secured Tunnel User, or iap.tunnelInstances.accessViaIAP (preferred)
+ - Your organization hasn't blocked access to external IP addresses. IAP changes the source traffic to 35.235.240.0/20 and the tunnel to https://tunnel.cloudproxy.app.
+ - If your organization blocks access to public IP addresses, try connecting through a bastion server.
+
+ssh-keygen -t rsa -f ~/.ssh/google_compute_engine -C usermm
+
+sudo chmod 600 /home/theone/.ssh/google_compute_engine
+
+chmod 600 ~/.ssh/config
+Host *
+    HostName *
+    User usermm
+    Port 22
+    IdentityFile ~/.ssh/google_compute_engine
+
+pub file in the VM
+
+gcloud compute ssh --zone "us-central1-b" "vm"  --tunnel-through-iap --project "project222"

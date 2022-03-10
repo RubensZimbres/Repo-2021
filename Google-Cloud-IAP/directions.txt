@@ -31,6 +31,8 @@ Host *
 
 pub file in the VM
 
++ NAT Gateway with external IP
+
 gcloud compute ssh --zone "us-central1-b" "vm"  --tunnel-through-iap --project "project222"
 
 python /usr/local/bin/jupyter-notebook --ip=0.0.0.0 --port=8080 --no-browser &

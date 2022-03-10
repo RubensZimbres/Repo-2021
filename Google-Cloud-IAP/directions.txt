@@ -14,6 +14,10 @@ ssh-keygen -t rsa -f ~/.ssh/google_compute_engine -C usermm
 
 sudo chmod 600 /home/theone/.ssh/google_compute_engine
 
+gcloud config set project
+
++ Firewall TCP 22 - "22.222.222.0/20"
+
 chmod 600 ~/.ssh/config
 Host *
     HostName *

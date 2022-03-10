@@ -10,13 +10,17 @@ Check the following items:
  - Your organization hasn't blocked access to external IP addresses. IAP changes the source traffic to 35.235.240.0/20 and the tunnel to https://tunnel.cloudproxy.app.
  - If your organization blocks access to public IP addresses, try connecting through a bastion server.
 
+enable networkmanagement + IAP
+
 ssh-keygen -t rsa -f ~/.ssh/google_compute_engine -C usermm
 
 sudo chmod 600 /home/theone/.ssh/google_compute_engine
 
 gcloud config set project
 
-+ Firewall TCP 22 - "22.222.222.0/20"
++ Firewall TCP  - "35.222.222.0/20"
+
+Add role: iap.tunnelInstances.accessViaIAP attach to Group/Member
 
 chmod 600 ~/.ssh/config
 Host *

@@ -35,9 +35,9 @@ pub file in the VM
 
 gcloud compute ssh --zone "us-central1-b" "vm"  --tunnel-through-iap --project "project222"
 
-python /usr/local/bin/jupyter-notebook --ip=0.0.0.0 --port=8080 --no-browser &
+python /usr/local/bin/jupyter-notebook --ip=0.0.0.0 --port=8080 &
 
 -------------
 https://goteleport.com/blog/ssh-tunneling-explained/
 
-ssh -i /home/user/.ssh/google_compute_engine -R 80:192.168.0.1:8282 user@35.XX.XX.181
+gcloud compute start-iap-tunnel instance-XXX 22 --zone=us-central1-a --local-host-port=localhost:9999

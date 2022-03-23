@@ -42,4 +42,4 @@ https://goteleport.com/blog/ssh-tunneling-explained/
 
 https://cloud.google.com/iap/docs/using-tcp-forwarding#gcloud_2
 
-gcloud compute start-iap-tunnel instance-XXX 22 --zone=us-central1-a --local-host-port=localhost:9999
+gcloud compute start-iap-tunnel instance-XXX 22(jupyter port) --zone=us-central1-a --local-host-port=localhost:9999

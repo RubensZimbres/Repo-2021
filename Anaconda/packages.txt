@@ -30,3 +30,6 @@ Kernel modules: nvidiafb, nouveau
 sudo apt install nvidia-driver-510 nvidia-dkms-510
 
 sudo apt install nvidia-cuda-toolkit
+export CUDA_PATH=/usr -- at the end of your .bashrc and run
+source ~/.bashrc
+

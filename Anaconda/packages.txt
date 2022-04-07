@@ -1,0 +1,22 @@
+   68  wget https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh
+   70  sudo bash Anaconda3-2020.07-Linux-x86_64.sh
+   72  source /home/anaconda3/bin/activate
+   73  sudo apt-get install -y apt-utils build-essential cmake && sudo apt-get install -y libgtk-3-dev && sudo apt-get install -y libboost-all-dev && sudo apt-get install -y default-libmysqlclient-dev
+   74  sudo apt --fix-broken install
+   75  sudo apt-get install -y apt-utils build-essential cmake && sudo apt-get install -y libgtk-3-dev && sudo apt-get install -y libboost-all-dev
+   76  sudo apt-get install -y apt-utils build-essential cmake
+   77  sudo apt-get install -y libgtk-3-dev && sudo apt-get install -y libboost-all-dev
+   78  sudo apt-get install -y libboost-all-dev
+   79  pip install cmake python-Levenshtein Flask gunicorn pybase64 protobuf nltk fuzzywuzzy python-csv Unidecode torch tensorflow-gpu transformers imutils scikit-image scipy==1.4.1 opencv-python text2num sklearn scikit-learn
+   80  pip install --upgrade google-cloud-vision
+   81  pip install --upgrade google-cloud-language
+   82  pip install --upgrade google-cloud
+   83  pip install google-cloud-storage
+   84  pip install google-cloud-bigquery
+   85  sudo apt-get install apt-transport-https ca-certificates gnupg
+   86  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+   87  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+   88  sudo apt-get update && sudo apt-get install google-cloud-cli
+   89  python -c "import nltk;nltk.download('punkt');nltk.download('stopwords')"
+   90  pip install dlib
+   94  pip install numpy --upgrade --ignore-installed

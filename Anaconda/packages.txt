@@ -20,3 +20,11 @@
    89  python -c "import nltk;nltk.download('punkt');nltk.download('stopwords')"
    90  pip install dlib
    94  pip install numpy --upgrade --ignore-installed
+hwinfo --gfxcard --short
+lspci | grep -i vga
+lspci -s 01:00.0 -v
+
+Kernel driver in use: nouveau
+Kernel modules: nvidiafb, nouveau
+
+sudo apt install nvidia-driver nvidia-cuda-toolkit

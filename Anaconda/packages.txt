@@ -27,4 +27,6 @@ lspci -s 01:00.0 -v
 Kernel driver in use: nouveau
 Kernel modules: nvidiafb, nouveau
 
-sudo apt install nvidia-driver nvidia-cuda-toolkit
+sudo apt install nvidia-driver-510 nvidia-dkms-510
+
+sudo apt install nvidia-cuda-toolkit

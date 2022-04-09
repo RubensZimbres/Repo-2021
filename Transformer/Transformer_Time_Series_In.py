@@ -2,7 +2,20 @@ import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas_datareader import data
-#pip install pandas-datareader
+import tensorflow as tf
+import pandas as pd  
+import numpy as np
+from  sklearn.preprocessing import MinMaxScaler
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import math, copy, time
+from torch.autograd import Variable
+import matplotlib.pyplot as plt
+import seaborn
+seaborn.set_context(context="talk")
+
 
 stock = 'RENT3.SA'
 source = 'yahoo'
@@ -14,10 +27,6 @@ goog_df = data.DataReader(stock, source, start, end)
 
 dataset = goog_df['Adj Close']
 
-import tensorflow as tf
-import pandas as pd  
-import numpy as np
-from  sklearn.preprocessing import MinMaxScaler
 
 dataset = np.array(dataset.astype('float32')).reshape(-1,1)
 
@@ -53,15 +62,6 @@ Y0=Y0.reshape(Y0.shape[0],Y0.shape[1],1).astype(np.float32)
 
 
 
-import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import math, copy, time
-from torch.autograd import Variable
-import matplotlib.pyplot as plt
-import seaborn
-seaborn.set_context(context="talk")
 
 class EncoderDecoder(nn.Module):
     """
@@ -380,13 +380,14 @@ def get_std_opt(model):
             torch.optim.Adam(model.parameters(), lr=0.01, betas=(0.9, 0.98), eps=1e-9))
 
 
-
 def data_gen(V, batch, nbatches):
     "Generate random data for a src-tgt copy task."
     for i in range(nbatches):
-        data1 = torch.from_numpy(X0.reshape(3772,8))#.long()
+        data1 = torch.from_numpy(X0.reshape(X0.shape[0]
+,8))#.long()
         data1[:, 0] = 1
-        data2 = torch.from_numpy(Y0.reshape(3772,8))#.long()
+        data2 = torch.from_numpy(Y0.reshape(X0.shape[0]
+,8))#.long()
         data2[:, 0] = 1
         src = Variable(data1, requires_grad=False)
         tgt = Variable(data2, requires_grad=False)
@@ -402,7 +403,8 @@ class SimpleLossCompute:
         
     def __call__(self, x, y, norm):
         x = self.generator(x)
-        x=torch.sum(x.reshape(3772,7,-1), (2))
+        x=torch.sum(x.reshape(X0.shape[0]
+,7,-1), (2))
         loss = self.criterion(torch.sum(x,(0)), 
                               torch.sum(y,(0))) #/ norm
         if loss<0.01:
@@ -434,8 +436,9 @@ for epoch in range(300):
 
 
 
-PATH = './pytorch_time_series_model_loss_OK_norm.pth'
+PATH = '/home/theone/other_models/pytorch_time_series_model_loss_OK_norm.pth'
 
+torch.save(model.state_dict(), PATH)
 
 X0=trainX[0:-2]
 Y0=trainX[1:-1]

@@ -18,7 +18,7 @@ sudo chmod 600 /home/theone/.ssh/google_compute_engine
 
 gcloud config set project
 
-+ Firewall TCP  - "35.222.222.0/20"
++ Firewall TCP  ALL PORTS - "35.235.240.0/20" ingress
 
 Add role: iap.tunnelInstances.accessViaIAP attach to Group/Member
 

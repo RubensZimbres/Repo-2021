@@ -1,5 +1,7 @@
 conda create --name vuln
 
+source /home/user/anaconda3/bin/activate
+
 sudo apt install python3.8-venv
 
 git clone https://github.com/PyCQA/bandit
@@ -8,4 +10,4 @@ cd bandit
 
 python3 setup.py install
 
-bandit -r ../
+bandit -r ../your_code

@@ -12,7 +12,7 @@ from torch import nn, optim
 regra=30 #2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
 base1=2
 states=np.arange(0,base1)
-dimensions=4
+dimensions=5
 kernel=np.random.randint(len(states), size=(dimensions,dimensions))
 
 
@@ -82,14 +82,13 @@ import torch.nn as nn
 class Net(nn.Module):
     def __init__(self,kernel):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, 3, 1,bias=False)
-        self.conv2 = nn.Conv2d(2, 64, 3, 1,bias=False)
-        self.dropout1 = nn.Dropout(0.25)
-        self.dropout2 = nn.Dropout(0.5)
-        self.fc1 = nn.Linear(121, 128)
-        self.fc2 = nn.Linear(128, 10)
+        self.conv1 = nn.Conv2d(1, 32, 3, 3,bias=False)
+        self.conv2 = nn.Conv2d(1, 64, 3, 1,bias=False)
+        self.dropout1 = nn.Dropout(0.1)
+        self.fc1 = nn.Linear(576, 1024)
+        self.fc2 = nn.Linear(1024, 10)
         self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
-        self.conv2.weight = nn.Parameter(kernel,requires_grad=True)
+        #self.conv2.weight = nn.Parameter(kernel,requires_grad=True)
 
 
     def forward(self, x):
@@ -102,7 +101,7 @@ class Net(nn.Module):
         x = torch.flatten(x, 1)
         x = self.fc1(x)
         x = F.relu(x)
-        x = self.dropout2(x)
+        #x = self.dropout2(x)
         x = self.fc2(x)
         output = F.log_softmax(x, dim=1)
         return output
@@ -115,7 +114,7 @@ PATH = './cifar_net.pth'
 n_epochs = 200
 batch_size_train = 128
 batch_size_test = 128
-learning_rate = 0.005
+learning_rate = 0.01
 momentum = 0.5
 log_interval = 10
 
@@ -124,7 +123,7 @@ train_counter = []
 test_losses = []
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
 
-c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(-1,1,4,4)).type(torch.cuda.FloatTensor)
+c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(-1,1,5,5)).type(torch.cuda.FloatTensor)
 #print(c)
 net = Net(c).to(device)
 criterion = nn.CrossEntropyLoss()

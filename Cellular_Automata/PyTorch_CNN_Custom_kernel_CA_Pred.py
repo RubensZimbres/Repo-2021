@@ -1,9 +1,18 @@
 import numpy as np
 import itertools
+import numpy as np
+import torch
+import torchvision
+import matplotlib.pyplot as plt
+from time import time
+from torchvision import datasets, transforms
+from torch import nn, optim
+
+
 regra=30 #2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
 base1=2
 states=np.arange(0,base1)
-dimensions=5
+dimensions=4
 kernel=np.random.randint(len(states), size=(dimensions,dimensions))
 
 
@@ -38,13 +47,8 @@ def cellular_automaton():
 
 cellular_automaton()[1:4,1:4]
 
-import numpy as np
-import torch
-import torchvision
-import matplotlib.pyplot as plt
-from time import time
-from torchvision import datasets, transforms
-from torch import nn, optim
+device = torch.device("cuda")
+
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
@@ -78,31 +82,40 @@ import torch.nn as nn
 class Net(nn.Module):
     def __init__(self,kernel):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(3, 10, kernel_size=5,bias=False)
-        self.conv2 = nn.Conv2d(1, 20, kernel_size=5)
-        self.conv2_drop = nn.Dropout2d()
-        self.fc1 = nn.Linear(320, 50)
-        self.fc2 = nn.Linear(50, 10)
+        self.conv1 = nn.Conv2d(1, 32, 3, 1,bias=False)
+        self.conv2 = nn.Conv2d(2, 64, 3, 1,bias=False)
+        self.dropout1 = nn.Dropout(0.25)
+        self.dropout2 = nn.Dropout(0.5)
+        self.fc1 = nn.Linear(121, 128)
+        self.fc2 = nn.Linear(128, 10)
         self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
+        self.conv2.weight = nn.Parameter(kernel,requires_grad=True)
+
 
     def forward(self, x):
-        x = F.relu(F.max_pool2d(self.conv1(x), 2))
-        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
-        x = x.view(-1, 320)
-        x = F.relu(self.fc1(x))
-        x = F.dropout(x, training=self.training)
+        x = self.conv1(x)
+        x = F.relu(x)
+        x = self.conv2(x)
+        x = F.relu(x)
+        x = F.max_pool2d(x, 2)
+        x = self.dropout1(x)
+        x = torch.flatten(x, 1)
+        x = self.fc1(x)
+        x = F.relu(x)
+        x = self.dropout2(x)
         x = self.fc2(x)
-        return F.log_softmax(x)
+        output = F.log_softmax(x, dim=1)
+        return output
 
 import torch.optim as optim
 
 PATH = './cifar_net.pth'
 
 
-n_epochs = 35
+n_epochs = 200
 batch_size_train = 128
-batch_size_test = 500
-learning_rate = 0.01
+batch_size_test = 128
+learning_rate = 0.005
 momentum = 0.5
 log_interval = 10
 
@@ -111,17 +124,19 @@ train_counter = []
 test_losses = []
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
 
-c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(1,1,5,5)).type(torch.FloatTensor)
+c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(-1,1,4,4)).type(torch.cuda.FloatTensor)
 #print(c)
-net = Net(c)
+net = Net(c).to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
+optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
+
 
 def train(epoch):
+  net.train()
   for batch_idx, (data, target) in enumerate(train_loader):
     #net.load_state_dict(torch.load(PATH))
     net.train()
-
+    data, target = data.to(device), target.to(device)
     optimizer.zero_grad()
     output = net(data)
     loss = F.nll_loss(output, target)
@@ -144,13 +159,14 @@ def test():
     correct = 0
     with torch.no_grad():
         for data, target in test_loader:
+            data, target = data.to(device), target.to(device)
             output = net(data)
             test_loss += F.nll_loss(output, target, size_average=False).item()
             pred = output.data.max(1, keepdim=True)[1]
             correct += pred.eq(target.data.view_as(pred)).sum()
             test_loss /= len(test_loader.dataset)
             test_losses.append(test_loss)
-            print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+            print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.6f}%)\n'.format(
                 test_loss, correct, len(test_loader.dataset),
                 100. * correct / len(test_loader.dataset)))
 
@@ -185,4 +201,7 @@ with torch.no_grad():
     plt.imshow(image, cmap='gray')
     plt.title(f'Prediction: {predicted_class} - Actual target: {true_target}')
     plt.show()
-    
+
+model_parameters = filter(lambda p: p.requires_grad, Net.parameters())
+params = sum([np.prod(p.size()) for p in model_parameters])
+print(params)

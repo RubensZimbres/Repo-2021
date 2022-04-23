@@ -84,7 +84,8 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 32, 3, 3,bias=False)
         self.conv2 = nn.Conv2d(1, 64, 3, 1,bias=False)
-        self.dropout1 = nn.Dropout(0.1)
+        self.dropout1 = nn.Dropout(0.15)
+        self.dropout2 = nn.Dropout(0.15)
         self.fc1 = nn.Linear(576, 1024)
         self.fc2 = nn.Linear(1024, 10)
         self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
@@ -101,7 +102,7 @@ class Net(nn.Module):
         x = torch.flatten(x, 1)
         x = self.fc1(x)
         x = F.relu(x)
-        #x = self.dropout2(x)
+        x = self.dropout2(x)
         x = self.fc2(x)
         output = F.log_softmax(x, dim=1)
         return output
@@ -114,7 +115,7 @@ PATH = './cifar_net.pth'
 n_epochs = 200
 batch_size_train = 128
 batch_size_test = 128
-learning_rate = 0.01
+learning_rate = 0.008
 momentum = 0.5
 log_interval = 10
 

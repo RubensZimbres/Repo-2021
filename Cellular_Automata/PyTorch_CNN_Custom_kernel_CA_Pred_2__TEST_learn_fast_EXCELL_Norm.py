@@ -8,8 +8,8 @@ from time import time
 from torchvision import datasets, transforms
 from torch import nn, optim
 
-regra=30#2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
-base1=2#5
+regra=2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
+base1=5
 states=np.arange(0,base1)
 dimensions=3
 kernel=np.random.randint(len(states), size=(dimensions,dimensions))
@@ -60,7 +60,7 @@ train_loader = torch.utils.data.DataLoader(
                                torchvision.transforms.Normalize(
                                  (0.1307,), (0.3081,))
                              ])),
-  batch_size=32, shuffle=True)
+  batch_size=1000, shuffle=True)
 
 test_loader = torch.utils.data.DataLoader(
   torchvision.datasets.MNIST('./', train=False, download=True,
@@ -83,8 +83,8 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 64, 3, 1,bias=False)
         self.conv2 = nn.Conv2d(1, 64, 3, 1,bias=False)
-        self.dropout1 = nn.Dropout(0.25)
-        self.dropout2 = nn.Dropout(0.5)
+        self.dropout1 = nn.Dropout(0.15)
+        self.dropout2 = nn.Dropout(0.3)
         self.fc1 = nn.Linear(9216, 1024)
         self.fc2 = nn.Linear(1024, 10)
         self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
@@ -109,10 +109,10 @@ class Net(nn.Module):
 import torch.optim as optim
 
 
-n_epochs = 40
-batch_size_train = 128
+n_epochs = 200
+batch_size_train = 1000
 batch_size_test = 1000
-learning_rate = 0.009
+learning_rate = 0.093
 momentum = 0.9
 log_interval = 10
 
@@ -121,8 +121,11 @@ train_counter = []
 test_losses = []
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
 
-c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(-1,1,3,3)).type(torch.cuda.FloatTensor)
-#print(c)
+def norm(x):
+  return (x-np.min(x))/(np.max(x)-np.min(x))
+
+c=torch.from_numpy(norm(cellular_automaton()).astype(np.float16).reshape(-1,1,3,3)).type(torch.cuda.FloatTensor)
+print(c)
 net = Net(c).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)

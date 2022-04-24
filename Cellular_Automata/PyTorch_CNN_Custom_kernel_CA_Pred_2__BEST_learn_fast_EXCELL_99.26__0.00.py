@@ -178,27 +178,29 @@ batch_idx, (example_data, example_targets) = next(examples)
 # Disable grad
 
 with torch.no_grad():
-    
+    model = Net(c)
+    checkpoint = torch.load('/home/theone/other_models/Cellular Automaton/results/model.pth')
+    model.load_state_dict(checkpoint)
     # Retrieve item
-    index = 256
-    item = example_data[index]
-    image = item[0]
-    true_target = example_targets[1]
+    index = 200
+    item = example_data
+    image = item.to('cpu')
+    true_target = example_targets[index].to('cpu')
     
     # Generate prediction
-    prediction = Net(image)
+    prediction = model.to('cpu')(image)
     
     # Predicted class value using argmax
-    predicted_class = np.argmax(prediction)
+    predicted_class = np.argmax(prediction[index])
     
     # Reshape image
-    image = image.reshape(28, 28, 1)
+    image = image[index].reshape(28, 28, 1)
     
     # Show result
     plt.imshow(image, cmap='gray')
     plt.title(f'Prediction: {predicted_class} - Actual target: {true_target}')
     plt.show()
 
-model_parameters = filter(lambda p: p.requires_grad, Net.parameters())
+model_parameters = filter(lambda p: p.requires_grad, model.parameters())
 params = sum([np.prod(p.size()) for p in model_parameters])
 print(params)

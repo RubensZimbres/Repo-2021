@@ -111,7 +111,7 @@ import torch.optim as optim
 PATH = './cifar_net.pth'
 
 
-n_epochs = 200
+n_epochs = 280
 batch_size_train = 1000
 batch_size_test = 1000
 learning_rate = 0.005

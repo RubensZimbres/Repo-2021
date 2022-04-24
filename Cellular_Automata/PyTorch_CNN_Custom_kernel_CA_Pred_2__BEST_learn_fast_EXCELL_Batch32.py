@@ -8,8 +8,8 @@ from time import time
 from torchvision import datasets, transforms
 from torch import nn, optim
 
-regra=2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
-base1=5
+regra=30#2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
+base1=2#5
 states=np.arange(0,base1)
 dimensions=3
 kernel=np.random.randint(len(states), size=(dimensions,dimensions))
@@ -83,8 +83,8 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 64, 3, 1,bias=False)
         self.conv2 = nn.Conv2d(1, 64, 3, 1,bias=False)
-        self.dropout1 = nn.Dropout(0.2)
-        self.dropout2 = nn.Dropout(0.4)
+        self.dropout1 = nn.Dropout(0.25)
+        self.dropout2 = nn.Dropout(0.5)
         self.fc1 = nn.Linear(9216, 1024)
         self.fc2 = nn.Linear(1024, 10)
         self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
@@ -110,9 +110,9 @@ import torch.optim as optim
 
 
 n_epochs = 40
-batch_size_train = 32
+batch_size_train = 128
 batch_size_test = 1000
-learning_rate = 0.005
+learning_rate = 0.009
 momentum = 0.9
 log_interval = 10
 

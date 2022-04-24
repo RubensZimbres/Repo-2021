@@ -85,8 +85,8 @@ class Net(nn.Module):
         self.conv2 = nn.Conv2d(1, 64, 3, 1,bias=False)
         self.dropout1 = nn.Dropout(0.2)
         self.dropout2 = nn.Dropout(0.2)
-        self.fc1 = nn.Linear(9216, 128)
-        self.fc2 = nn.Linear(128, 10)
+        self.fc1 = nn.Linear(9216, 1024)
+        self.fc2 = nn.Linear(1024, 10)
         self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
         #self.conv2.weight = nn.Parameter(kernel,requires_grad=True)
 
@@ -111,11 +111,11 @@ import torch.optim as optim
 PATH = './cifar_net.pth'
 
 
-n_epochs = 150
+n_epochs = 200
 batch_size_train = 1000
 batch_size_test = 1000
-learning_rate = 0.01
-momentum = 0.5
+learning_rate = 0.005
+momentum = 0.7
 log_interval = 10
 
 train_losses = []

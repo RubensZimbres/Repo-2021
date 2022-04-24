@@ -109,7 +109,7 @@ class Net(nn.Module):
 import torch.optim as optim
 
 
-n_epochs = 120
+n_epochs = 200
 batch_size_train = 1000
 batch_size_test = 1000
 learning_rate = 0.009

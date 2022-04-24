@@ -82,11 +82,11 @@ import torch.nn as nn
 class Net(nn.Module):
     def __init__(self,kernel):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, 3, 3,bias=False)
-        self.conv2 = nn.Conv2d(1, 64, 3, 1,bias=False)
-        self.dropout1 = nn.Dropout(0.25)
-        self.dropout2 = nn.Dropout(0.4)
-        self.fc1 = nn.Linear(576, 1024)
+        self.conv1 = nn.Conv2d(1, 128, 3, 3,bias=False)
+        self.conv2 = nn.Conv2d(1, 256, 3, 1,bias=False)
+        self.dropout1 = nn.Dropout(0.2)
+        self.dropout2 = nn.Dropout(0.3)
+        self.fc1 = nn.Linear(2304, 1024)
         self.fc2 = nn.Linear(1024, 10)
         self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
         #self.conv2.weight = nn.Parameter(kernel,requires_grad=True)

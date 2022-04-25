@@ -60,16 +60,16 @@ train_loader = torch.utils.data.DataLoader(
                              transform=torchvision.transforms.Compose([
                                torchvision.transforms.ToTensor(),
                                torchvision.transforms.Normalize(
-                                 (0.1307,), (0.3081,))
+                                 (0.0,), (1.,))
                              ])),
-  batch_size=1000, shuffle=True)
+  batch_size=256, shuffle=True)
 
 test_loader = torch.utils.data.DataLoader(
   torchvision.datasets.MNIST('./', train=False, download=True,
                              transform=torchvision.transforms.Compose([
                                torchvision.transforms.ToTensor(),
                                torchvision.transforms.Normalize(
-                                 (0.1307,), (0.3081,))
+                                 (0.0,), (1,))
                              ])),
   batch_size=1000, shuffle=True)
 
@@ -116,10 +116,8 @@ class Net(nn.Module):
 import torch.optim as optim
 
 
-n_epochs = 480
-batch_size_train = 1000
-batch_size_test = 1000
-learning_rate = 0.006
+n_epochs = 300
+learning_rate = 0.003
 momentum = 0.8
 log_interval = 10
 
@@ -157,10 +155,10 @@ def train(epoch):
 
 
 def test():
-    net.eval()
     test_loss = 0
     correct = 0
     with torch.no_grad():
+        net.eval()
         for data, target in test_loader:
             data, target = data.to(device), target.to(device)
             output = net(data)

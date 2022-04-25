@@ -8,11 +8,10 @@ from time import time
 from torchvision import datasets, transforms
 from torch import nn, optim
 
-
-regra=30 #2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
-base1=2
+regra=150#2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
+base1=2#5
 states=np.arange(0,base1)
-dimensions=5
+dimensions=3
 kernel=np.random.randint(len(states), size=(dimensions,dimensions))
 
 
@@ -21,6 +20,7 @@ def cellular_automaton():
 
     lista=states
     kernel=np.pad(kernel, (1, 1), 'constant', constant_values=(0))
+    print(kernel)
     q12=np.array([p for p in itertools.product(lista, repeat=3)])[::-1]
 
     uau12 = np.zeros(q12.shape[0])
@@ -45,7 +45,12 @@ def cellular_automaton():
     kernel=np.array([item for item in map(ca,range(1,kernel.shape[0]-1))])
     return kernel
 
-cellular_automaton()[1:4,1:4]
+#def norm(x):
+#  return (x-np.min(x))/(np.max(x)-np.min(x)+0.0001)
+
+#c=torch.from_numpy(norm(cellular_automaton()).astype(np.float16).reshape(-1,1,3,3)).type(torch.cuda.FloatTensor)
+#print(c)
+
 
 device = torch.device("cuda")
 
@@ -61,7 +66,7 @@ train_loader = torch.utils.data.DataLoader(
                                torchvision.transforms.Normalize(
                                  (0.1307,), (0.3081,))
                              ])),
-  batch_size=128, shuffle=True)
+  batch_size=1000, shuffle=True)
 
 test_loader = torch.utils.data.DataLoader(
   torchvision.datasets.MNIST('./', train=False, download=True,
@@ -82,14 +87,15 @@ import torch.nn as nn
 class Net(nn.Module):
     def __init__(self,kernel):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 128, 3, 3,bias=False)
-        self.conv2 = nn.Conv2d(1, 256, 3, 1,bias=False)
-        self.dropout1 = nn.Dropout(0.12)
-        self.dropout2 = nn.Dropout(0.12)
-        self.fc1 = nn.Linear(2304, 1024)
+        self.conv1 = nn.Conv2d(1, 64, 3, 1,bias=False)
+        self.conv2 = nn.Conv2d(1, 64, 3, 1, bias=False)
+        self.conv3 = nn.Conv2d(1, 32, 3, 1, bias=False)
+        self.dropout1 = nn.Dropout(0.2)
+        self.dropout2 = nn.Dropout(0.4)
+        self.fc1 = nn.Linear(3872, 1024)
         self.fc2 = nn.Linear(1024, 10)
         self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
-        #self.conv2.weight = nn.Parameter(kernel,requires_grad=True)
+        self.conv2.weight = nn.Parameter(kernel,requires_grad=True)
 
 
     def forward(self, x):
@@ -97,8 +103,10 @@ class Net(nn.Module):
         x = F.relu(x)
         x = self.conv2(x)
         x = F.relu(x)
+        x = self.dropout2(x)
+        x = self.conv3(x)
+        x = F.relu(x)
         x = F.max_pool2d(x, 2)
-        x = self.dropout1(x)
         x = torch.flatten(x, 1)
         x = self.fc1(x)
         x = F.relu(x)
@@ -109,14 +117,11 @@ class Net(nn.Module):
 
 import torch.optim as optim
 
-PATH = './cifar_net.pth'
 
-
-n_epochs = 200
-batch_size_train = 128
-batch_size_test = 128
-learning_rate = 0.008
-momentum = 0.5
+n_epochs = 230
+batch_size_train = 256
+batch_size_test = 1000
+learning_rate = 0.01
 log_interval = 10
 
 train_losses = []
@@ -124,12 +129,14 @@ train_counter = []
 test_losses = []
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
 
-c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(-1,1,5,5)).type(torch.cuda.FloatTensor)
-#print(c)
+def norm(x):
+  return (x-np.min(x))/(np.max(x)-np.min(x))
+
+c=torch.from_numpy(norm(cellular_automaton()).astype(np.float16).reshape(-1,1,3,3)).type(torch.cuda.FloatTensor)
+print(c)
 net = Net(c).to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
-
+optimizer = optim.Adam(net.parameters(), lr=learning_rate)
 
 def train(epoch):
   net.train()
@@ -166,7 +173,7 @@ def test():
             correct += pred.eq(target.data.view_as(pred)).sum()
             test_loss /= len(test_loader.dataset)
             test_losses.append(test_loss)
-            print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.6f}%)\n'.format(
+        print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.6f}%)\n'.format(
                 test_loss, correct, len(test_loader.dataset),
                 100. * correct / len(test_loader.dataset)))
 
@@ -181,27 +188,30 @@ batch_idx, (example_data, example_targets) = next(examples)
 # Disable grad
 
 with torch.no_grad():
-    
+    model = Net(c)
+    checkpoint = torch.load('/home/theone/other_models/Cellular Automaton/results/model.pth')
+    model.load_state_dict(checkpoint)
     # Retrieve item
-    index = 256
-    item = example_data[index]
-    image = item[0]
-    true_target = example_targets[1]
+    index = 200
+    item = example_data
+    image = item.to('cpu')
+    true_target = example_targets[index].to('cpu')
     
     # Generate prediction
-    prediction = Net(image)
+    prediction = model.to('cpu')(image)
     
     # Predicted class value using argmax
-    predicted_class = np.argmax(prediction)
+    predicted_class = np.argmax(prediction[index])
     
     # Reshape image
-    image = image.reshape(28, 28, 1)
+    image = image[index].reshape(28, 28, 1)
     
     # Show result
     plt.imshow(image, cmap='gray')
     plt.title(f'Prediction: {predicted_class} - Actual target: {true_target}')
     plt.show()
 
-model_parameters = filter(lambda p: p.requires_grad, Net.parameters())
+model_parameters = filter(lambda p: p.requires_grad, model.parameters())
 params = sum([np.prod(p.size()) for p in model_parameters])
 print(params)
+

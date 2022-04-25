@@ -10,8 +10,8 @@ from time import time
 from torchvision import datasets, transforms
 from torch import nn, optim
 
-regra=150 #2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
-base1=2 #5
+regra=30#2159062512564987644819455219116893945895958528152021228705752563807958532187120148734120
+base1=2#5
 states=np.arange(0,base1)
 dimensions=3
 kernel=[[1, 0, 1],[0, 1, 0],[1, 0, 1]]#np.random.randint(len(states), size=(dimensions,dimensions))
@@ -51,9 +51,9 @@ print(cellular_automaton()[1:4,1:4])
 device = torch.device("cuda")
 
 
-transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+#transform = transforms.Compose(
+#    [transforms.ToTensor(),
+#     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 train_loader = torch.utils.data.DataLoader(
   torchvision.datasets.MNIST('./', train=True, download=True,
@@ -83,7 +83,7 @@ import torch.nn as nn
 class Net(nn.Module):
     def __init__(self,kernel):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 64, 3, 1,bias=False)
+        self.conv1 = nn.Conv2d(12, 64, 3, 1,bias=False)
         self.conv2 = nn.Conv2d(1, 64, 3, 1,bias=False)
         self.dropout1 = nn.Dropout(0.2)
         self.dropout2 = nn.Dropout(0.4)
@@ -91,8 +91,8 @@ class Net(nn.Module):
         self.fc2 = nn.Linear(1024, 10)
         self.batchnorm1 = nn.BatchNorm2d(1)
         self.batchnorm2 = nn.BatchNorm1d(1024)
-        self.conv1.weight = nn.Parameter(kernel,requires_grad=True)
-        self.conv2.weight = nn.Parameter(kernel,requires_grad=True)
+        self.conv1.weight = nn.Parameter(kernel,requires_grad=False)
+        self.conv2.weight = nn.Parameter(kernel,requires_grad=False)
 
 
     def forward(self, x):
@@ -103,6 +103,7 @@ class Net(nn.Module):
         x = F.max_pool2d(x, 2)
         x = self.batchnorm1 (x)
         x = self.dropout1(x)
+        #print(x.shape)
         x = torch.flatten(x, 1)
         x = self.fc1(x)
         x = self.batchnorm2(x)
@@ -115,11 +116,11 @@ class Net(nn.Module):
 import torch.optim as optim
 
 
-n_epochs = 200
+n_epochs = 480
 batch_size_train = 1000
 batch_size_test = 1000
-learning_rate = 0.0077
-momentum = 0.9
+learning_rate = 0.006
+momentum = 0.8
 log_interval = 10
 
 train_losses = []
@@ -131,14 +132,13 @@ c=torch.from_numpy(cellular_automaton().astype(np.float16).reshape(-1,1,3,3)).ty
 #print(c)
 net = Net(c).to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=momentum)
+optimizer = optim.Adam(net.parameters(), lr=learning_rate)#, momentum=momentum)
 
 
 def train(epoch):
-  net.train()
   for batch_idx, (data, target) in enumerate(train_loader):
     #net.load_state_dict(torch.load(PATH))
-    net.train()
+    net.train(True)
     data, target = data.to(device), target.to(device)
     optimizer.zero_grad()
     output = net(data)

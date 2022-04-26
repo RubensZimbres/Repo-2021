@@ -200,3 +200,18 @@ with torch.no_grad():
 model_parameters = filter(lambda p: p.requires_grad, model.parameters())
 params = sum([np.prod(p.size()) for p in model_parameters])
 print(params)
+
+Train Epoch: 2 [0/60000 (0%)]   Loss: 0.025488
+Train Epoch: 2 [5000/60000 (8%)]        Loss: 0.017526
+Train Epoch: 2 [10000/60000 (17%)]      Loss: 0.010448
+Train Epoch: 2 [15000/60000 (25%)]      Loss: 0.007660
+Train Epoch: 2 [20000/60000 (33%)]      Loss: 0.009406
+Train Epoch: 2 [25000/60000 (42%)]      Loss: 0.014141
+Train Epoch: 2 [30000/60000 (50%)]      Loss: 0.007342
+Train Epoch: 2 [35000/60000 (58%)]      Loss: 0.036374
+Train Epoch: 2 [40000/60000 (67%)]      Loss: 0.020807
+Train Epoch: 2 [45000/60000 (75%)]      Loss: 0.007119
+Train Epoch: 2 [50000/60000 (83%)]      Loss: 0.022738
+Train Epoch: 2 [55000/60000 (92%)]      Loss: 0.007261
+
+Test set: Avg. loss: 0.0440, Accuracy: 9854/10000 (98.540001%)

@@ -82,7 +82,7 @@ class Net(nn.Module):
         self.conv2 = nn.Conv2d(1, 64, 10, 1,bias=False)
         self.dropout1 = nn.Dropout(0.2)
         self.dropout2 = nn.Dropout(0.4)
-        self.fc1 = nn.Linear(100, 28*28)
+        self.fc1 = nn.Linear(3136, 28*28)
         self.fc2 = nn.Linear(28*28, 1024)
         self.fc3 = nn.Linear(1024, 1024)
         self.fc4 = nn.Linear(1024, 10)
@@ -90,9 +90,9 @@ class Net(nn.Module):
         torch.nn.init.xavier_uniform(self.fc2.weight)
         torch.nn.init.xavier_uniform(self.fc3.weight)
         torch.nn.init.xavier_uniform(self.fc4.weight)
-        self.batch_norm = nn.BatchNorm1d(100)
+        self.batch_norm = nn.BatchNorm1d(3136)
         self.conv1.weight = nn.Parameter(kernel,requires_grad=False)
-        self.conv2.weight = nn.Parameter(kernel,requires_grad=False)
+        #self.conv2.weight = nn.Parameter(kernel,requires_grad=False)
 
 
     def forward(self, x):
@@ -121,8 +121,8 @@ class Net(nn.Module):
 import torch.optim as optim
 
 #Tuning
-n_epochs = 300
-learning_rate = 0.003
+n_epochs = 500
+learning_rate = 0.01
 log_interval = 500
 train_losses = []
 test_losses = []
@@ -139,7 +139,7 @@ optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=0.8)
 
 def train(epoch):
   net.train()
-  #checkpoint = torch.load('/home/theone/other_models/Cellular Automaton/results/model_98.61.pth')
+  #checkpoint = torch.load('/home/theone/other_models/Cellular Automaton/results/model_300_acc_98.01.pth')
   #net.load_state_dict(checkpoint)
   for batch_idx, (data, target) in enumerate(train_loader):
     data, target = data.to(device), target.to(device)
@@ -153,7 +153,7 @@ def train(epoch):
         epoch, batch_idx * len(data), len(train_loader.dataset),
         100. * batch_idx / len(train_loader), loss.item()))
       train_losses.append(loss.item()) 
-  torch.save(net.state_dict(), '/home/theone/other_models/Cellular Automaton/results/Finetune/model_{0}_acc{1}.pth'.format(epoch,1-loss.item()))
+  torch.save(net.state_dict(), '/home/theone/other_models/Cellular Automaton/results/Finetune/model_{0}_acc{1}.pth'.format(epoch,100. * batch_idx / len(train_loader)))
 
 
 def test():
@@ -166,9 +166,9 @@ def test():
             #print(data.shape)
             try:
               output = net(data)
-              test_loss += F.nll_loss(output, target, size_average=False).item()
-              pred = output.max(1, keepdim=True)[1]
-              correct += pred.eq(target.data.view_as(pred)).sum()
+              test_loss += F.nll_loss(output, target, reduction='sum').item()
+              pred = output.argmax(1, keepdim=True)
+              correct += pred.eq(target.data.view_as(pred)).sum().item()
             except:
               pass
         test_loss /= len(test_loader.dataset)

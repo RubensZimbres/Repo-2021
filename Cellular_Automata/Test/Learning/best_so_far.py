@@ -218,6 +218,7 @@ Test set: Avg. loss: 0.0440, Accuracy: 9854/10000 (98.540001%)
 
 ######  Tuning   ######  
 
+checkpoint = torch.load('/home/theone/other_models/Cellular Automaton/results/model_98.61.pth')
             
 n_epochs = 300
 learning_rate = 0.003

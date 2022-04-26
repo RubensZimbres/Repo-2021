@@ -215,3 +215,21 @@ Train Epoch: 2 [50000/60000 (83%)]      Loss: 0.022738
 Train Epoch: 2 [55000/60000 (92%)]      Loss: 0.007261
 
 Test set: Avg. loss: 0.0440, Accuracy: 9854/10000 (98.540001%)
+
+######  Tuning   ######  
+
+            
+n_epochs = 300
+learning_rate = 0.003
+log_interval = 10
+train_losses = []
+test_losses = []
+test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
+
+def norm(x):
+    return (x-x.min())/(x.max()-x.min())
+
+c=torch.from_numpy(norm(cellular_automaton()).astype(np.float16).reshape(-1,1,dimensions,dimensions)).type(torch.cuda.FloatTensor)
+print(c)
+net = Net(c).to(device)
+optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=0.8)

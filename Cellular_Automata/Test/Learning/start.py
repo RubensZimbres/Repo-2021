@@ -120,7 +120,6 @@ import torch.optim as optim
 n_epochs = 300
 learning_rate = 0.01
 log_interval = 10
-
 train_losses = []
 test_losses = []
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
@@ -131,7 +130,7 @@ def norm(x):
 c=torch.from_numpy(norm(cellular_automaton()).astype(np.float16).reshape(-1,1,dimensions,dimensions)).type(torch.cuda.FloatTensor)
 print(c)
 net = Net(c).to(device)
-optimizer = optim.SGD(net.parameters(), lr=learning_rate)
+optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=0.9)
 
 
 def train(epoch):

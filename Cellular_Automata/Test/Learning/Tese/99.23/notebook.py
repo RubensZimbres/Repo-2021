@@ -175,7 +175,7 @@ def test():
         print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.6f}%)\n'.format(
                 test_loss, correct, len(test_loader.dataset),
                 100. * correct / len(test_loader.dataset)))
-        torch.save(net.state_dict(), '/home/theone/other_models/Cellular Automaton/results/newest/model_acc_{1}_{0}.pth'.format(epoch,100. * correct / len(test_loader.dataset)))
+        torch.save(net.state_dict(), '/home/theone/other_models/Cellular Automaton/results/128/model_acc_{1}_{0}.pth'.format(epoch,100. * correct / len(test_loader.dataset)))
 
 
 for epoch in range(1, n_epochs + 1):

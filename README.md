@@ -30,11 +30,12 @@ Here are the commands to successfully deploy a model in Google Cloud AI Platform
 Here there are commands and Python files to deploy in Google Cloud Functions.  
   
 <b>Google-Cloud-IAP</b>  
-Here are the directions to securely connect your Jupyter Notebook to a Google Cloud Compute Engine via internal IP through an IAP (Identity-Aware Proxy) tunnel + TCP Forwarding. Full tutorial here: 
-<a href="url">link text</a>
+Here are the directions to securely connect your Jupyter Notebook to a Google Cloud Compute Engine via internal IP through an IAP (Identity-Aware Proxy) tunnel + TCP Forwarding. Full tutorial here: <a href="url">https://www.linkedin.com/pulse/connecting-jupyter-notebook-google-cloud-vm-using-only-rubens-zimbres/</a>  
+<img src=https://media-exp1.licdn.com/dms/image/C5612AQFrp9VdWw4Czw/article-cover_image-shrink_720_1280/0/1649690624116?e=1657152000&v=beta&t=KeobL2FyKHV6nnBmO20wfdzVWhstwMx8xCWBkFi60-w>
   
 <b>Google-Cloud-OCR</b>  
-
+Code for submitting documents to Document AI, OCR service from Google Cloud.  
+  
 <b></b>  
 <b></b>  
 <b></b>  

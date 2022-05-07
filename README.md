@@ -54,7 +54,7 @@ Here there are codes to query GPT-2, for the Squeeze BERT (a smaller version of 
 <b>Kali</b>  
 Here there is a bunch of bash and Python scripts for ethical hacking, development of exploits and exploiting OWASP Top 10.  
   
-<b><Keras/b>  
+<b>Keras</b>  
 Codes for LSTM and simple neural network in Keras Sequential.  
   
 <b>Neural_Cellular_Automata_Google</b>  
@@ -65,6 +65,15 @@ Here there is the code used by Google guys to create a Neural Cellular Automata,
 <b>OpenCV</b>  
 A simple algorithm in OpenCV to detect filled circles in school tests:  
 <img src=https://github.com/RubensZimbres/Repo-2021/blob/main/OpenCV/works.png>  
+  
+<b>OpenCV_Haarcascade</b>  
+Here are the instructions to train your own object detector using haarcascade in OpenCV.  
+  
+<b>Prophet</b>  
+Code to make predicions with Facebook's Prophet.  
+  
+<b>PySpark</b>  
+A sample notebook in PySpark.  
   
 <b></b>  
 <b></b>  

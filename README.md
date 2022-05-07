@@ -73,11 +73,28 @@ Here are the instructions to train your own object detector using haarcascade in
 Code to make predicions with Facebook's Prophet.  
   
 <b>PySpark</b>  
-A sample notebook in PySpark.  
+A sample notebook in PySpark with some basic codes in example.py and ML classifiers .  
   
-<b></b>  
-<b></b>  
-<b></b>  
-<b></b>  
-<b></b>  
+<b>PyTorch Geometric</b>  
+Graph Neural Networks in PyTorch Geometric, for protein and molecule structure.  
   
+<b>Python Vulnerabilities</b>  
+This part shows how to install Bandit, a library that scans Python codes for common vulnerabilities to malicious hackers.  
+  
+<b>RRG</b>  
+This code shows how to prepare data for RRG - Relative Rotation Graph, for stocks analysis of momentum and relative strength.  
+  
+<b>Tensorflow</b>  
+Here there are codes of Gated Recurrent Units for Text Generation in Keras and links for the hierarchical Softmax activation function.  
+
+<b>Transformer</b>  
+In this section you will find codes to customize PyTorch architecture, load partial weights, a transformer implementation, beam search, generation of word embeddings and also a Transformer customized to act as a time series predictor, using floats instead og long integers, as the original.  
+  
+<b>ONNX</b>  
+A tool to speed up inference time of PyTorch models.  
+  
+<b>Root dir: file Embeddings_PyT_TF.py</b>  
+How to generate word embeddings (3,768) in PyTorch and Tensorflow.
+
+<b>Root dir: file GPU_GCP.txt</b>  
+How to install NVIDIA driver in Google Cloud Compute Engine.  

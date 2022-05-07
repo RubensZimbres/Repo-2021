@@ -36,15 +36,29 @@ Here are the directions to securely connect your Jupyter Notebook to a Google Cl
 Code for submitting documents to Document AI, OCR service from Google Cloud.  
   
 <b>Google-Cloud-Storage</b>  
-Python code to rename all files in storage, even if they have strange characters, as 'ç' and 'õ'.
-<b></b>  
-<b></b>  
+Python code to rename all files in storage, even if they have strange characters, as 'ç' and 'õ'.  
+  
+<b>Google-Cloud-Train</b>  
+Instructions to submit a training job for AI Platform and inference.  
   
 <b>Convolutional Graph Neural Networks in PyTorch </b>  
-  
+This folder brings Graph CNNs in PyTorch with dgl library. There is an Attention Graph Neural Net, as well as Graph Neural Nets for Classification and to find communities.  
+
 <img src=https://github.com/RubensZimbres/Repo-2021/blob/main/Graph-Networks/graph4_comm_movie.gif>  
   
 <img src=https://github.com/RubensZimbres/Repo-2021/blob/main/Graph-Networks/movie.gif>  
+  
+<b>Hugging Face</b>  
+Here there are codes to query GPT-2, for the Squeeze BERT (a smaller version of BERT).
+  
+<b>Kali</b>  
+Here there is a bunch of bash and Python scripts for ethical hacking, development of exploits and exploiting OWASP Top 10.  
+  
+<b></b>  
+<b></b>  
+<b></b>  
+<b></b>  
+  
     
 <b>Neural Cellular Automata </b>  
   

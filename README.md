@@ -23,10 +23,18 @@ This part has codes to develop Elementary Cellular Automata in Python, binary an
   
 <img src=https://github.com/RubensZimbres/Repo-2021/blob/main/Cellular_Automata/CA1D_5_.png>  
     
-<b></b>  
-<b></b>  
-<b></b>  
-<b></b>  
+<b>Google-Cloud-Deploy</b>  
+Here are the commands to successfully deploy a model in Google Cloud AI Platform.  
+  
+<b>Google-Cloud-Functions-Job</b>  
+Here there are commands and Python files to deploy in Google Cloud Functions.  
+  
+<b>Google-Cloud-IAP</b>  
+Here are the directions to securely connect your Jupyter Notebook to a Google Cloud Compute Engine via internal IP through an IAP (Identity-Aware Proxy) tunnel + TCP Forwarding. Full tutorial here: 
+<a href="url">link text</a>
+  
+<b>Google-Cloud-OCR</b>  
+
 <b></b>  
 <b></b>  
 <b></b>  

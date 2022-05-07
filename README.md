@@ -10,21 +10,26 @@ In Arduino folder, there is a bash command to solve permissions issues in Arduin
 Here there are commands for creating a service in Ubuntu.  
   
 <b>BOVESPA</b>  
-Here there is a code that analyzes Fibonnaci, RSI and close prie for stocks in Brazilian Stock Exchange, saving engineered variables to BigQuqery in order to create a dashboard in Data Studio.  
+Here there is a code that analyzes Fibonnaci, RSI and closing price for stocks in Brazilian Stock Exchange, saving engineered variables to BigQuqery in order to create a dashboard in Data Studio.  
   
   <img src=https://github.com/RubensZimbres/Repo-2021/blob/main/BOVESPA/bovespa.png>  
-<b></b>  
-<b></b>  
-<b></b>  
-<b></b>  
-<b></b>  
-<b></b>  
-<b></b>  
-<b></b>  
-<b></b>  
-<b>One-Dimensional Cellular Automata from Scratch </b>  
+  
+<b>C-Language</b>  
+Notebooks of C language of my course on Udemy. There is also a Cellular Automata code in C that is intended to be used in LEDs.  
+  
+<b>Cellular Automata - One-Dimensional Cellular Automata from Scratch </b>  
+This part has codes to develop Elementary Cellular Automata in Python, binary and 5 states, and also an experiment of adding a CA to a PyTorch CNN's kernel, to solve the MNIST task. The model achieves 99.29 accuracy 
+<a href="url">https://github.com/RubensZimbres/Repo-2021/tree/main/Cellular_Automata/Test/Learning/Tese/99.29t</a>
   
 <img src=https://github.com/RubensZimbres/Repo-2021/blob/main/Cellular_Automata/CA1D_5_.png>  
+    
+<b></b>  
+<b></b>  
+<b></b>  
+<b></b>  
+<b></b>  
+<b></b>  
+<b></b>  
   
 <b>Convolutional Graph Neural Networks in PyTorch </b>  
   

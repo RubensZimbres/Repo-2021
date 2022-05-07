@@ -10,7 +10,9 @@ In Arduino folder, there is a bash command to solve permissions issues in Arduin
 Here there are commands for creating a service in Ubuntu.  
   
 <b>BOVESPA</b>  
-Here there is a code that analyzes Fibonnaci, RSI and close prie for stocks in Brazilian Stock Exchange, saving engineered variables to BigQuqery in order to create a dashboard in Data Studio.
+Here there is a code that analyzes Fibonnaci, RSI and close prie for stocks in Brazilian Stock Exchange, saving engineered variables to BigQuqery in order to create a dashboard in Data Studio.  
+  
+  <img src=https://github.com/RubensZimbres/Repo-2021/blob/main/BOVESPA/bovespa.png>  
 <b></b>  
 <b></b>  
 <b></b>  

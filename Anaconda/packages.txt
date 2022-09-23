@@ -4,7 +4,7 @@ NO UPDATES
    70  sudo bash Anaconda3-2020.07-Linux-x86_64.sh
    72  source /home/anaconda3/bin/activate
    78  sudo apt-get install -y libboost-all-dev
-   79  pip install cmake python-Levenshtein Flask gunicorn pybase64 protobuf nltk fuzzywuzzy python-csv Unidecode torch tensorflow-gpu transformers imutils scikit-image scipy==1.4.1 opencv-python text2num sklearn scikit-learn
+   79  pip install cmake python-Levenshtein Flask gunicorn pybase64 protobuf nltk fuzzywuzzy python-csv Unidecode torch tensorflow-gpu transformers imutils scikit-image opencv-python text2num sklearn scikit-learn
    80  pip install --upgrade google-cloud-vision
    81  pip install --upgrade google-cloud-language
    82  pip install --upgrade google-cloud
@@ -15,8 +15,11 @@ NO UPDATES
    87  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
    88  sudo apt-get update && sudo apt-get install google-cloud-cli
    89  python -c "import nltk;nltk.download('punkt');nltk.download('stopwords')"
-   90  pip install dlib
+   90  conda *** install dlib
    94  pip install numpy --upgrade --ignore-installed
+   
+Instalar displaylink com old monitor conectado ***   
+   
 hwinfo --gfxcard --short
 lspci | grep -i vga
 lspci -s 01:00.0 -v

@@ -33,3 +33,4 @@ sudo apt install nvidia-cuda-toolkit
 export CUDA_PATH=/usr -- at the end of your .bashrc and run
 source ~/.bashrc
 
+NO Firefox - sec key

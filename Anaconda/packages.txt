@@ -34,4 +34,6 @@ sudo apt install nvidia-cuda-toolkit
 export CUDA_PATH=/usr -- at the end of your .bashrc and run
 source ~/.bashrc
 
+echo 2 | sudo tee /sys/class/leds/dell::kbd_backlight/brightness
+
 NO Firefox - sec key

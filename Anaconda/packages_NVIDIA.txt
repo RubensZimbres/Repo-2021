@@ -68,6 +68,9 @@ sudo apt-get -y install cudnn
 https://ohmyz.sh/
 
 Tensorflow:
+
+tensorflow-2.11.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+
 https://developer.nvidia.com/rdp/cudnn-archive
 which nvcc
 echo $CUDA_HOME
@@ -81,3 +84,14 @@ export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
 source ~/.bashrc
+
+Download cuDNN v8.9.7 (December 5th, 2023), for CUDA 11.x
+
+Local Installer for Linux x86_64 (Tar)
+tar -xvf
+cd cudnn-linux-x86_64-8.x.x.x_cudaX.X-archive
+
+sudo cp ./lib/libcudnn* /usr/lib/x86_64-linux-gnu/
+sudo cp ./include/cudnn*.h /usr/include/
+
+sudo chmod a+r /usr/lib/x86_64-linux-gnu/libcudnn*

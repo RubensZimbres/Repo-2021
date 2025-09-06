@@ -95,3 +95,5 @@ sudo cp ./lib/libcudnn* /usr/lib/x86_64-linux-gnu/
 sudo cp ./include/cudnn*.h /usr/include/
 
 sudo chmod a+r /usr/lib/x86_64-linux-gnu/libcudnn*
+
+python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"

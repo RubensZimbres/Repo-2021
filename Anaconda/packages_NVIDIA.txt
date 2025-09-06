@@ -66,3 +66,18 @@ sudo apt-get update
 sudo apt-get -y install cudnn
 
 https://ohmyz.sh/
+
+Tensorflow:
+https://developer.nvidia.com/rdp/cudnn-archive
+which nvcc
+echo $CUDA_HOME
+ls -l /usr/bin/nvcc
+cat /usr/bin/nvcc
+nano ~/.bashrc
+
+# Set CUDA Environment Variables
+export CUDA_HOME=/usr/lib/nvidia-cuda-toolkit
+export PATH=$CUDA_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+
+source ~/.bashrc

@@ -59,6 +59,17 @@ sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
 wget https://developer.download.nvidia.com/compute/cuda/12.3.2/local_installers/cuda-repo-ubuntu2204-12-3-local_12.3.2-545.23.08-1_amd64.deb
 sudo dpkg -i cuda-repo-ubuntu2204-12-3-local_12.3.2-545.23.08-1_amd64.deb
 sudo cp /var/cuda-repo-ubuntu2204-12-3-local/cuda-*-keyring.gpg /usr/share/keyrings/
+
+sudo nano /etc/apt/sources.list.d/ubuntu.sources
+Paste in the following at the end of the file:
+
+Types: deb
+URIs: http://old-releases.ubuntu.com/ubuntu/
+Suites: lunar
+Components: universe
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+
 sudo apt-get update
 sudo apt-get -y install cuda-toolkit-12-3
 

@@ -54,18 +54,14 @@ sudo apt install nvidia-driver-535
 reboot
 
 nvidia-smi
-wget https://developer.download.nvidia.com/compute/cuda/12.1.1/local_installers/cuda-repo-ubuntu2204-12-1-local_12.1.1-535.183.01-1_amd64.deb
 sudo apt install nvidia-cuda-toolkit
-nvcc --version
-nvidia-smi
 
 wget https://developer.download.nvidia.com/compute/cudnn/9.2.1/local_installers/cudnn-local-repo-debian12-9.2.1_1.0-1_amd64.deb
 sudo dpkg -i cudnn-local-repo-debian12-9.2.1_1.0-1_amd64.deb
 sudo cp /var/cudnn-local-repo-debian12-9.2.1/cudnn-*-keyring.gpg /usr/share/keyrings/
 sudo apt-get update
-sudo apt-get -y install cudnn
 
-https://ohmyz.sh/
+######################
 
 Tensorflow:
 

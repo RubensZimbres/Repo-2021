@@ -77,9 +77,11 @@ GO TO:
 
 https://developer.nvidia.com/rdp/cudnn-archive
 
-wget https://developer.download.nvidia.com/compute/cudnn/9.2.1/local_installers/cudnn-local-repo-debian12-9.2.1_1.0-1_amd64.deb
-sudo dpkg -i cudnn-local-repo-debian12-9.2.1_1.0-1_amd64.deb
-sudo cp /var/cudnn-local-repo-debian12-9.2.1/cudnn-*-keyring.gpg /usr/share/keyrings/
+Get Download cuDNN v8.9.7
+
+wget https://developer.nvidia.com/downloads/compute/cudnn/secure/8.9.7/local_installers/12.x/cudnn-local-repo-ubuntu2204-8.9.7.29_1.0-1_amd64.deb/
+sudo dpkg -i cudnn-local-repo-ubuntu2204-8.9.7.29_1.0-1_amd64.deb
+sudo cp /var/cudnn-local-repo-ubuntu2204-8.9.7.29/cudnn-local-08A7D361-keyring.gpg /usr/share/keyrings/
 sudo apt-get update
 
 nano ~/.bashrc
@@ -96,7 +98,7 @@ Tensorflow:
 tensorflow-2.11.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 
 # Navigate to your extracted cuDNN folder
-# Example: cd cudnn-linux-x86_64-8.9.7.29_cuda12-archive/
+cd cudnn-linux-x86_64-8.9.7.29_cuda12-archive
 
 sudo cp include/cudnn*.h /usr/local/cuda-12.3/include
 sudo cp lib/libcudnn* /usr/local/cuda-12.3/lib64

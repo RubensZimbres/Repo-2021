@@ -50,16 +50,33 @@ sudo apt-get clean
 reboot
 
 sudo ubuntu-drivers autoinstall
-sudo apt install nvidia-driver-535
 reboot
 
 nvidia-smi
-sudo apt install nvidia-cuda-toolkit
+
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/12.3.2/local_installers/cuda-repo-ubuntu2204-12-3-local_12.3.2-545.23.08-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2204-12-3-local_12.3.2-545.23.08-1_amd64.deb
+sudo cp /var/cuda-repo-ubuntu2204-12-3-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get -y install cuda-toolkit-12-3
+
+GO TO:
+
+https://developer.nvidia.com/rdp/cudnn-archive
 
 wget https://developer.download.nvidia.com/compute/cudnn/9.2.1/local_installers/cudnn-local-repo-debian12-9.2.1_1.0-1_amd64.deb
 sudo dpkg -i cudnn-local-repo-debian12-9.2.1_1.0-1_amd64.deb
 sudo cp /var/cudnn-local-repo-debian12-9.2.1/cudnn-*-keyring.gpg /usr/share/keyrings/
 sudo apt-get update
+
+nano ~/.bashrc
+
+# Set CUDA Environment Variables for NVIDIA installation
+export CUDA_HOME=/usr/local/cuda-12.3
+export PATH=$CUDA_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
 ######################
 
@@ -67,29 +84,11 @@ Tensorflow:
 
 tensorflow-2.11.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 
-https://developer.nvidia.com/rdp/cudnn-archive
-which nvcc
-echo $CUDA_HOME
-ls -l /usr/bin/nvcc
-cat /usr/bin/nvcc
-nano ~/.bashrc
+# Navigate to your extracted cuDNN folder
+# Example: cd cudnn-linux-x86_64-8.9.7.29_cuda12-archive/
 
-# Set CUDA Environment Variables
-export CUDA_HOME=/usr/lib/nvidia-cuda-toolkit
-export PATH=$CUDA_HOME/bin:$PATH
-export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
-
-source ~/.bashrc
-
-Download cuDNN v8.9.7 (December 5th, 2023), for CUDA 11.x
-
-Local Installer for Linux x86_64 (Tar)
-tar -xvf
-cd cudnn-linux-x86_64-8.x.x.x_cudaX.X-archive
-
-sudo cp ./lib/libcudnn* /usr/lib/x86_64-linux-gnu/
-sudo cp ./include/cudnn*.h /usr/include/
-
-sudo chmod a+r /usr/lib/x86_64-linux-gnu/libcudnn*
+sudo cp include/cudnn*.h /usr/local/cuda-12.3/include
+sudo cp lib/libcudnn* /usr/local/cuda-12.3/lib64
+sudo chmod a+r /usr/local/cuda-12.3/include/cudnn*.h /usr/local/cuda-12.3/lib64/libcudnn*
 
 python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"

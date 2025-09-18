@@ -104,4 +104,7 @@ sudo cp include/cudnn*.h /usr/local/cuda-12.3/include
 sudo cp lib/libcudnn* /usr/local/cuda-12.3/lib64
 sudo chmod a+r /usr/local/cuda-12.3/include/cudnn*.h /usr/local/cuda-12.3/lib64/libcudnn*
 
+pip uninstall -y tensorflow tensorflow-text jax jaxlib ml-dtypes
+
+pip install tensorflow==2.16.1 tensorflow-text
 python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
